@@ -13,7 +13,7 @@ const { Content, Sider } = Layout;
 export default function Register(props) {
 
     const [ready, setReady] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const registerForm = useRef(null);
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function Register(props) {
     });
 
     function onFinish(values) {
-        setLoading(true);
+        setSubmitting(true);
         const { username, password, mail, name } = values;
         _service({
             method: 'POST',
@@ -41,18 +41,18 @@ export default function Register(props) {
                         message: 'Conta Criada',
                         description: 'A conta foi criada com sucesso, pode iniciar sessão.',
                     });
-                    setLoading(false);
+                    setSubmitting(false);
                     setReady(true);
                 } else {
                     notification["warning"]({
                         message: 'Utilizador existente',
                         description: response.json.error,
                     });
-                    setLoading(false);
+                    setSubmitting(false);
                 }
             },
             fail: () => {
-                setLoading(false);
+                setSubmitting(false);
                 notification["error"]({
                     message: 'Erro na Criação de Conta',
                     description: 'Não foi possível criar a conta, contacte-nos através do chat de suporte.',
@@ -95,7 +95,7 @@ export default function Register(props) {
                                     { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
                                 ]}
                             >
-                                <Input disabled={loading} maxLength={25} />
+                                <Input disabled={submitting} maxLength={25} />
                             </Form.Item>
                             <Form.Item
                                 label="Nome de Utilizador"
@@ -105,7 +105,7 @@ export default function Register(props) {
                                     { type: 'string', message: 'Utilizador inválido, apenas letras minúsculas e números.', pattern: '^[a-z0-9]{1,25}$' }
                                 ]}
                             >
-                                <Input disabled={loading} maxLength={25} />
+                                <Input disabled={submitting} maxLength={25} />
                             </Form.Item>
                             <Form.Item
                                 label="E-mail"
@@ -115,7 +115,7 @@ export default function Register(props) {
                                     { required: true, message: 'Insira o e-mail.' }
                                 ]}
                             >
-                                <Input disabled={loading} maxLength={250} />
+                                <Input disabled={submitting} maxLength={250} />
                             </Form.Item>
                             <Form.Item
                                 label="Palavra-passe"
@@ -125,7 +125,7 @@ export default function Register(props) {
                                     { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
                                 ]}
                             >
-                                <PasswordInput disabled={loading} maxLength={25} />
+                                <PasswordInput disabled={submitting} maxLength={25} />
                             </Form.Item>
                             <Form.Item
                                 label="Confirmar a Palavra-passe"
@@ -143,10 +143,10 @@ export default function Register(props) {
                                     })
                                 ]}
                             >
-                                <Input.Password disabled={loading} maxLength={25} />
+                                <Input.Password disabled={submitting} maxLength={25} />
                             </Form.Item>
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" loading={loading}>
+                                <Button type="primary" htmlType="submit" loading={submitting}>
                                     Criar Conta
                                     </Button>
                             </Form.Item>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route, useLocation, Link, Redirect } from "react-router-dom";
 
 import { ConfigProvider, Layout, Menu, Button } from 'antd';
-import { PieChartOutlined, UserOutlined, LogoutOutlined, MenuOutlined } from '@ant-design/icons';
+import { PieChartOutlined, UserOutlined, LogoutOutlined, MenuOutlined, EditOutlined } from '@ant-design/icons';
 import antLocale_ptPT from 'antd/lib/locale/pt_PT';
 
 import classNames from 'classnames';
@@ -14,6 +14,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import ReservedArea from './pages/ReservedArea';
 import RecoveryPage from './pages/Recovery';
+import Profile from './pages/Profile';
 
 import './styles/App.less';
 
@@ -42,7 +43,7 @@ export default function App(props) {
 
   return (
     <ConfigProvider locale={antLocale_ptPT}>
-      <Layout className={'page'}>
+      <Layout className={'page ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
         {_auth.isLogged() &&
           <Sider
             onBreakpoint={mobile => {
@@ -81,6 +82,11 @@ export default function App(props) {
                   : _auth.isLogged() &&
                   <SubMenu key={"profile"} className="profile-menu" icon={<UserOutlined />}>
                     <Menu.Item key="1">
+                      <Link to="/profile">
+                        <EditOutlined />&nbsp;&nbsp;&nbsp;Editar Perfil
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item key="2">
                       <Link to="/login">
                         <Button type="link" onClick={onLogout} danger>
                           <LogoutOutlined /> Terminar Sessão
@@ -101,6 +107,7 @@ export default function App(props) {
                 }
               </Route>
               <Route path="/reserved-area" component={ReservedArea} />
+              <Route path="/profile" component={Profile} />
               <Route path="/login" component={LoginPage} />
               <Route path="/register" component={RegisterPage} />
               <Route path="/recovery" component={RecoveryPage} />

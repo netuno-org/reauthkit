@@ -11,7 +11,7 @@ const { Content, Sider } = Layout;
 
 export default function Login(props) {
 
-    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function Login(props) {
     });
 
     function onFinish(values) {
-        setLoading(true);
+        setSubmitting(true);
         const { username, password, remember } = values;
         if (remember) {
             localStorage.setItem("login", JSON.stringify(values));
@@ -33,10 +33,10 @@ export default function Login(props) {
             username,
             password,
             success: () => {
-                setLoading(false);
+                setSubmitting(false);
             },
             fail: () => {
-                setLoading(false);
+                setSubmitting(false);
                 notification["error"]({
                     message: 'Login Inválido',
                     description:
@@ -78,7 +78,7 @@ export default function Login(props) {
                                 name="username"
                                 rules={[{ required: true, message: 'Insira o seu utilizador.' }]}
                             >
-                                <Input loading={loading} />
+                                <Input loading={submitting} />
                             </Form.Item>
 
                             <Form.Item
@@ -86,7 +86,7 @@ export default function Login(props) {
                                 name="password"
                                 rules={[{ required: true, message: 'Insira a palavra-passe.' }]}
                             >
-                                <Input.Password loading={loading} />
+                                <Input.Password loading={submitting} />
                             </Form.Item>
 
                             <Form.Item name="remember" valuePropName="checked">
@@ -94,7 +94,7 @@ export default function Login(props) {
                             </Form.Item>
 
                             <Form.Item>
-                                <Button loading={loading} type="primary" className="login-btn" htmlType="submit">
+                                <Button loading={submitting} type="primary" className="login-btn" htmlType="submit">
                                     Iniciar Sessão
                                 </Button>
                             </Form.Item>
@@ -107,7 +107,7 @@ export default function Login(props) {
                             <hr />
                             <span><p>ou</p></span>
                             <Link to="/register">
-                                <Button loading={loading} type="default" className={"register-btn"}>
+                                <Button loading={submitting} type="default" className={"register-btn"}>
                                     Criar Conta
                             </Button>
                             </Link>

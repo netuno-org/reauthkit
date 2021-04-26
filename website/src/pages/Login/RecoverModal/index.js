@@ -9,8 +9,7 @@ import './index.less';
 
 export default function RecoverModal(props) {
 
-    const [loading, setLoading] = useState(false);
-    const [ready, setReady] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [visible, setVisible] = useState(true);
     const recoverForm = useRef(null);
 
@@ -22,7 +21,7 @@ export default function RecoverModal(props) {
     });
 
     function onFinish(values) {
-        setLoading(true);
+        setSubmitting(true);
         const { mail } = values;
         _service({
             method: 'PUT',
@@ -36,12 +35,12 @@ export default function RecoverModal(props) {
                         message: 'Alteração da Palavra-Passe ',
                         description: 'Foi enviado um e-mail para a alteração da Palavra-Passe.',
                     });
-                    setLoading(false);
+                    setSubmitting(false);
                     setVisible(false);
                 }
             },
             fail: () => {
-                setLoading(false);
+                setSubmitting(false);
                 notification["error"]({
                     message: 'Erro na Alteração da Palavra-Passe',
                     description: 'Não foi possível alterar a palavra-passe, contacte-nos através do chat de suporte.',
@@ -82,7 +81,7 @@ export default function RecoverModal(props) {
                 <Button key="back" onClick={onCancel}>
                     Cancelar
                 </Button>,
-                <Button key="send" type="primary" htmlType="submit" loading={loading} onClick={onSubmit} >
+                <Button key="send" type="primary" htmlType="submit" loading={submitting} onClick={onSubmit} >
                     Enviar
                 </Button>
             ]}
@@ -100,7 +99,7 @@ export default function RecoverModal(props) {
                         { required: true, message: 'Insira o e-mail.' }
                     ]}
                 >
-                    <Input maxLength={250} />
+                    <Input disabled={submitting} maxLength={250} />
                 </Form.Item>
             </Form>
 

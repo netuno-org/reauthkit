@@ -12,7 +12,7 @@ const { Content, Sider } = Layout;
 export default function Recovery(props) {
 
     const [ready, setReady] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [hash, setHash] = useState(false);
     const recoveryForm = useRef(null);
 
@@ -23,7 +23,7 @@ export default function Recovery(props) {
     }, [location]);
 
     function onFinish(values) {
-        setLoading(true);
+        setSubmitting(true);
         const { password } = values;
         _service({
             method: 'POST',
@@ -38,12 +38,12 @@ export default function Recovery(props) {
                         message: 'Alteração de Palavra-Passe',
                         description: 'A sua palavra-passe foi alterada com sucesso.',
                     });
-                    setLoading(false);
+                    setSubmitting(false);
                     setReady(true);
                 }
             },
             fail: () => {
-                setLoading(false);
+                setSubmitting(false);
                 notification["error"]({
                     message: 'Erro na alteração de Palavra-Passe',
                     description: 'Não foi possível alterar a sua palavra-passe, por favor contacte-nos através do chat de suporte.',
@@ -58,9 +58,8 @@ export default function Recovery(props) {
 
     if (ready) {
         return <Redirect to="/login" />;
-    } else if (window.location.hash && window.location.hash != "") {
+    } else if (window.location.hash && window.location.hash !== "") {
         return (
-
             <Layout>
                 <Content className="recovery-container">
                     <div className="content-title">
@@ -77,20 +76,20 @@ export default function Recovery(props) {
                             onFinishFailed={onFinishFailed}
                         >
                             <Form.Item
-                                label="Nova Palavra-passe"
+                                label="Palavra-passe"
                                 name="password"
                                 rules={[
-                                    { required: true, message: 'Insira a nova palavra-passe.' },
+                                    { required: true, message: 'Insira a palavra-passe.' },
                                     { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
                                 ]}
                             >
-                                <PasswordInput />
+                                <PasswordInput disabled={submitting} maxLength={25} />
                             </Form.Item>
                             <Form.Item
-                                label="Confirmar nova Palavra-passe"
+                                label="Confirmar a Palavra-passe"
                                 name="password_confirm"
                                 rules={[
-                                    { required: true, message: 'Insira a confirmação da nova palavra-passe.' },
+                                    { required: true, message: 'Insira a confirmação da palavra-passe.' },
                                     { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
                                     ({ getFieldValue }) => ({
                                         validator(_, value) {
@@ -102,10 +101,10 @@ export default function Recovery(props) {
                                     })
                                 ]}
                             >
-                                <Input.Password maxLength={25} />
+                                <Input.Password disabled={submitting} maxLength={25} />
                             </Form.Item>
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" loading={loading}>
+                                <Button type="primary" htmlType="submit" loading={submitting}>
                                     Redefinir Palavra-passe
                                 </Button>
                             </Form.Item>
