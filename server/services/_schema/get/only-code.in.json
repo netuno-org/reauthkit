@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+      "uid": {
+        "_schema": "uid"
+      }
+    },
+    "required": [
+      "uid"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "type": "object",
+    "properties": {
+      "name": {
+        "_schema": "non-empty-string"
+      },
+      "username": {
+        "_schema": "non-empty-string"
+      },
+      "mail": {
+        "_schema": "non-empty-string"
+      },
+      "password": {
+        "_schema": "non-empty-string"
+      }
+    },
+    "required": [
+      "name",
+      "username",
+      "mail",
+      "password"
+    ]
+}

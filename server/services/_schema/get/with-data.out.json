@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "required": [
+    "result",
+    "data"
+  ]
+}

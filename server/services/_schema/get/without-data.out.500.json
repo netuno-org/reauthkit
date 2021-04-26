@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "error": {
+      "_schema": "non-empty-string"
+    }  
+  },
+  "required": [
+    "result",
+    "error"
+  ]
+}

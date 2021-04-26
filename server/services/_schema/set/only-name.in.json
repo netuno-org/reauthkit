@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+      "name": {
+        "_schema": "non-empty-string"
+      }
+    },
+    "required": [
+      "name"
+    ]
+}

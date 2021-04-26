@@ -1,0 +1,16 @@
+{
+    "summary": "Recuperar a palavra-passe",
+    "type": "object",
+    "properties": {
+        "key": {
+            "type": "string-not-empty"
+        },
+        "password": {
+            "type": "string-not-empty"
+        }
+    },
+    "required": [
+        "key",
+        "password"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+        "result": {
+            "type": "boolean"
+        },
+        "message": {
+            "type": "string-not-empty"
+        }
+    },
+    "required": [
+        "result",
+        "message"
+    ]
+}

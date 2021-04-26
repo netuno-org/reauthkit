@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "boolean"
+      },
+      "error": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "result",
+      "error"
+    ]
+  }

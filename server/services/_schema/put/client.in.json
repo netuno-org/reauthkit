@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+      "nif": {
+        "_schema": "non-empty-string"
+      },
+      "mail": {
+        "_schema": "non-empty-string"
+      }
+    },
+    "required": [
+      "nif",
+      "mail"
+    ]
+}

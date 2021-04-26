@@ -1,0 +1,12 @@
+{
+    "summary": "Enviar mail de recuperação da palavra-passe",
+    "type": "object",
+    "properties": {
+        "mail": {
+            "type": "string-not-empty"
+        }
+    },
+    "required": [
+        "mail"
+    ]
+}
