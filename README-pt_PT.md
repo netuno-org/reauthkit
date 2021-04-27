@@ -6,7 +6,7 @@ Uma solução pronta para registo, autenticação, edição de perfil e área re
 
 #### Netuno
 
-[Siga os passos aqui](https://doc.netuno.org/docs/en/installation/)
+[Siga os passos aqui](https://doc.netuno.org/docs/pt-PT/installation/)
 
 #### React AUTH
 
