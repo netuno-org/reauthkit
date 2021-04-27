@@ -34,7 +34,7 @@ Também vai ter de copiar a amostra de configuração de serviços executanto
 
 e modificar a fim de corresponder às configurações do seu ambiente de desenvolvimento.
 
-## Running
+## Execução
 
 No diretório da raiz do Netuno execute
 
