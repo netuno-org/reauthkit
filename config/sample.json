@@ -1,0 +1,76 @@
+{
+    "cron": {
+        "jobs": []
+    },
+    "settings": {
+        "public": {}
+    },
+    "smtp": {
+        "default": {
+            "enabled": true,
+            "host": "example.org",
+            "port": 465,
+            "ssl": true,
+            "from": "noreply@example.org",
+            "username": "noreply@example.org",
+            "password": "V3ryS3cur4Pa55w0rd!"
+        }
+    },
+    "name": "react_auth",
+    "setup": {
+        "schema": {
+            "execution": true,
+            "auto_create": true
+        },
+        "scripts": {
+            "execution": true
+        },
+        "enabled": true
+    },
+    "language": "pt_PT",
+    "firebase": {
+        "app_name": "",
+        "database_url": "",
+        "key_file": "",
+        "listener_secret": ""
+    },
+    "locale": "pt_PT",
+    "remote": {},
+    "commands": [
+        {
+            "path": "ui",
+            "command": "npm run watch",
+            "enabled": true
+        },
+        {
+            "path": "website",
+            "command": "npm run start",
+            "enabled": true
+        }
+    ],
+    "db": {
+        "default": {
+            "password": "V3ryS3cur4Pa55w0rd!",
+            "engine": "pg",
+            "port": "5432",
+            "host": "localhost",
+            "name": "react_auth",
+            "username": "postgres"
+        }
+    },
+    "jwt": {
+        "enabled": true,
+        "secret": "B%de{cfFK3([XxFh",
+        "access_expires": 60,
+        "refresh_expires": 1440,
+        "algorithm": "HS512"
+    },
+    "cors": [
+        {
+            "enabled": true,
+            "origins": [
+                "http://localhost:3000"
+            ]
+        }
+    ],
+}
