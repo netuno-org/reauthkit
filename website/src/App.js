@@ -15,6 +15,7 @@ import RegisterPage from './pages/Register';
 import ReservedArea from './pages/ReservedArea';
 import RecoveryPage from './pages/Recovery';
 import Profile from './pages/Profile';
+import NotFoundPage from './pages/NotFound';
 
 import './styles/App.less';
 
@@ -111,6 +112,7 @@ export default function App(props) {
               <Route path="/login" component={LoginPage} />
               <Route path="/register" component={RegisterPage} />
               <Route path="/recovery" component={RecoveryPage} />
+              <Route component={NotFoundPage} />
             </Switch>
           </Content>
           {!_auth.isLogged() &&
