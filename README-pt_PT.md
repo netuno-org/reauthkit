@@ -26,6 +26,8 @@ Copie a configuração de amostra da aplicação executando (no diretório da ra
 
 e ajustando o ficheiro `_development.json` de acordo com a sua configuração local.
 
+> Onde se encontra `JWTRandomSecureSecret` coloque um código secreto o mais aleatório visto ser isto que assegura a segurança das credenciais dos utiilzadores, como por exemplo: `#J&Az+7(8d+k/9q]` . [Geração de códigos seguros.](https://passwordsgenerator.net/)
+
 > Vai ter de configurar obrigatoriamente uma ligação SMTP para a funcionalidade de recuperação de palavra-passe funcionar corretamente.
 
 Também vai ter de copiar a amostra de configuração de serviços executanto

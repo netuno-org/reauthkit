@@ -60,7 +60,7 @@
     },
     "jwt": {
         "enabled": true,
-        "secret": "B%de{cfFK3([XxFh",
+        "secret": "JWTRandomSecureSecret",
         "access_expires": 60,
         "refresh_expires": 1440,
         "algorithm": "HS512"

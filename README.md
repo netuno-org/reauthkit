@@ -26,6 +26,8 @@ Copy the app sample configuration file by running (in the app root directory)
 
 and adjust the `_development.json` file accordingly to your local environment.
 
+> Locate and replace the word `JWTRandomSecureSecret` by a secret code, as random as possible, since this is what ensures the security of users' credentials. For example: `#J&Az+7(8d+k/9q]` . [Secure Code Generation.](https://passwordsgenerator.net/)
+
 > You'll need to configure an SMTP connection for the password recovery feature to function properly.
 
 You'll also need to copy the sample service config file by running 
