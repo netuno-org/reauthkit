@@ -57,10 +57,10 @@ Some screenshots below.
 
 ### Mobile
 
-Login             |  Registration
+Login  |  Registration
 :-------------------------:|:-------------------------:
 ![Login](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/login.png)  |  ![Register](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/registration.png)
 
-Login             |  Registration
+Reserved Area  |  Edit Profile
 :-------------------------:|:-------------------------:
 ![Reserved Area](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/reserved-area.png)  |  ![Edit Profile](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/edit-profile.png)
