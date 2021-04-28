@@ -43,3 +43,21 @@ In the Netuno root directory run
 `./netuno server app=react_auth`
 
 and it should start both the backend and the frontend server.
+
+## Print Screen
+
+Some screenshots below.
+
+### Desktop
+
+![Login](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/login.png)
+![Register](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/registration.png)
+![Reserved Area](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/reserved-area.png)
+![Edit Profile](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/edit-profile.png)
+
+### Mobile
+
+![Login](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/login.png)
+![Register](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/registration.png)
+![Reserved Area](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/reserved-area.png)
+![Edit Profile](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/edit-profile.png)
