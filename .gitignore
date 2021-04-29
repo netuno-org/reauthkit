@@ -16,4 +16,4 @@ package-lock.json
 
 config/_development.json
 config/_production.json
-website/src/common/Config.js
+website/src/config/config.json

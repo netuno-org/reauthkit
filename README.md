@@ -20,6 +20,8 @@ in the `react_auth/website/` directory.
 
 ## Configuration
 
+> The following process is oriented to Linux development environments with a few notes also destined to Microsoft Windows development environments.
+
 1. Copy the app sample configuration file by running (in the app root directory):
 
     * `cp config/sample.json config/_development.json` (for a development environment)
@@ -40,7 +42,9 @@ in the `react_auth/website/` directory.
 
     2. Inside the same folder run `cp _development_config.json config.json` to create the configuration file based on the development configuration.
 
-    > To create a production ready build just run `npm run build` in `(app root directory)/website/` which will momentarily create a `config.json` based on the production configuration file and when it's finished it should revert back to the development configuration.
+    > To create a production ready build just run `bash build.sh` in `(app root directory)/website/` which will momentarily create a `config.json` based on the production configuration file and when it's finished it should revert back to the development configuration.
+
+    > There's also a `build.bat` present in `(app root directory)/website/` for Microsoft Windows development environments.
 
 ## Running
 
@@ -50,7 +54,7 @@ In the Netuno root directory run
 
 and it should start both the backend and the frontend server.
 
-## Print Screen
+## Screenshots
 
 Some screenshots below.
 
