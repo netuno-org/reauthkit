@@ -1,6 +1,6 @@
 # Netuno React AUTH
 
-A ready to use solution for user registration, authentication, profile editing and reserved area using [Netuno](https://www.netuno.org/), [ReactJS](https://reactjs.org/) and [Ant Design](https://ant.design/).
+A ready to use boilerplate solution for user registration, authentication, profile editing and reserved area using [Netuno](https://www.netuno.org/), [JWT](https://jwt.io/), [ReactJS](https://reactjs.org/) and [Ant Design](https://ant.design/).
 
 ## Installation
 
@@ -20,21 +20,27 @@ in the `react_auth/website/` directory.
 
 ## Configuration
 
-Copy the app sample configuration file by running (in the app root directory) 
+1. Copy the app sample configuration file by running (in the app root directory):
 
-`cp config/sample.json config/_development.json` 
+    * `cp config/sample.json config/_development.json` (for a development environment)
 
-and adjust the `_development.json` file accordingly to your local environment.
+    * `cp config/sample.json config/_production.json` (for a production environment)
 
-> Locate and replace the word `JWTRandomSecureSecret` by a secret code, as random as possible, since this is what ensures the security of users' credentials. For example: `#J&Az+7(8d+k/9q]` . [Secure Code Generation.](https://passwordsgenerator.net/)
+    and adjust the `_development.json` and/or `_production_.json` file accordingly to your environment.
 
-> You'll need to configure an SMTP connection for the password recovery feature to function properly.
+2. You'll need to configure an SMTP connection for the password recovery feature to function properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/sending-emails/)
 
-You'll also need to copy the sample service config file by running 
+3. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/database/psql/)
 
-`cp website/src/common/sample_Config.js website/src/common/Config.js` 
+4. Locate and replace the word `JWTRandomSecureSecret` by a secret code, as random as possible, since this is what ensures the security of users' credentials. For example: `#J&Az+7(8d+k/9q]` . [Recommended Secure Code Generation tool.](https://passwordsgenerator.net/)
 
-and modifying to match your local environment configuration.
+5. You'll also need to configure the website sample config file located in `website/src/config/`:
+
+    1. Change the configurations inside `_development_config.json` and `_production_config.json` for development and production environments respectively.
+
+    2. Inside the same folder run `cp _development_config.json config.json` to create the configuration file based on the development configuration.
+
+    > To create a production ready build just run `npm run build` in `(app root directory)/website/` which will momentarily create a `config.json` based on the production configuration file and when it's finished it should revert back to the development configuration.
 
 ## Running
 
