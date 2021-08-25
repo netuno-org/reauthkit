@@ -79,9 +79,11 @@ export default class DashboardContainer extends Component {
         const { counter } = this.state;
         return (
             <div className="my-dashboard">
-                <div className="my-dashboard__button">
-                    <MyButton mainRef={ this.button } text={ `ReactJS ⚡ Ant.Design 👉 Click me! ${ counter }` } click={ this.click } />
-                </div>
+              { /*
+                 <div className="my-dashboard__button">
+                   <MyButton mainRef={ this.button } text={ `ReactJS ⚡ Ant.Design 👉 Click me! ${ counter }` } click={ this.click } />
+                 </div>
+              */ }
             </div>
         );
     }
