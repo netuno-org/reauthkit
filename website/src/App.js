@@ -39,7 +39,7 @@ export default function App(props) {
   }
 
   function onCollapse() {
-    setCollapsed(!collapsed)
+    setCollapsed(!collapsed);
   }
 
   return (
@@ -48,7 +48,7 @@ export default function App(props) {
         {_auth.isLogged() &&
           <Sider
             onBreakpoint={mobile => {
-              setSideMenuMobileMode(mobile)
+              setSideMenuMobileMode(mobile);
             }}
             collapsedWidth={sideMenuMobileMode ? '0' : '80'}
             breakpoint={"md"}

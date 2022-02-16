@@ -16,9 +16,9 @@ export default function Login(props) {
 
     useEffect(() => {
         if (_auth.isLogged()) {
-            window.scrollTo(0, 0)
+            window.scrollTo(0, 0);
         }
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     });
 
     function onFinish(values) {
@@ -56,6 +56,7 @@ export default function Login(props) {
     }
 
     if (_auth.isLogged()) {
+        window.setTimeout(() => window.location.reload(), 250);
         return <Redirect to="/reserved-area" />;
     } else {
         return (

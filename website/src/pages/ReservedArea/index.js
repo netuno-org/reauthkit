@@ -10,7 +10,6 @@ import './index.less';
 const { Title } = Typography;
 
 export default function ReservedArea(props) {
-
     if (_auth.isLogged()) {
         return (
             <div className="dashboard-layout-content">

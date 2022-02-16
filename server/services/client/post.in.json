@@ -1,8 +1,8 @@
 {
-    "summary": "Registar novo cliente.",
+    "summary": "Atualizar dados do guardião.",
     "description": "",
     "security": [
         { "BearerAuth": [] }
     ],
-    "_schema": "set/client.in"
+    "_schema": "put/client.in"
 }

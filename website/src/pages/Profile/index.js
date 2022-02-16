@@ -62,7 +62,7 @@ export default function Profile(props) {
         setSubmitting(true);
         const { name, username, password, mail } = values;
         _service({
-            method: 'PUT',
+            method: 'POST',
             url: 'client',
             data: {
                 name,

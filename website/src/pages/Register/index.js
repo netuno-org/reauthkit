@@ -18,16 +18,16 @@ export default function Register(props) {
 
     useEffect(() => {
         if (_auth.isLogged()) {
-            window.scrollTo(0, 0)
+            window.scrollTo(0, 0);
         }
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     });
 
     function onFinish(values) {
         setSubmitting(true);
         const { username, password, mail, name } = values;
         _service({
-            method: 'POST',
+            method: 'PUT',
             url: 'client',
             data: {
                 name,
@@ -154,7 +154,7 @@ export default function Register(props) {
                     </div>
                 </Content>
                 <Sider width={'50%'}>
-                    <span class="helper" /><img alt="sider-register" src={"/images/sider-register.png"} />
+                    <span className="helper" /><img alt="sider-register" src={"/images/sider-register.png"} />
                 </Sider>
             </Layout>
         );
