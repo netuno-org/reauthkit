@@ -1,4 +1,4 @@
-# Netuno React AUTH
+# ReAuthKit
 
 A ready to use boilerplate solution for user registration, authentication, profile editing and reserved area using [Netuno](https://www.netuno.org/), [JWT](https://jwt.io/), [ReactJS](https://reactjs.org/) and [Ant Design](https://ant.design/).
 
@@ -8,15 +8,15 @@ A ready to use boilerplate solution for user registration, authentication, profi
 
 [Follow the steps here](https://doc.netuno.org/docs/en/installation/)
 
-#### React AUTH
+#### ReAuthKit App
 
-Clone this project to `(Netuno Root directory)/apps/react_auth/`.
+Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 Then install the NPM dependencies by running 
 
 `npm install` 
 
-in the `react_auth/website/` directory.
+in the `reauthkit/website/` directory.
 
 ## Configuration
 
@@ -50,7 +50,7 @@ in the `react_auth/website/` directory.
 
 In the Netuno root directory run
 
-`./netuno server app=react_auth`
+`./netuno server app=reauthkit`
 
 and it should start both the backend and the frontend server.
 
@@ -61,20 +61,20 @@ Some screenshots below.
 ### Desktop
 
 ##### Login
-![Login](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/login.png)
+![Login](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/login.png)
 ##### Register
-![Register](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/registration.png)
+![Register](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/registration.png)
 ##### Reserved Area
-![Reserved Area](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/reserved-area.png)
+![Reserved Area](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/reserved-area.png)
 ##### Edit Profile
-![Edit Profile](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/desktop/edit-profile.png)
+![Edit Profile](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/edit-profile.png)
 
 ### Mobile
 
 Login  |  Registration
 :-------------------------:|:-------------------------:
-![Login](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/login.png)  |  ![Register](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/registration.png)
+![Login](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/login.png)  |  ![Register](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/registration.png)
 
 Reserved Area  |  Edit Profile
 :-------------------------:|:-------------------------:
-![Reserved Area](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/reserved-area.png)  |  ![Edit Profile](https://raw.githubusercontent.com/netuno-org/react-auth/main/docs/prinstscreens/mobile/edit-profile.png)
+![Reserved Area](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/reserved-area.png)  |  ![Edit Profile](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile.png)

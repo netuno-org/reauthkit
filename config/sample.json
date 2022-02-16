@@ -16,7 +16,7 @@
             "password": "V3ryS3cur4Pa55w0rd!"
         }
     },
-    "name": "react_auth",
+    "name": "reauthkit",
     "setup": {
         "schema": {
             "execution": true,
@@ -54,7 +54,7 @@
             "engine": "pg",
             "port": "5432",
             "host": "localhost",
-            "name": "react_auth",
+            "name": "reauthkit",
             "username": "postgres"
         }
     },
