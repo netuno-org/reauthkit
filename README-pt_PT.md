@@ -14,7 +14,7 @@ Clone este projeto para `(Netuno Root directory)/apps/reauthkit/`.
 
 Depois instale as dependências NPM excutando
 
-`npm install` 
+`npm install --force` 
 
 no diretório `reauthkit/website/`.
 
