@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Link } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { Layout, Typography, Form, Input, Button, Checkbox, notification } from 'antd';
 import _auth from '@netuno/auth-client';
 import RecoverModal from './RecoverModal';
@@ -57,7 +57,7 @@ export default function Login(props) {
 
     if (_auth.isLogged()) {
         window.setTimeout(() => window.location.reload(), 250);
-        return <Redirect to="/reserved-area" />;
+        return <Navigate to="/reserved-area" />;
     } else {
         return (
             <Layout>

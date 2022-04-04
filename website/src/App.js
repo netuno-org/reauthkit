@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, useLocation, Link, Redirect } from "react-router-dom";
+import { Routes as Switch, Route, useLocation, Link, Navigate } from "react-router-dom";
 
 import { ConfigProvider, Layout, Menu, Button } from 'antd';
 import { PieChartOutlined, UserOutlined, LogoutOutlined, MenuOutlined, EditOutlined } from '@ant-design/icons';
@@ -21,6 +21,19 @@ import './styles/App.less';
 
 const { Header, Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
+
+const Navteste = () => {
+  if(_auth.isLogged()){
+    return (
+      <Navigate to="/reserved-area" />
+    );
+  }else{
+      return(
+        <Navigate to="/login" />
+      );
+  }
+} 
+
 
 export default function App(props) {
 
@@ -100,19 +113,13 @@ export default function App(props) {
           </Header>
           <Content className={classNames({ 'auth ': _auth.isLogged() })}>
             <Switch>
-              <Route exact path="/">
-                {_auth.isLogged() ?
-                  <Redirect to="/reserved-area" />
-                  :
-                  <Redirect to="/login" />
-                }
-              </Route>
-              <Route path="/reserved-area" component={ReservedArea} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/login" component={LoginPage} />
-              <Route path="/register" component={RegisterPage} />
-              <Route path="/recovery" component={RecoveryPage} />
-              <Route component={NotFoundPage} />
+              <Route exact path="/" element={<Navteste/>}/>
+              <Route path="/reserved-area" element={<ReservedArea/>} />
+              <Route path="/profile" element={<Profile/>} />
+              <Route path="/login" element={<LoginPage/>} />
+              <Route path="/register" element={<RegisterPage/>} />
+              <Route path="/recovery" element={<RecoveryPage/>} />
+              <Route element={<NotFoundPage/>} />
             </Switch>
           </Content>
           {!_auth.isLogged() &&

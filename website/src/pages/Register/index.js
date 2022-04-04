@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Layout, Typography, Form, Input, Button, notification } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 import _auth from '@netuno/auth-client';
@@ -66,10 +66,10 @@ export default function Register(props) {
     }
 
     if (_auth.isLogged()) {
-        return <Redirect to="/reserved-area" />;
+        return <Navigate to="/reserved-area" />;
     }
     else if (ready) {
-        return <Redirect to="/login" />;
+        return <Navigate to="/login" />;
     } else {
         return (
             <Layout>

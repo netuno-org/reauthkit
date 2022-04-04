@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Redirect, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { Layout, Typography, Form, Input, Button, notification } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 import _service from '@netuno/service-client';
@@ -57,7 +57,7 @@ export default function Recovery(props) {
     }
 
     if (ready) {
-        return <Redirect to="/login" />;
+        return <Navigate to="/login" />;
     } else if (window.location.hash && window.location.hash !== "") {
         return (
             <Layout>

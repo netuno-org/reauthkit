@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import { Typography } from 'antd';
 
@@ -19,6 +19,6 @@ export default function ReservedArea(props) {
             </div>
         );
     } else {
-        return <Redirect to="/login" />;
+        return <Navigate to="/login" />;
     }
 }
