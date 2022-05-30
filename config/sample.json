@@ -40,11 +40,13 @@
         {
             "path": "ui",
             "command": "npm run watch",
+            "install": "npm install --force",
             "enabled": true
         },
         {
             "path": "website",
             "command": "npm run start",
+            "install": "npm install --force",
             "enabled": true
         }
     ],
