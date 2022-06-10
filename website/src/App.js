@@ -94,7 +94,7 @@ export default function App(props) {
                     <Button type="primary">Iniciar sessão</Button>
                   </Link>
                   : _auth.isLogged() &&
-                  <SubMenu key={"profile"} className="profile-menu" icon={<UserOutlined />}>
+                  <SubMenu key={"profile"} className="profile-menu" popupClassName="profile-menu-popup" icon={<UserOutlined />}>
                     <Menu.Item key="1">
                       <Link to="/profile">
                         <EditOutlined />&nbsp;&nbsp;&nbsp;Editar Perfil
