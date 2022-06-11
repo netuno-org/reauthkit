@@ -1,8 +1,0 @@
-{
-    "summary": "Registar novo cliente.",
-    "description": "",
-    "security": [
-        { "BearerAuth": [] }
-    ],
-    "_schema": "set/client.in"
-}

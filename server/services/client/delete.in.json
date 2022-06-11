@@ -1,7 +1,0 @@
-{
-    "summary": "Apagar a conta de cliente",
-    "description": "",
-    "security": [
-        { "BearerAuth": [] }
-    ]
-}

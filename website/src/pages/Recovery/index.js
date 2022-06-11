@@ -19,14 +19,14 @@ export default function Recovery(props) {
     const location = useLocation();
 
     useEffect(() => {
-        setHash(location.hash.substring(1))
+        setHash(location.hash.substring(1));
     }, [location]);
 
     function onFinish(values) {
         setSubmitting(true);
         const { password } = values;
         _service({
-            method: 'POST',
+            method: 'PUT',
             url: 'recovery',
             data: {
                 password,
@@ -38,8 +38,8 @@ export default function Recovery(props) {
                         message: 'Alteração de Palavra-Passe',
                         description: 'A sua palavra-passe foi alterada com sucesso.',
                     });
-                    setSubmitting(false);
-                    setReady(true);
+                    //setSubmitting(false);
+                    //setReady(true);
                 }
             },
             fail: () => {
@@ -71,7 +71,7 @@ export default function Recovery(props) {
                             ref={recoveryForm}
                             layout="vertical"
                             name="basic"
-                            initialValues={{ remember: true }}
+                            initialValues={{ }}
                             onFinish={onFinish}
                             onFinishFailed={onFinishFailed}
                         >
@@ -108,9 +108,7 @@ export default function Recovery(props) {
                                     Redefinir Palavra-passe
                                 </Button>
                             </Form.Item>
-
                         </Form>
-
                     </div>
                 </Content>
                 <Sider width={'50%'}>

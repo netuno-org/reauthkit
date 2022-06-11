@@ -1,78 +1,89 @@
 {
-    "cron": {
-        "jobs": []
+  "cron": {
+    "jobs": []
+  },
+  "settings": {
+    "public": {}
+  },
+  "smtp": {
+    "default": {
+      "enabled": true,
+      "host": "example.org",
+      "port": 465,
+      "ssl": true,
+      "from": "noreply@example.org",
+      "username": "noreply@example.org",
+      "password": "V3ryS3cur4Pa55w0rd!"
+    }
+  },
+  "name": "reauthkit",
+  "setup": {
+    "schema": {
+      "execution": true,
+      "auto_create": true
     },
-    "settings": {
-        "public": {}
+    "scripts": {
+      "execution": true
     },
-    "smtp": {
-        "default": {
-            "enabled": true,
-            "host": "example.org",
-            "port": 465,
-            "ssl": true,
-            "from": "noreply@example.org",
-            "username": "noreply@example.org",
-            "password": "V3ryS3cur4Pa55w0rd!"
-        }
+    "enabled": true
+  },
+  "language": "pt_PT",
+  "firebase": {
+    "app_name": "",
+    "database_url": "",
+    "key_file": "",
+    "listener_secret": ""
+  },
+  "locale": "pt_PT",
+  "remote": {},
+  "commands": [
+    {
+      "path": "ui",
+      "command": "npm run watch",
+      "install": "npm install --force",
+      "enabled": true
     },
-    "name": "reauthkit",
-    "setup": {
-        "schema": {
-            "execution": true,
-            "auto_create": true
-        },
-        "scripts": {
-            "execution": true
-        },
-        "enabled": true
-    },
-    "language": "pt_PT",
-    "firebase": {
-        "app_name": "",
-        "database_url": "",
-        "key_file": "",
-        "listener_secret": ""
-    },
-    "locale": "pt_PT",
-    "remote": {},
-    "commands": [
-        {
-            "path": "ui",
-            "command": "npm run watch",
-            "install": "npm install --force",
-            "enabled": true
-        },
-        {
-            "path": "website",
-            "command": "npm run start",
-            "install": "npm install --force",
-            "enabled": true
-        }
-    ],
-    "db": {
-        "default": {
-            "password": "V3ryS3cur4Pa55w0rd!",
-            "engine": "pg",
-            "port": "5432",
-            "host": "localhost",
-            "name": "reauthkit",
-            "username": "postgres"
-        }
-    },
-    "jwt": {
-        "enabled": true,
-        "secret": "JWTRandomSecureSecret",
-        "access_expires": 60,
-        "refresh_expires": 1440,
-        "algorithm": "HS512"
-    },
-    "cors": [
-        {
-            "enabled": true,
-            "origins": [
-                "http://localhost:3000"
-            ]
-        }
-    ],
+    {
+      "path": "website",
+      "command": "npm run start",
+      "install": "npm install --force",
+      "enabled": true
+    }
+  ],
+  "db": {
+    "default": {
+      "password": "V3ryS3cur4Pa55w0rd!",
+      "engine": "pg",
+      "port": "5432",
+      "host": "localhost",
+      "name": "reauthkit",
+      "username": "postgres"
+    }
+  },
+  "jwt": {
+    "enabled": true,
+    "secret": "JWTRandomSecureSecret",
+    "access_expires": 60,
+    "refresh_expires": 1440,
+    "algorithm": "HS512"
+  },
+  "cors": [
+    {
+      "enabled": true,
+      "origins": [
+        "*"
+      ]
+    }
+  ],
+  "openapi": {
+    "host": "http://localhost:9000",
+    "basePath": "/services",
+    "schemes": [ "http" ],
+    "servers": [
+      {
+        "url": "http://localhost:9000/services",
+        "description": "Local Development"
+      }
+    ]
+  }
 }

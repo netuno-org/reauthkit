@@ -27,8 +27,8 @@ export default function Register(props) {
         setSubmitting(true);
         const { username, password, mail, name } = values;
         _service({
-            method: 'PUT',
-            url: 'client',
+            method: 'POST',
+            url: 'people',
             data: {
                 name,
                 username,

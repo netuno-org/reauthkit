@@ -1,8 +1,0 @@
-{
-    "summary": "Atualizar dados do guardião.",
-    "description": "",
-    "security": [
-        { "BearerAuth": [] }
-    ],
-    "_schema": "put/client.in"
-}

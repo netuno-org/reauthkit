@@ -31,14 +31,14 @@ export default function Profile(props) {
         setLoading(true);
         _service({
             method: 'GET',
-            url: 'client',
+            url: 'people',
             success: (response) => {
                 setLoading(false);
                 if (response.json.result) {
                     profileForm.current.setFieldsValue({
-                        name: response.json.data[0].name,
-                        username: response.json.data[0].username,
-                        mail: response.json.data[0].email
+                        name: response.json.data.name,
+                        username: response.json.data.username,
+                        email: response.json.data.email
                     });
                 } else {
                     notification["warning"]({
@@ -60,15 +60,15 @@ export default function Profile(props) {
 
     function onFinish(values) {
         setSubmitting(true);
-        const { name, username, password, mail } = values;
+        const { name, username, password, email } = values;
         _service({
-            method: 'POST',
-            url: 'client',
+            method: 'PUT',
+            url: 'people',
             data: {
                 name,
                 username,
                 password,
-                mail,
+                email,
             },
             success: (response) => {
                 if (response.json.result) {
@@ -165,7 +165,7 @@ export default function Profile(props) {
                         </Form.Item>
                         <Form.Item
                             label="E-mail"
-                            name="mail"
+                            name="email"
                             rules={[
                                 { type: 'email', message: 'O e-mail inserido não é válido.' },
                                 { required: true, message: 'Insira o e-mail.' }

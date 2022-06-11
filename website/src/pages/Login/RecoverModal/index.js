@@ -14,17 +14,14 @@ export default function RecoverModal(props) {
     const recoverForm = useRef(null);
 
     useEffect(() => {
-        if (_auth.isLogged()) {
-            window.scrollTo(0, 0)
-        }
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     });
 
     function onFinish(values) {
         setSubmitting(true);
         const { mail } = values;
         _service({
-            method: 'PUT',
+            method: 'POST',
             url: 'recovery',
             data: {
                 mail,

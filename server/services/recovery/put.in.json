@@ -1,12 +1,17 @@
 {
-    "summary": "Enviar mail de recuperação da palavra-passe",
-    "type": "object",
-    "properties": {
-        "mail": {
-            "type": "string-not-empty"
-        }
+  "summary": "New Password",
+  "description": "Save the new password.",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string-not-empty"
     },
-    "required": [
-        "mail"
-    ]
+    "password": {
+      "type": "string-not-empty"
+    }
+  },
+  "required": [
+    "key",
+    "password"
+  ]
 }
