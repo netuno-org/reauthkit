@@ -113,6 +113,8 @@ Adjust the variables in `website/src/craco.config.js`:
   ...
 ```
 
+> [Full Ant.Design variables list.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
+
 In the `website/src/styles/variables.less` adjust the Ant.Design theme import, comment out the dark theme and uncomment the default (light):
 
 ```
