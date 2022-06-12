@@ -112,7 +112,7 @@ export default function Recovery(props) {
                     </div>
                 </Content>
                 <Sider width={'50%'}>
-                    <span class="helper" /><img alt="sider-recovery" src={"/images/sider-recovery.png"} />
+                    <span className="helper" /><img alt="sider-recovery" src={"/images/sider-recovery.png"} />
                 </Sider>
             </Layout>
         );
