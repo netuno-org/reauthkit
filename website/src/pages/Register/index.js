@@ -25,7 +25,7 @@ export default function Register(props) {
 
     function onFinish(values) {
         setSubmitting(true);
-        const { username, password, mail, name } = values;
+        const { username, password, email, name } = values;
         _service({
             method: 'POST',
             url: 'people',
@@ -33,7 +33,7 @@ export default function Register(props) {
                 name,
                 username,
                 password,
-                mail
+                email
             },
             success: (response) => {
                 if (response.json.result) {
@@ -109,7 +109,7 @@ export default function Register(props) {
                             </Form.Item>
                             <Form.Item
                                 label="E-mail"
-                                name="mail"
+                                name="email"
                                 rules={[
                                     { type: 'email', message: 'O e-mail inserido não é válido.' },
                                     { required: true, message: 'Insira o e-mail.' }
