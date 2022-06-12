@@ -42,6 +42,8 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
     > There's also a `build.bat` present in `(app root directory)/website/` for Microsoft Windows development environments.
 
+6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/openapi/)
+
 ## Running
 
 In the Netuno root directory run
@@ -51,6 +53,18 @@ In the Netuno root directory run
 and it should start both the back-end and the front-end server.
 
 > The first run may take a while due to the installation of frontend dependencies.
+
+By default, the Netuno back office will be available in:
+
+- http://localhost:9000/
+
+The OpenAPI will be in:
+
+- http://localhost:9000/services/_openapi
+
+And the front-end (restricted website) will start in:
+
+- http://localhost:3000/
 
 ## Style
 
