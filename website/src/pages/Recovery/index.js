@@ -38,8 +38,8 @@ export default function Recovery(props) {
                         message: 'Alteração de Palavra-Passe',
                         description: 'A sua palavra-passe foi alterada com sucesso.',
                     });
-                    //setSubmitting(false);
-                    //setReady(true);
+                    setSubmitting(false);
+                    setReady(true);
                 }
             },
             fail: () => {
