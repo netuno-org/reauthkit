@@ -87,6 +87,8 @@ Ajuste no `website/src/craco.config.js` as variáveis:
   ...
 ```
 
+> [Lista completa das variáveis do Ant.Design.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
+
 No `website/src/styles/variables.less` ajuste a importação do tema do Ant.Design, comente o tema padrão (claro) e descomente o escuro:
 
 ```
@@ -112,6 +114,8 @@ Ajuste no `website/src/craco.config.js` as variáveis:
   '@layout-trigger-color': '#002140',
   ...
 ```
+
+> [Lista completa das variáveis do Ant.Design.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
 
 No `website/src/styles/variables.less` ajuste a importação do tema do Ant.Design, comente o tema escuro e descomente o padrão (claro):
 
