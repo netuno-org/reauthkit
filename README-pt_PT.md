@@ -12,23 +12,19 @@ Uma solução *boilerplate* pronta a usar para registo, autenticação, edição
 
 Clone este projeto para `(Netuno Root directory)/apps/reauthkit/`.
 
-Depois instale as dependências NPM excutando
-
-`npm install --force` 
-
-no diretório `reauthkit/website/`.
-
 ## Configuração
 
-> Todo o processo a seguir descrito é destinado a ambientes de desenvolvimento Linux com algumas notas também destinadas a ambientes Microsoft Windows.
+> Todo o processo a seguir descrito é destinado a ambientes de desenvolvimento Linux e MacOS com algumas notas também destinadas a ambientes Microsoft Windows.
 
 1. Copie a configuração de amostra da aplicação executando (no diretório da raiz da aplicação):
 
-    * `cp config/sample.json config/_development.json` (para um ambiente de desenvolvimento local/de testes)
+    * `cp config/sample.json config/_development.json` (para um ambiente de desenvolvimento local/teste)
 
     * `cp config/sample.json config/_production.json` (para um ambiente de produção)
 
     e ajuste o ficheiro `_development.json` e/ou o `_production_.json` de acordo com o seu ambiente de desenvolvimento.
+    
+> Pode alterar o nome da aplicação, alterando o nome da pasta e o parâmetro de configuração `name`.
 
 2. Vai ter de configurar obrigatoriamente uma ligação SMTP para a funcionalidade de recuperação de palavra-passe funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/sending-emails/)
 
@@ -52,7 +48,65 @@ No diretório da raiz do Netuno execute
 
 `./netuno server app=reauthkit`
 
-que fará com que o servidor de backend e fronted iniciem.
+que fará com que o servidor de back-end e front-end iniciem.
+
+> A primeira execução pode demorar um pouco devido a instalação das dependências de front-end.
+
+## Estilo
+
+Indicações para a estilização geral do website restrito.
+
+### Escuro
+
+Segue como pode ser aplicado o estilo escuro.
+
+Ajuste no `website/src/craco.config.js` as variáveis:
+
+```
+  ...
+  '@primary-color': '#1890ff',
+  '@menu-bg': '#141414',
+  '@layout-body-background': '#202020',
+  '@layout-footer-background': '#303030',
+  '@layout-header-background': '#141414',
+  '@layout-trigger-color': '#eff8ff',
+  ...
+```
+
+No `website/src/styles/variables.less` ajuste a importação do tema do Ant.Design, comente o tema padrão (claro) e descomente o escuro:
+
+```
+//@import '~antd/lib/style/themes/default.less';
+@import '~antd/lib/style/themes/dark.less';
+```
+
+No `website/src/App.js` procure pela tag do componente `Sider` e remova o atributo `theme="light"`.
+
+### Claro
+
+Segue como pode ser aplicado o estilo claro.
+
+Ajuste no `website/src/craco.config.js` as variáveis:
+
+```
+  ...
+  '@primary-color': '#1890ff',
+  '@menu-bg': '#ffffff',
+  '@layout-body-background': '#ffffff',
+  '@layout-footer-background': '#eff8ff',
+  '@layout-header-background': '#ffffff',
+  '@layout-trigger-color': '#002140',
+  ...
+```
+
+No `website/src/styles/variables.less` ajuste a importação do tema do Ant.Design, comente o tema escuro e descomente o padrão (claro):
+
+```
+@import '~antd/lib/style/themes/default.less';
+//@import '~antd/lib/style/themes/dark.less';
+```
+
+No `website/src/App.js` procure pela tag do componente `Sider` e adicione o atributo `theme="light"`.
 
 ## Capturas de Ecrã
 

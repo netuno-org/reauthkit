@@ -5,8 +5,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import 'antd/dist/antd.less';
-
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={""}>

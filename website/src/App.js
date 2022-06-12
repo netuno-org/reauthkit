@@ -123,7 +123,7 @@ export default function App(props) {
             </Switch>
           </Content>
           {!_auth.isLogged() &&
-            <Footer>© sitana.pt 2021</Footer>
+            <Footer>© netuno.org 2022</Footer>
           }
         </Layout>
       </Layout>
