@@ -41,7 +41,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
     });
   }, [loggedUserInfoReload]);
   useEffect(() => {
-    if (loggedUserInfo.avatar) {
+    if (loggedUserInfo && loggedUserInfo.avatar) {
       setAvatarImageURL(null);
       setTimeout(() => setAvatarImageURL(`${_service.config().prefix}/people/avatar?uid=${loggedUserInfo.uid}&${new Date().getTime()}`), 250);
     }
@@ -56,8 +56,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   if (loggedUserInfo) {
     return (
       <div className="header__user-info">
-        
-        <img src={avatarImageURL}/>
+        {avatarImageURL && <img src={avatarImageURL}/>}
         <span>{loggedUserInfo.name}</span>
       </div>
     );
