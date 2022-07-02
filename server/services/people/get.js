@@ -5,9 +5,11 @@ const dbPeople = _db.queryFirst(`
 `, _user.id);
 
 const data = _val.map()
+      .set("uid", dbPeople.getString("uid"))
       .set("name", dbPeople.getString("name"))
       .set("email", dbPeople.getString("email"))
-      .set("username", _user.get(_user.id()).getString("user"));
+      .set("username", _user.get(_user.id()).getString("user"))
+      .set("avatar", dbPeople.getString("avatar") != '')
 
 _out.json(
   _val.map()
