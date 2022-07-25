@@ -45,14 +45,16 @@
 
     .logo-container {
       max-width: 200px;
-      height: @layout-header-height;
-      line-height: @layout-header-height;
-      display: inline-block;
+      height: 60px;
       text-align: center;
+      padding-top: 10px;
+      display: flex;
+      justify-content: center;
 
       img {
         max-width: 90%;
-        margin-top: -5px;
+        height: auto;
+        object-fit: contain;
       }
     }
   }
@@ -69,6 +71,7 @@
         top: 0;
         padding: 0 calc((100vw - @desktop-width)/2);
         z-index: 100;
+        box-shadow: 10px 0 10px rgb(0 0 0 / 20%);
 
         @media screen and (max-width: @desktop-width) {
           padding: 0 40px;
@@ -97,7 +100,6 @@
 
           .profile-menu {
             margin-right: 0;
-            line-height: 55px;
 
             .anticon {
               padding: 0 14px;
@@ -118,6 +120,7 @@
 
           img {
             max-width: 100%;
+            height: auto;
             margin-top: -5px;
           }
         }
@@ -125,9 +128,9 @@
 
       &-content {
         position: relative;
+        margin: 20px 0;
         &.auth {
           //background-color: #F0F2F5;
-          padding: 40px 0;
           @media screen and (max-width: @mobile-width) {
             padding: 20px 0;
           }
@@ -164,8 +167,10 @@
       }
 
       &-footer {
-
+        position: relative;
+        box-shadow: 10px 0 10px rgb(0 0 0 / 20%);
         text-align: center;
+        color: @primary-color;
         padding: 20px calc((100vw - @desktop-width)/2);
 
         @media screen and (max-width: @desktop-width) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes as Switch, Route, useLocation, Link, Navigate } from "react-router-dom";
+import { Routes as Switch, Route, useLocation, useNavigate, Link, Navigate } from "react-router-dom";
 
 import { ConfigProvider, Layout, Menu, Button } from 'antd';
 import { PieChartOutlined, UserOutlined, LogoutOutlined, MenuOutlined, EditOutlined } from '@ant-design/icons';
@@ -27,26 +27,32 @@ import './styles/App.less';
 const { Header, Content, Sider, Footer } = Layout;
 const { SubMenu } = Menu;
 
-const Navteste = () => {
-  if(_auth.isLogged()){
+const NavWithAuthCheck = () => {
+  if (_auth.isLogged()) {
     return (
       <Navigate to="/reserved-area" />
     );
-  }else{
-      return(
-        <Navigate to="/login" />
-      );
   }
-} 
-
+  return(
+    <Navigate to="/login" />
+  );
+};
 
 export default function App(props) {
-
-  const location = useLocation();
-
   const [headerButtonMode, setHeaderButtonMode] = useState('login');
   const [collapsed, setCollapsed] = useState(false);
   const [sideMenuMobileMode, setSideMenuMobileMode] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    _auth.config({
+      onLogout: () => {
+        navigate('/login');
+      }
+    });
+  }, []);
 
   useEffect(() => {
     setHeaderButtonMode(location.pathname);
@@ -108,11 +114,9 @@ export default function App(props) {
                        </Link>
                      </Menu.Item>
                      <Menu.Item key="2">
-                       <Link to="/login">
-                         <Button type="link" onClick={onLogout} danger>
-                           <LogoutOutlined /> Terminar Sessão
-                         </Button>
-                       </Link>
+                       <Button type="link" onClick={onLogout} danger>
+                         <LogoutOutlined /> Terminar Sessão
+                       </Button>
                      </Menu.Item>
                    </SubMenu>
                  </>
@@ -121,7 +125,7 @@ export default function App(props) {
             </Header>
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
               <Switch>
-                <Route exact path="/" element={<Navteste/>}/>
+                <Route exact path="/" element={<NavWithAuthCheck/>}/>
                 <Route path="/reserved-area" element={<ReservedArea/>} />
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/login" element={<LoginPage/>} />
@@ -131,7 +135,7 @@ export default function App(props) {
               </Switch>
             </Content>
             {!_auth.isLogged() &&
-             <Footer>© netuno.org 2022</Footer>
+             <Footer>© netuno.org {new Date().getFullYear()}</Footer>
             }
           </Layout>
         </Layout>
