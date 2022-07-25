@@ -4,6 +4,11 @@ const dbPeople = _db.queryFirst(`
   WHERE people_user_id = ?::int
 `, _user.id);
 
+if (!dbPeople) {
+  _header.status(404)
+  _exec.stop()
+}
+
 const data = _val.map()
       .set("uid", dbPeople.getString("uid"))
       .set("name", dbPeople.getString("name"))
