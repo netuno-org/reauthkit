@@ -10,7 +10,7 @@ if (userEmailExists || usernameExists) {
   _header.status(409);
   _out.json(
     _val.map()
-      .set("error", "already-exists")
+      .set("error", `${userEmailExists ? 'email' : 'user'}-already-exists`)
   );
 } else {
   const dbNetunoGroup = _group.firstByCode("people");
