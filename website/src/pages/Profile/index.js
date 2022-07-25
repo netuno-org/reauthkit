@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Typography, Form, Input, Button, Divider, notification, Spin } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
@@ -16,8 +16,7 @@ import './index.less';
 
 const { Title } = Typography;
 
-function Profile({loggedUserInfo, loggedUserInfoReloadAction, history}) {
-
+function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
@@ -25,6 +24,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction, history}) {
   const profileAvatar = useRef(null);
   const profileForm = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const layout = {
     wrapperCol: { xs: { span: 24 }, sm: { span: 24 }, md: { span: 24 }, lg: { span: 12 } }
@@ -39,7 +39,6 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction, history}) {
           email: loggedUserInfo?.email
         });
       }
-      console.log('loggedUserInfo.avatar', loggedUserInfo.avatar)
       if (loggedUserInfo.avatar) {
         setAvatarImageURL(`${_service.config().prefix}/people/avatar?uid=${loggedUserInfo.uid}`);
       }
@@ -117,7 +116,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction, history}) {
     return (
       <div>
         <div className="content-title">
-          <Button className="go-back-btn" type="link" onClick={() => history.goBack()}><ArrowLeftOutlined /> Voltar atrás</Button>
+          <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
         </div>
         <div className="content-title">
           <Title level={2}>Editar Perfil</Title>
