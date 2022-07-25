@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { loggedUserInfoAction } from '../../redux/actions';
 
 import _service from '@netuno/service-client';
+import _auth from '@netuno/auth-client';
 
 import './index.less';
 
@@ -37,6 +38,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
           message: 'Dados do Utilizador',
           description: 'Ocorreu um erro a carregar os dados, por favor tente novamente.',
         });
+        _auth.logout();
       }
     });
   }, [loggedUserInfoReload]);
