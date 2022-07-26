@@ -2,6 +2,8 @@
 
 Uma solução *boilerplate* pronta a usar para registo, autenticação, edição de perfil e área reservada utilizando [Netuno](https://www.netuno.org/), [JWT](https://jwt.io/), [ReactJS](https://reactjs.org/), [Redux](https://redux.js.org/) e [Ant Design](https://ant.design/).
 
+![Outdoor](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/billboard.png)
+
 ## Instalação
 
 #### Netuno

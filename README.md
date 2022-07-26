@@ -4,6 +4,8 @@
 
 A ready to use boilerplate solution for user registration, authentication, profile editing and reserved area using [Netuno](https://www.netuno.org/), [JWT](https://jwt.io/), [ReactJS](https://reactjs.org/), [Redux](https://redux.js.org/) and [Ant Design](https://ant.design/).
 
+![Billboard](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/billboard.png)
+
 ## Installation
 
 #### Netuno
