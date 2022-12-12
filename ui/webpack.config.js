@@ -54,14 +54,25 @@ module.exports = {
                     },
                     {
                         loader: 'less-loader', // compiles Less to CSS
-                        options: {
-                            modifyVars: {
-                                'primary-color': '#5b5ce1',
-                                'link-color': '#5b5ce1',
-                                'border-radius-base': '5px'
-                            },
-                            javascriptEnabled: true
+                        options: {                          
+
+                           
+                            
+                            lessOptions: {
+                                modifyVars: {
+                                    'primary-color': '#5b5ce1',
+                                    'link-color': '#5b5ce1',
+                                    'border-radius-base': '5px',
+                                    javascriptEnabled: true,
+                                 
+                                }, 
+                              },
+                            
+                            
+                                
+                       
                         }
+                       
                     }
                 ]
             },

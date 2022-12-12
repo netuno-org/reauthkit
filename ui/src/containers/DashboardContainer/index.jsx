@@ -14,7 +14,7 @@ export default class DashboardContainer extends Component {
         this.click = this.click.bind(this);
     }
 
-    componentWillMount() {
+   // componentWillMount() {
         /*
         // Basic sample of the service call:
         fetch('/services/my-test.netuno', {
@@ -65,7 +65,7 @@ export default class DashboardContainer extends Component {
             }
         });
         */
-    }
+    //}
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         $(this.button.current).fadeOut(250).fadeIn(250);
