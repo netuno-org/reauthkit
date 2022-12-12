@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
-import { Row, Col, Button, Slider, Divider, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Slider, Divider } from 'antd';
 import {useDropzone} from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 
