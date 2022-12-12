@@ -85,7 +85,7 @@ export default function App(props) {
            >
              <div className="logo-container"><img alt="logo" src="/images/logo.png" /></div>
              <Menu defaultSelectedKeys={['1']} mode="inline">
-               <Menu.Item key="1" icon={<PieChartOutlined/>} theme="light" className="menu-item">
+               <Menu.Item key="1" icon={<PieChartOutlined/>} theme="light" className="menu-item-reserved">
                  <Link to="/reserved-area">Área Reservada</Link>
                </Menu.Item>
              </Menu>
