@@ -1,6 +1,6 @@
 @import './variables.less';
 
-@import '~antd/dist/antd.less';
+@import '~antd/dist/reset.css';
 
 .page {
   padding-top: @layout-header-height;
@@ -31,10 +31,11 @@
 
       .anticon {
         font-size: 22px;
+        
       }
     }
 
-    @media screen and (max-width: @mobile-width - 1px) {
+    @media screen and (max-width: (@mobile-width - 1px)) {
       position: fixed;
       left: 0;
       top: 0;
@@ -65,12 +66,14 @@
 
   .ant {
     &-layout {
+      background-color: @layout-body-background;
       &-header {
         position: fixed;
         width: 100vw;
         top: 0;
         padding: 0 calc((100vw - @desktop-width)/2);
         z-index: 100;
+        background-color: @layout-header-background;
         box-shadow: 10px 0 10px rgb(0 0 0 / 20%);
 
         @media screen and (max-width: @desktop-width) {
@@ -97,14 +100,15 @@
           float: right;
           clear: right;
           border: 0;
-
+          
           .profile-menu {
             margin-right: 0;
-
+            
             .anticon {
               padding: 0 14px;
               margin: 0;
               font-size: 22px;
+              color:#1677ff;
             }
           }
         }
@@ -166,11 +170,16 @@
         }
       }
 
+      &-menu-item-icon {
+        color:red;
+      }
+
       &-footer {
         position: relative;
         box-shadow: 10px 0 10px rgb(0 0 0 / 20%);
         text-align: center;
         color: @primary-color;
+        background-color: @layout-footer-background;
         padding: 20px calc((100vw - @desktop-width)/2);
 
         @media screen and (max-width: @desktop-width) {
