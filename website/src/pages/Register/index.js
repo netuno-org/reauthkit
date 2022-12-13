@@ -109,8 +109,8 @@ export default function Register(props) {
                 label="Utilizador"
                 name="username"
                 rules={[
-                  { required: true, message: 'Insira o seu utilizador.' },
-                  { type: 'string', message: 'Utilizador inválido, apenas letras minúsculas e números.', pattern: '^[a-z0-9]{1,25}$' }
+                  { required: true, message: 'Insira o seu usuário.' },
+                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
                 ]}
               >
                 <Input disabled={submitting} maxLength={25} />
