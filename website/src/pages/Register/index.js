@@ -47,14 +47,14 @@ export default function Register(props) {
       },
       fail: (e) => {
         setSubmitting(false);
-        if (e && e.status == 409 && e.json && e.json.error) {
-          if (e.json.error == 'email-already-exists') {
+        if (e && e.status === 409 && e.json && e.json.error) {
+          if (e.json.error === 'email-already-exists') {
             return notification["warning"]({
               message: 'E-mail Existente',
               description: 'Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
             });
           }
-          if (e.json.error == 'user-already-exists') {
+          if (e.json.error === 'user-already-exists') {
             return notification["warning"]({
               message: 'Utilizador Existente',
               description: 'Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
