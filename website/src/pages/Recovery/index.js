@@ -4,7 +4,7 @@ import { Layout, Typography, Form, Input, Button, notification } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 import _service from '@netuno/service-client';
 
-import './index.less';
+//import './index.less';
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
