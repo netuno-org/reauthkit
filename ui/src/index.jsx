@@ -1,10 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
+
+import { createRoot } from 'react-dom/client';
 import DashboardContainer from "./containers/DashboardContainer/index.jsx";
 
-const dashboardDiv = document.getElementById("app-dashboard");
-
-const dashboardContainer = dashboardDiv ? ReactDOM.render(<DashboardContainer />, dashboardDiv) : false;
+const dashboardDiv = createRoot(document.getElementById("app-dashboard"));
+const dashboardContainer = dashboardDiv ?   dashboardDiv.render(<DashboardContainer />) : false;
 
 netuno.addNavigationLoad(() => {
     $('[netuno-navigation]').find('a').on('netuno:click', (e)=> {
