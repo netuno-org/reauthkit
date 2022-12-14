@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
-import { Row, Col, Button, Slider, Divider, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Slider, Divider } from 'antd';
 import {useDropzone} from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 
-import _service from '@netuno/service-client';
+//import _service from '@netuno/service-client';
 
-import './index.less';
+//import './index.less';
 
 function Avatar({currentImage}, ref) {
   const [image, setImage] = useState(currentImage);

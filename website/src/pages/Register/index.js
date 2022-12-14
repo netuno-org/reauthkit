@@ -47,14 +47,14 @@ export default function Register(props) {
       },
       fail: (e) => {
         setSubmitting(false);
-        if (e && e.status == 409 && e.json && e.json.error) {
-          if (e.json.error == 'email-already-exists') {
+        if (e && e.status === 409 && e.json && e.json.error) {
+          if (e.json.error === 'email-already-exists') {
             return notification["warning"]({
               message: 'E-mail Existente',
               description: 'Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
             });
           }
-          if (e.json.error == 'user-already-exists') {
+          if (e.json.error === 'user-already-exists') {
             return notification["warning"]({
               message: 'Utilizador Existente',
               description: 'Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
@@ -109,8 +109,8 @@ export default function Register(props) {
                 label="Utilizador"
                 name="username"
                 rules={[
-                  { required: true, message: 'Insira o seu utilizador.' },
-                  { type: 'string', message: 'Utilizador inválido, apenas letras minúsculas e números.', pattern: '^[a-z0-9]{1,25}$' }
+                  { required: true, message: 'Insira o seu usuário.' },
+                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
                 ]}
               >
                 <Input disabled={submitting} maxLength={25} />

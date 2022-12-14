@@ -76,7 +76,10 @@ export default function Login(props) {
               <Form.Item
                 label="Utilizador"
                 name="username"
-                rules={[{ required: true, message: 'Insira o seu utilizador.' }]}
+                rules={[
+                  { required: true, message: 'Insira o seu usuário.' },
+                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+              ]}
               >
                 <Input loading={submitting} />
               </Form.Item>

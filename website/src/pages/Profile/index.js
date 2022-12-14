@@ -12,7 +12,7 @@ import _service from '@netuno/service-client';
 
 import Avatar from './Avatar';
 
-import './index.less';
+//import './index.less';
 
 const { Title } = Typography;
 
