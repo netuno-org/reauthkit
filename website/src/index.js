@@ -1,20 +1,21 @@
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Suspense fallback={""}>
-      <Router>
-        <App />
-      </Router>
-    </Suspense>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import './index.css';
+
+createRoot(document.getElementById('root'))
+  .render(
+    <React.StrictMode>
+      <Suspense fallback={""}>
+        <Router>
+          <App />
+        </Router>
+      </Suspense>
+    </React.StrictMode>
+  );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
