@@ -3,17 +3,13 @@ import { Row, Col, Button, Slider, Divider } from 'antd';
 import {useDropzone} from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 
-//import _service from '@netuno/service-client';
-
-//import './index.less';
-
 function Avatar({currentImage}, ref) {
   const [image, setImage] = useState(currentImage);
   const [scale, setScale] = useState(1.0);
   const [rotate, setRotate] = useState(0);
   const [position, setPosition] = useState(undefined);
   const [color, setColor] = useState('#ffffff');
-  const {getRootProps, getInputProps, open, acceptedFiles} = useDropzone({
+  const {getRootProps, getInputProps, open} = useDropzone({
     noClick: true,
     noKeyboard: true,
     multiple: false,

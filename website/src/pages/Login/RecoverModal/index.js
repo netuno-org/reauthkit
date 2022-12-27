@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Form, Input, notification } from 'antd';
 
-import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
-
-//import './index.less';
-
 
 export default function RecoverModal(props) {
 

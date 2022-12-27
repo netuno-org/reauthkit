@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Typography, Form, Input, Button, Divider, notification, Spin } from 'antd';
+import { Typography, Form, Input, Button, Divider, notification } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 
 import { connect } from 'react-redux';
@@ -12,12 +12,9 @@ import _service from '@netuno/service-client';
 
 import Avatar from './Avatar';
 
-//import './index.less';
-
 const { Title } = Typography;
 
 function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
@@ -104,103 +101,93 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
     console.log('Failed:', errorInfo);
   }
 
-  if (loading) {
-    return (
-      <div className="loading-wrapper">
-        <div className="content-title">
-          <Title level={2}><Spin /> a carregar...</Title>
-        </div>
+  return (
+    <div>
+      <div className="content-title">
+        <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
       </div>
-    );
-  } else {
-    return (
-      <div>
-        <div className="content-title">
-          <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
-        </div>
-        <div className="content-title">
-          <Title level={2}>Editar Perfil</Title>
-        </div>
-        <div className="content-body">
-          <Avatar ref={profileAvatar} currentImage={avatarImageURL}/>
-          <Divider orientation="left" plain>Informações Gerais</Divider>
-          <Form
-            {...layout}
-            onValuesChange={onValuesChange}
-            ref={profileForm}
-            layout="vertical"
-            name="basic"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+      <div className="content-title">
+        <Title level={2}>Editar Perfil</Title>
+      </div>
+      <div className="content-body">
+        <Avatar ref={profileAvatar} currentImage={avatarImageURL}/>
+        <Divider orientation="left" plain>Informações Gerais</Divider>
+        <Form
+          {...layout}
+          onValuesChange={onValuesChange}
+          ref={profileForm}
+          layout="vertical"
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label="Nome"
+            name="name"
+            rules={[
+              { required: true, message: 'Insira o seu nome.' },
+              { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+            ]}
           >
-            <Form.Item
-              label="Nome"
-              name="name"
-              rules={[
-                { required: true, message: 'Insira o seu nome.' },
-                { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
-              ]}
-            >
-              <Input disabled={submitting} maxLength={25} />
-            </Form.Item>
-            <Form.Item
-              label="Nome de utilizador"
-              name="username"
-              rules={[
-                { required: true, message: 'Insira o seu nome.' },
-                { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
-              ]}
-            >
-              <Input disabled={submitting} maxLength={25} />
-            </Form.Item>
-            <Form.Item
-              label="E-mail"
-              name="email"
-              rules={[
-                { type: 'email', message: 'O e-mail inserido não é válido.' },
-                { required: true, message: 'Insira o e-mail.' }
-              ]}
-            >
-              <Input disabled={submitting} maxLength={250} />
-            </Form.Item>
-            <Form.Item
-              label="Nova Palavra-passe"
-              name="password"
-              rules={[
-                { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
-              ]}
-            >
-              <PasswordInput />
-            </Form.Item>
-            <Form.Item
-              label="Confirmar nova Palavra-passe"
-              name="password_confirm"
-              rules={[
-                { required: passwordRequired, message: 'Insira a confirmação da nova palavra-passe.' },
-                { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject('As palavras-passes não são iguais.');
-                  },
-                })
-              ]}
-            >
-              <Input.Password maxLength={25} />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" loading={submitting}>
-                Atualizar Perfil
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+            <Input disabled={submitting} maxLength={25} />
+          </Form.Item>
+          <Form.Item
+            label="Nome de utilizador"
+            name="username"
+            rules={[
+              { required: true, message: 'Insira o seu nome.' },
+              { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+            ]}
+          >
+            <Input disabled={submitting} maxLength={25} />
+          </Form.Item>
+          <Form.Item
+            label="E-mail"
+            name="email"
+            rules={[
+              { type: 'email', message: 'O e-mail inserido não é válido.' },
+              { required: true, message: 'Insira o e-mail.' }
+            ]}
+          >
+            <Input disabled={submitting} maxLength={250} />
+          </Form.Item>
+          <Form.Item
+            label="Nova Palavra-passe"
+            name="password"
+            rules={[
+              { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+            ]}
+          >
+            <PasswordInput />
+          </Form.Item>
+          <Form.Item
+            label="Confirmar nova Palavra-passe"
+            name="password_confirm"
+            rules={[
+              { required: passwordRequired, message: 'Insira a confirmação da nova palavra-passe.' },
+              { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject('As palavras-passes não são iguais.');
+                },
+              })
+            ]}
+          >
+            <Input.Password maxLength={25} />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={submitting}>
+              Atualizar Perfil
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = store => {
