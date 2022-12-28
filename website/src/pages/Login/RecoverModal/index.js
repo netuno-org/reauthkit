@@ -6,7 +6,7 @@ import _service from '@netuno/service-client';
 export default function RecoverModal(props) {
 
   const [submitting, setSubmitting] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [open, setOpen] = useState(true);
   const recoverForm = useRef(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function RecoverModal(props) {
             description: 'Foi enviado um e-mail para a alteração da Palavra-Passe.',
           });
           setSubmitting(false);
-          setVisible(false);
+          setOpen(false);
         }
       },
       fail: () => {
@@ -58,7 +58,7 @@ export default function RecoverModal(props) {
   }
 
   function onCancel() {
-    setVisible(false);
+    setOpen(false);
     if (props.onClose) {
       props.onClose();
     }
@@ -68,7 +68,7 @@ export default function RecoverModal(props) {
     <Modal
       className={'modal-recover'}
       title="Recuperar o Acesso"
-      visible={visible}
+      open={open}
       onCancel={onCancel}
       footer={[
         <Button key="back" onClick={onCancel}>

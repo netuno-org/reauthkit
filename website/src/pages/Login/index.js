@@ -81,7 +81,7 @@ export default function Login(props) {
                   { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
               ]}
               >
-                <Input loading={submitting} />
+                <Input />
               </Form.Item>
 
               <Form.Item
@@ -89,7 +89,7 @@ export default function Login(props) {
                 name="password"
                 rules={[{ required: true, message: 'Insira a palavra-passe.' }]}
               >
-                <Input.Password loading={submitting} />
+                <Input.Password />
               </Form.Item>
 
               <Form.Item name="remember" valuePropName="checked">
@@ -119,7 +119,7 @@ export default function Login(props) {
 
         </Content>
         <Sider width={'50%'}>
-          <span class="helper" /><img alt="sider-login" src={"/images/sider-login.png"} />
+          <span className="helper" /><img alt="sider-login" src={"/images/sider-login.png"} />
         </Sider>
       </Layout>
     );

@@ -25,7 +25,6 @@ import NotFoundPage from './pages/NotFound';
 import './styles/App.less';
 
 const { Header, Content, Sider, Footer } = Layout;
-const { SubMenu } = Menu;
 
 const NavWithAuthCheck = () => {
   if (_auth.isLogged()) {
@@ -84,11 +83,18 @@ export default function App(props) {
              theme="light"
            >
              <div className="logo-container"><img alt="logo" src="/images/logo.png" /></div>
-             <Menu defaultSelectedKeys={['1']} mode="inline">
-               <Menu.Item key="1" icon={<PieChartOutlined/>} theme="light" className="menu-item-reserved">
-                 <Link to="/reserved-area">Área Reservada</Link>
-               </Menu.Item>
-             </Menu>
+             <Menu
+              defaultSelectedKeys={['1']}
+              mode="inline"
+              items={[
+                {
+                  key: "1",
+                  label: "Área Reservada",
+                  icon: <PieChartOutlined/>,
+                  className: "menu-item-reserved"
+                }
+              ]}
+            />
            </Sider>
           }
           <Layout>
@@ -96,32 +102,45 @@ export default function App(props) {
               {!_auth.isLogged() &&
                <Link to="/" className="logo-container"><img alt="logo" src="/images/logo.png" /></Link>
               }
-              <Menu mode="horizontal">
-                {headerButtonMode === '/login' ?
-                 <Link to="/register">
-                   <Button type="primary">Criar conta</Button>
-                 </Link>
-                 : headerButtonMode === '/register' ?
-                 <Link to="/login">
-                   <Button type="primary">Iniciar sessão</Button>
-                 </Link>
-                 : _auth.isLogged() &&
-                 <>
-                   <SubMenu key={"profile"} className="profile-menu" popupClassName="profile-menu-popup" title={<HeaderUserInfo />}>
-                     <Menu.Item key="1">
-                       <Link to="/profile">
-                         <EditOutlined />&nbsp;&nbsp;&nbsp;Editar Perfil
-                       </Link>
-                     </Menu.Item>
-                     <Menu.Item key="2">
-                       <Button type="link" onClick={onLogout} danger>
-                         <LogoutOutlined /> Terminar Sessão
-                       </Button>
-                     </Menu.Item>
-                   </SubMenu>
-                 </>
-                }
-              </Menu>
+              {headerButtonMode === '/login' ?
+               <Link to="/register">
+                 <Button type="primary">Criar conta</Button>
+               </Link>
+               : headerButtonMode === '/register' ?
+               <Link to="/login">
+                 <Button type="primary">Iniciar sessão</Button>
+               </Link>
+               : _auth.isLogged() &&
+               <Menu
+                  mode="horizontal"
+                  items={[
+                    {
+                      key: "profile",
+                      label: <HeaderUserInfo />,
+                      className: "profile-menu",
+                      popupClassName: "profile-menu-popup",
+                      children: [
+                        {
+                            key: "1",
+                            label: (
+                                <Link to="/profile">
+                                <EditOutlined />&nbsp;&nbsp;&nbsp;Editar Perfil
+                                </Link>
+                            )
+                        },
+                        {
+                            key: "2",
+                            label: (
+                                <Button type="link" onClick={onLogout} danger>
+                                <LogoutOutlined /> Terminar Sessão
+                                </Button>
+                            )
+                        }
+                      ]
+                    }
+                  ]}
+               />
+              }
             </Header>
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
               <Switch>
