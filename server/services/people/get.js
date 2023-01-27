@@ -2,7 +2,7 @@ const dbPeople = _db.queryFirst(`
   SELECT *
   FROM people
   WHERE people_user_id = ?::int
-`, _user.id);
+`, _user.id)
 
 if (!dbPeople) {
   _header.status(404)

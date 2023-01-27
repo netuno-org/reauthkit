@@ -35,7 +35,13 @@ const peopleData = _val.map()
       .set("email", email)
 
 if (avatar) {
-  peopleData.set("avatar", avatar)
+  peopleData.set(
+    "avatar", 
+    _image
+      .init(avatar)
+      .resize(500, 500)
+      .file(avatar.name(), "jpeg")
+  )
 }
 
 _db.update(

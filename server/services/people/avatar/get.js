@@ -18,7 +18,7 @@ const storageAvatarFile = _storage.database(
   dbAvatarName
 )
 
-_header.contentTypePNG()
+_header.contentTypeJPG()
 _header.noCache()
 
 _out.copy(storageAvatarFile.inputStream())
