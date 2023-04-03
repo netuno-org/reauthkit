@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@netuno/auth-client": "^1.0.9",
+    "@netuno/auth-client": "^1.1.0",
     "@netuno/service-client": "^1.2.0",
     "antd": "^5.0.4",
     "antd-password-input-strength": "^2.0.1",
