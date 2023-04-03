@@ -2,7 +2,7 @@
 
 cp src/config/_production_config.json src/config/config.json
 
-npm install
+npm install --force
 
 npm run build
 

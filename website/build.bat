@@ -1,6 +1,6 @@
 copy /y "src\config\_production_config.json" "src\config\config.json"
 
-call npm install
+call npm install --force
 
 call npm run build
 
