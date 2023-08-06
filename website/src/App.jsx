@@ -66,7 +66,20 @@ export default function App(props) {
   }
 
   return (
-    <ConfigProvider locale={antLocale_ptPT}>
+    <ConfigProvider
+      locale={antLocale_ptPT}
+      theme={{
+        token: {
+          colorPrimary: '#1178FF',
+          fontSize: 16,
+          borderRadius: 20,
+          primaryColor: '#1890ff',
+          colorBgBase: '#eff8ff',
+          colorBgLayout: '#ffffff',
+          colorBgMask: '#002140'
+        }
+      }}
+    >
       <Provider store={Store}>
         <Layout className={'page ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
           {_auth.isLogged() &&
