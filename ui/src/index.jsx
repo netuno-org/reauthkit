@@ -1,10 +1,29 @@
 import React from "react";
-
 import { createRoot } from 'react-dom/client';
+
+import { ConfigProvider, theme } from "antd";
+
 import DashboardContainer from "./containers/DashboardContainer/index.jsx";
 
 const dashboardDiv = createRoot(document.getElementById("app-dashboard"));
-const dashboardContainer = dashboardDiv ?   dashboardDiv.render(<DashboardContainer />) : false;
+const dashboardContainer = dashboardDiv ? dashboardDiv.render(<DashboardContainer />) : false;
+
+if (dashboardContainer) {
+  dashboardContainer.render(
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#5b5ce1',
+          colorLink: '#5b5ce1',
+          borderRadius: 5,
+        },
+        algorithm: theme.defaultAlgorithm
+      }}
+    >
+      <DashboardContainer />
+    </ConfigProvider>
+  );
+}
 
 netuno.addNavigationLoad(() => {
     $('[netuno-navigation]').find('a').on('netuno:click', (e)=> {
