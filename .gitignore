@@ -16,9 +16,6 @@ package-lock.json
 
 config/_development.json
 config/_production.json
-website/src/config/config.json
-public/scripts/main.js
-public/scripts/main.js.map
 
 storage/database
 
