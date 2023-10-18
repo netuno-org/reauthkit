@@ -10,5 +10,13 @@ export default defineConfig({
   },
   plugins: [
     react()
-  ]
+  ],
+  build: {
+    onwarn: (warning, warn) => {
+      if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || warning.code == 'EVAL') {
+        return
+      }
+      warn(warning);
+    }
+  }
 })
