@@ -32,3 +32,5 @@ pnpm-lock.yaml
 *#*
 
 /src/config/config.json
+
+/public/reauthkit.js
