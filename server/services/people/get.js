@@ -1,7 +1,7 @@
 const dbPeople = _db.queryFirst(`
   SELECT *
   FROM people
-  WHERE people_user_id = ?::int
+  WHERE people_user_id = ${_db.param("int")}
 `, _user.id)
 
 if (!dbPeople) {
