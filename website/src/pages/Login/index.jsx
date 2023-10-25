@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Navigate, Link } from "react-router-dom";
 import { Layout, Typography, Form, Input, Button, Checkbox, notification } from 'antd';
 import _auth from '@netuno/auth-client';
+import _service from '@netuno/service-client';
+import Config from '../../common/Config';
 import RecoverModal from './RecoverModal';
+
+import {
+  FaFacebook, FaGoogle, FaDiscord, FaGithub
+} from "react-icons/fa";
 
 import './index.less';
 
@@ -10,7 +16,7 @@ const { Title } = Typography;
 const { Content, Sider } = Layout;
 
 export default function Login(props) {
-
+  const servicePrefix = _service.config().prefix;
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -73,12 +79,29 @@ export default function Login(props) {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
             >
+              { Config.authProviders().facebook &&
+                <Form.Item>
+                  <Button href={`${servicePrefix}/_auth_provider/login/facebook`} icon={<FaFacebook />}>Entrar com o Facebook</Button>
+                </Form.Item> }
+              { Config.authProviders().google &&
+                <Form.Item>
+                  <Button href={`${servicePrefix}/_auth_provider/login/google`} icon={<FaGoogle />}>Entrar com o Google</Button>
+                </Form.Item> }
+              { Config.authProviders().github &&
+                <Form.Item>
+                  <Button href={`${servicePrefix}/_auth_provider/login/github`} icon={<FaGithub />}>Entrar com o GitHub</Button>
+                </Form.Item> }
+              { Config.authProviders().discord &&
+                <Form.Item>
+                  <Button href={`${servicePrefix}/_auth_provider/login/discord`} icon={<FaDiscord />}>Entrar com o Discord</Button>
+                </Form.Item> }
+
               <Form.Item
                 label="Utilizador"
                 name="username"
                 rules={[
                   { required: true, message: 'Insira o seu usuário.' },
-                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-z]+[a-z0-9]{1,24}$" }
               ]}
               >
                 <Input />
