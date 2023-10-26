@@ -6,7 +6,7 @@ const password = _req.getString("password")
 const avatar = _req.getFile("avatar")
 
 const dbPeople = _db.queryFirst(`
-  SELECT * FROM people WHERE people_user_id = ?::int
+  SELECT * FROM people WHERE people_user_id = ${_db.param("int")}
 `, _user.id())
 
 const userData = _user.get(_user.id())
