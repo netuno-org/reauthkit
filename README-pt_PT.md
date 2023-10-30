@@ -28,21 +28,23 @@ Clone este projeto para `(Netuno Root directory)/apps/reauthkit/`.
     
 > Pode alterar o nome da aplicação, alterando o nome da pasta e o parâmetro de configuração `name`.
 
+3. De acordo com o seu ambiente de desenvolvimento, altere o arquivo `.json` a chaved `settings.api.endpoint` para o endereço correto dos serviços Netuno, exemplo:
+
+```
+  ...
+    "api": {
+      "endpoint": "http://localhost:9000/services/"
+    },
+  ...
+```
+
+> Atenção: A configuração do Endpoint da API é exportada para o website poder conseguir acessar aos endereços de serviços, através da definição do prefixo de URLs no cliente de serviços ([service-client](https://www.npmjs.com/package/@netuno/service-client)).
+
 2. Vai ter de configurar obrigatoriamente uma ligação SMTP para a funcionalidade de recuperação de palavra-passe funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/sending-emails/)
 
 3. Vai ter de configurar, também, obrigatoriamente uma ligação de base de dados do tipo PostgreSQL para esta aplicação funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/database/psql/)
 
 4. Onde se encontra `JWTRandomSecureSecret` coloque um código secreto o mais aleatório visto ser isto que assegura a segurança das credenciais dos utiilzadores, como por exemplo: `#J&Az+7(8d+k/9q]` . [Geração de códigos seguros recomendado.](https://passwordsgenerator.net/)
-
-5. Também vai ter de configurar a amostra de configuração do website localizada no diretório `website/src/config/`:
-
-    1. Altere a configuração presente em `_development_config.json` e `_production_config.json` para ambientes de desenvolvimento/de testes e de produção respetivamente.
-
-    2. Dentro do mesmo diretório execute `cp _development_config.json config.json` a fim de criar o ficheiro de configuração necessário baseado na configuração de desenvolvimento.
-
-    > Para criar uma versão de produção otimizada basta executar `bash build.sh` no diretório `(diretório raíz da aplicação)/website/` que irá momentaneamente substituir o ficheiro `config.json` com a configuração baseada no ficheiro de produção e que ao terminar reverterá para a configuração presente no ficheiro de configuração de ambiente de desenvolvimento/de testes.
-
-    > Também se encontra o ficheiro `build.bat` presente em `(diretório raíz da aplicação)/website/` destinado a ambientes de desenvolvimento em Microsoft Windows.
 
 6. Para configurar a definição do OpenAPI, procure para parametrização do `openapi`, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/openapi/)
 
@@ -68,65 +70,31 @@ E o front-end (site restrito) começará em:
 
 - http://localhost:3000/
 
+## Produção
+
+Em produção altere o ambiente do Netuno para `production`, isto é feito no arquivo de configuração principal do Netuno, o `config.js` que encontra-se na raíz, desta forma:
+
+```
+config.env = 'production'
+```
+
+Na configuração da aplicação, no arquivo `config/_production.json`, desabilite os `commands`, defina o valor de todos os comandos `enabled` com o valor `false`, por que em produção não queremos comandos do NPM sendo executados juntos com o Netuno.
+
+Dentro da pasta do website execute:
+
+`npm install`
+
+Para criar a versão de produção do website otimizada, basta executar `bash build.sh` no diretório `(diretório raíz da aplicação)/website/`. Também se encontra o ficheiro `build.bat` presente em `(diretório raíz da aplicação)/website/` destinado a ambientes de desenvolvimento em Microsoft Windows.
+
 ## Estilo
 
-Indicações para a estilização geral do website restrito.
+Para customizar o website no geral altere as configurações de tema do Ant.Design.
 
-### Escuro
+No arquivo `website/src/App.jsx`, procure pelo componente `ConfigProvider` e adapte os valores do atributo do `theme`.
 
-Segue como pode ser aplicado o estilo escuro.
+> Veja a [documentação oficial do Ant.Design sobre customização do tema](https://ant.design/docs/react/customize-theme).
 
-Ajuste no `website/src/craco.config.js` as variáveis:
-
-```
-  ...
-  '@primary-color': '#1890ff',
-  '@menu-bg': '#141414',
-  '@layout-body-background': '#202020',
-  '@layout-footer-background': '#303030',
-  '@layout-header-background': '#141414',
-  '@layout-trigger-color': '#eff8ff',
-  ...
-```
-
-> [Lista completa das variáveis do Ant.Design.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
-
-No `website/src/styles/variables.less` ajuste a importação do tema do Ant.Design, comente o tema padrão (claro) e descomente o escuro:
-
-```
-//@import '~antd/lib/style/themes/default.less';
-@import '~antd/lib/style/themes/dark.less';
-```
-
-No `website/src/App.js` procure pela tag do componente `Sider` e remova o atributo `theme="light"`.
-
-### Claro
-
-Segue como pode ser aplicado o estilo claro.
-
-Ajuste no `website/src/craco.config.js` as variáveis:
-
-```
-  ...
-  '@primary-color': '#1890ff',
-  '@menu-bg': '#ffffff',
-  '@layout-body-background': '#ffffff',
-  '@layout-footer-background': '#eff8ff',
-  '@layout-header-background': '#ffffff',
-  '@layout-trigger-color': '#002140',
-  ...
-```
-
-> [Lista completa das variáveis do Ant.Design.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
-
-No `website/src/styles/variables.less` ajuste a importação do tema do Ant.Design, comente o tema escuro e descomente o padrão (claro):
-
-```
-@import '~antd/lib/style/themes/default.less';
-//@import '~antd/lib/style/themes/dark.less';
-```
-
-No `website/src/App.js` procure pela tag do componente `Sider` e adicione o atributo `theme="light"`.
+As configurações das variávies do LESS encontra-se aqui: `website/src/styles/variables.less`
 
 ## Capturas de Ecrã
 
