@@ -13,7 +13,7 @@
     "@netuno/auth-client": "^1.1.0",
     "@netuno/service-client": "^1.2.0",
     "@ant-design/icons": "^5.2.4",
-    "antd": "^5.5.2",
+    "antd": "^5.9.2",
     "antd-password-input-strength": "^2.0.1",
     "classnames": "^2.3.2",
     "prop-types": "^15.8.1",
