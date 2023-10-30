@@ -28,7 +28,7 @@ Clone este projeto para `(Netuno Root directory)/apps/reauthkit/`.
     
 > Pode alterar o nome da aplicação, alterando o nome da pasta e o parâmetro de configuração `name`.
 
-3. De acordo com o seu ambiente de desenvolvimento, altere o arquivo `.json` a chaved `settings.api.endpoint` para o endereço correto dos serviços Netuno, exemplo:
+2. De acordo com o seu ambiente de desenvolvimento, altere o arquivo `.json` na chave `settings.api.endpoint` para o endereço correto dos serviços Netuno, exemplo:
 
 ```
   ...
@@ -40,11 +40,11 @@ Clone este projeto para `(Netuno Root directory)/apps/reauthkit/`.
 
 > Atenção: A configuração do Endpoint da API é exportada para o website poder conseguir acessar aos endereços de serviços, através da definição do prefixo de URLs no cliente de serviços ([service-client](https://www.npmjs.com/package/@netuno/service-client)).
 
-2. Vai ter de configurar obrigatoriamente uma ligação SMTP para a funcionalidade de recuperação de palavra-passe funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/sending-emails/)
+3. Vai ter de configurar obrigatoriamente uma ligação SMTP para a funcionalidade de recuperação de palavra-passe funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/sending-emails/)
 
-3. Vai ter de configurar, também, obrigatoriamente uma ligação de base de dados do tipo PostgreSQL para esta aplicação funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/database/psql/)
+4. Vai ter de configurar, também, obrigatoriamente uma ligação de base de dados do tipo PostgreSQL para esta aplicação funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/database/psql/)
 
-4. Onde se encontra `JWTRandomSecureSecret` coloque um código secreto o mais aleatório visto ser isto que assegura a segurança das credenciais dos utiilzadores, como por exemplo: `#J&Az+7(8d+k/9q]` . [Geração de códigos seguros recomendado.](https://passwordsgenerator.net/)
+5. Onde se encontra `JWTRandomSecureSecret` coloque um código secreto o mais aleatório visto ser isto que assegura a segurança das credenciais dos utiilzadores, como por exemplo: `#J&Az+7(8d+k/9q]` . [Geração de códigos seguros recomendado.](https://passwordsgenerator.net/)
 
 6. Para configurar a definição do OpenAPI, procure para parametrização do `openapi`, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/openapi/)
 
