@@ -1,7 +1,7 @@
 const dbPeople = _db.queryFirst(`
   SELECT *
   FROM people
-  WHERE people_user_id = ?::int
+  WHERE people_user_id = ${_db.param("int")}
 `, _user.id)
 
 if (!dbPeople) {
@@ -15,6 +15,7 @@ const data = _val.map()
       .set("email", dbPeople.getString("email"))
       .set("username", _user.get(_user.id()).getString("user"))
       .set("avatar", dbPeople.getString("avatar") != '')
+      .set("group", _group.code())
 
 _out.json(
   _val.map()

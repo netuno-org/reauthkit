@@ -18,7 +18,11 @@ const storageAvatarFile = _storage.database(
   dbAvatarName
 )
 
-_header.contentTypeJPG()
+if (storageAvatarFile.extension() == "jpg" || storageAvatarFile.extension() == "jpeg") {
+  _header.contentTypeJPG()
+} else {
+  _header.contentTypePNG()
+}
 _header.noCache()
 
 _out.copy(storageAvatarFile.inputStream())

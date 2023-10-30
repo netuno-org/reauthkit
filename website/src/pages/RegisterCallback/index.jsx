@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Navigate, useParams } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button, notification } from 'antd';
-import { PasswordInput } from "antd-password-input-strength";
+import { Layout, Spin, Typography, Form, Input, Button, notification } from 'antd';
 import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
-
-import {
-  FaFacebook, FaGoogle, FaDiscord, FaGithub
-} from "react-icons/fa";
-
-import Config from '../../common/Config';
 
 import './index.less';
 
@@ -17,39 +10,99 @@ const { Title } = Typography;
 const { Content, Sider } = Layout;
 
 export default function Register(props) {
-  const servicePrefix = _service.config().prefix;
-  const [ready, setReady] = useState(false);
+  const [toLogin, setToLogin] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [logged, setLogged] = useState(false);
+  const [providerData, setProviderData] = useState(null);
+  const [loadingProviderData, setLoadingProviderData] = useState(true);
   const registerForm = useRef(null);
   const { provider } = useParams(null);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+
   useEffect(() => {
-    if (_auth.isLogged()) {
-      window.scrollTo(0, 0);
-    }
     window.scrollTo(0, 0);
+    _service({
+      method: 'POST',
+      url: `_auth_provider/register/${provider}`,
+      data: {
+        code
+      },
+      success: async ({ json }) => {
+        if (json) {
+          if (json.exists) {
+            notification["warning"]({
+              message: 'Conta Já Existe',
+              description: 'Já foi criada uma conta com este e-mail, efetue o login ou a recuperação do acesso.',
+            });
+            setToLogin(true);
+          } else {
+            setProviderData(json);
+          }
+        }
+        setLoadingProviderData(false);
+      },
+      fail: (error) => {
+        console.error(error);
+        notification["error"]({
+          message: 'Erro na Criação da Conta',
+          description: 'Ocorreu um erro na criação da conta, por favor contacte-nos através do suporte.',
+        });
+        setLoadingProviderData(false);
+      }
+    });
   }, []);
 
   function onFinish(values) {
     setSubmitting(true);
-    const { username, password, email, name } = values;
+    const { username, email, name } = values;
     _service({
       method: 'POST',
       url: 'people',
       data: {
         name,
         username,
-        password,
-        email
+        code: providerData.uid,
+        provider
       },
       success: (response) => {
         if (response.json.result) {
           notification["success"]({
             message: 'Conta Criada',
-            description: 'A conta foi criada com sucesso, pode iniciar sessão.',
+            description: 'A conta foi criada com sucesso.',
           });
           setSubmitting(false);
-          setReady(true);
+
+          _service({
+            method: 'POST',
+            url: `_auth_provider/login/${provider}`,
+            data: {
+              uid: providerData.uid
+            },
+            success: async ({ json }) => {
+              if (json) {
+                if (json.token) {
+                  const authConfig = await _auth.config();
+                  authConfig.token.load(authConfig, json.token);
+                  setLogged(true);
+                } else {
+                  notification["error"]({
+                    message: 'Falha no Login',
+                    description: 'Não foi possível logar automaticamente.',
+                  });
+                  setToLogin(true);
+                }
+              }
+            },
+            fail: (error) => {
+              console.error(error);
+              notification["error"]({
+                message: 'Erro na Autenticação',
+                description: 'Ocorreu um erro grave de autenticação, por favor contacte-nos através do chat de suporte.',
+              });
+            }
+          });
         }
       },
       fail: (e) => {
@@ -80,10 +133,17 @@ export default function Register(props) {
     console.log('Failed:', errorInfo);
   }
 
-  if (_auth.isLogged()) {
+  if (loadingProviderData) {
+    return (
+      <div className="register-container">
+        <Spin />
+      </div>
+    );
+  }
+  if (logged && _auth.isLogged()) {
     return <Navigate to="/reserved-area" />;
   }
-  if (ready) {
+  if (toLogin) {
     return <Navigate to="/login" />;
   }
   return (
@@ -98,26 +158,10 @@ export default function Register(props) {
             ref={registerForm}
             layout="vertical"
             name="basic"
-            initialValues={{ remember: true }}
+            initialValues={{ name: providerData.name, username: providerData.username, email: providerData.email }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            { Config.authProviders().facebook &&
-              <Form.Item>
-                <Button href={`${servicePrefix}/_auth_provider/register/facebook`} icon={<FaFacebook />}>Registrar com o Facebook</Button>
-              </Form.Item> }
-            { Config.authProviders().google &&
-              <Form.Item>
-                <Button href={`${servicePrefix}/_auth_provider/register/google`} icon={<FaGoogle />}>Registrar com o Google</Button>
-              </Form.Item> }
-            { Config.authProviders().github &&
-              <Form.Item>
-                <Button href={`${servicePrefix}/_auth_provider/register/github`} icon={<FaGithub />}>Registrar com o GitHub</Button>
-              </Form.Item> }
-            { Config.authProviders().discord &&
-              <Form.Item>
-                <Button href={`${servicePrefix}/_auth_provider/register/discord`} icon={<FaDiscord />}>Registrar com o Discord</Button>
-              </Form.Item> }
             <Form.Item
               label="Nome"
               name="name"
@@ -141,40 +185,8 @@ export default function Register(props) {
             <Form.Item
               label="E-mail"
               name="email"
-              rules={[
-                { type: 'email', message: 'O e-mail inserido não é válido.' },
-                { required: true, message: 'Insira o e-mail.' }
-              ]}
             >
-              <Input disabled={submitting} maxLength={250} />
-            </Form.Item>
-            <Form.Item
-              label="Palavra-passe"
-              name="password"
-              rules={[
-                { required: true, message: 'Insira a palavra-passe.' },
-                { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
-              ]}
-            >
-              <PasswordInput disabled={submitting} maxLength={25} />
-            </Form.Item>
-            <Form.Item
-              label="Confirmar a Palavra-passe"
-              name="password_confirm"
-              rules={[
-                { required: true, message: 'Insira a confirmação da palavra-passe.' },
-                { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject('As palavras-passes não são iguais.');
-                  },
-                })
-              ]}
-            >
-              <Input.Password disabled={submitting} maxLength={25} />
+              <Input disabled={true} maxLength={250} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={submitting}>

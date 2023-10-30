@@ -16,11 +16,13 @@ import './common/Config';
 import HeaderUserInfo from './components/HeaderUserInfo';
 
 import LoginPage from './pages/Login';
-import RegisterPage from './pages/Register';
+import Register from './pages/Register';
 import ReservedArea from './pages/ReservedArea';
-import RecoveryPage from './pages/Recovery';
+import LoginCallback from './pages/LoginCallback';
+import RegisterCallback from './pages/RegisterCallback';
+import Recovery from './pages/Recovery';
 import Profile from './pages/Profile';
-import NotFoundPage from './pages/NotFound';
+import NotFound from './pages/NotFound';
 
 import './styles/App.less';
 
@@ -158,12 +160,14 @@ export default function App(props) {
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
               <Switch>
                 <Route exact path="/" element={<NavWithAuthCheck/>}/>
+                <Route path="/login/:provider" element={<LoginCallback/>} />
+                <Route path="/register/:provider" element={<RegisterCallback/>} />
                 <Route path="/reserved-area" element={<ReservedArea/>} />
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/login" element={<LoginPage/>} />
-                <Route path="/register" element={<RegisterPage/>} />
-                <Route path="/recovery" element={<RecoveryPage/>} />
-                <Route element={<NotFoundPage/>} />
+                <Route path="/register" element={<Register/>} />
+                <Route path="/recovery" element={<Recovery/>} />
+                <Route path="*" element={<NotFound/>} />
               </Switch>
             </Content>
             {!_auth.isLogged() &&

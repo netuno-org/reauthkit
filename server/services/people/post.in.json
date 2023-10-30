@@ -10,16 +10,20 @@
       "type": "string-not-empty"
     },
     "email": {
-      "type": "string-not-empty"
+      "type": "string"
     },
     "password": {
-      "type": "string-not-empty"
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
     }
   },
   "required": [
     "name",
-    "username",
-    "email",
-    "password"
+    "username"
   ]
 }
