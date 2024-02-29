@@ -9,8 +9,11 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "trash": {
+    "@netuno/auth-client": "^1.1.0"
+  },
   "dependencies": {
-    "@netuno/auth-client": "^1.1.0",
+    "@netuno/auth-client": "^1.1.1",
     "@netuno/service-client": "^1.2.0",
     "@ant-design/icons": "^5.2.4",
     "antd": "^5.9.2",
