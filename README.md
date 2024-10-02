@@ -30,21 +30,24 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 > You can change the application name by changing the folder name and the `name` configuration parameter.
 
-2. You'll need to configure an SMTP connection for the password recovery feature to function properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/sending-emails/)
+2. According to your development environment, change the `.json` file in the `settings.api.endpoint` key to the correct address of Neptune services, example:
 
-3. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/database/psql/)
+```
+  ...
+    "api": {
+      "endpoint": "http://localhost:9000/services/"
+    },
+  ...
 
-4. Locate and replace the word `JWTRandomSecureSecret` by a secret code, as random as possible, since this is what ensures the security of users' credentials. For example: `#J&Az+7(8d+k/9q]` . [Recommended Secure Code Generation tool.](https://passwordsgenerator.net/)
+```
 
-5. You'll also need to configure the website sample config file located in `website/src/config/`:
+> Attention: The API Endpoint configuration is exported so that the website can access the service addresses, by defining the URL prefix in the service client.
 
-    1. Change the configurations inside `_development_config.json` and `_production_config.json` for development and production environments respectively.
+3. You'll need to configure an SMTP connection for the password recovery feature to function properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/sending-emails/)
 
-    2. Inside the same folder run `cp _development_config.json config.json` to create the configuration file based on the development configuration.
+4. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/database/psql/)
 
-    > To create a production ready build just run `bash build.sh` in `(app root directory)/website/` which will momentarily create a `config.json` based on the production configuration file and when it's finished it should revert back to the development configuration.
-
-    > There's also a `build.bat` present in `(app root directory)/website/` for Microsoft Windows development environments.
+5. Locate and replace the word `JWTRandomSecureSecret` by a secret code, as random as possible, since this is what ensures the security of users' credentials. For example: `#J&Az+7(8d+k/9q]` . [Recommended Secure Code Generation tool.](https://passwordsgenerator.net/)
 
 6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/openapi/)
 
@@ -70,65 +73,34 @@ And the front-end (restricted website) will start in:
 
 - http://localhost:3000/
 
+## Production
+
+In production, change the Netuno environment to `production`, this is done in the main Netuno configuration file, `config.js` which is located at the root, like this:
+
+```
+config.env = 'production'
+```
+
+In the application configuration, in the `config/_production.json` file, disable the `commands`, set the value of all `enabled` commands to `false`, because in production we do not want NPM commands being executed together with Netuno.
+
+Inside the website folder run:
+
+```
+npm install
+
+```
+
+To create the optimized production version of the website, simply run `bash build.sh` in the directory `(application root directory)/website/`. The `build.bat` file is also found in `(application root directory)/website/` intended for development environments on Microsoft Windows.
+
 ## Style
 
-Indications for the general styling of the restricted website.
+To customize the website in general, change the Ant.Design theme settings.
 
-### Dark
+In the `website/src/App.jsx`  file, look for the `ConfigProvider` component and adapt the `theme` attribute values.
 
-Here's how the dark style can be applied.
+> See the [official Ant.Design documentation on theme customization](https://ant.design/docs/react/customize-theme).
 
-Adjust the variables in `website/src/craco.config.js`:
-
-```
-  ...
-  '@primary-color': '#1890ff',
-  '@menu-bg': '#141414',
-  '@layout-body-background': '#202020',
-  '@layout-footer-background': '#303030',
-  '@layout-header-background': '#141414',
-  '@layout-trigger-color': '#eff8ff',
-  ...
-```
-
-> [Full Ant.Design variables list.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
-
-In the `website/src/styles/variables.less` adjust the Ant.Design theme import, comment out the default theme (light) and uncomment the dark one:
-
-```
-//@import '~antd/lib/style/themes/default.less';
-@import '~antd/lib/style/themes/dark.less';
-```
-
-In `website/src/App.js` look for the `Sider` component tag and remove the `theme="light"` attribute.
-
-### Light
-
-Here's how the clear style can be applied.
-
-Adjust the variables in `website/src/craco.config.js`:
-
-```
-  ...
-  '@primary-color': '#1890ff',
-  '@menu-bg': '#ffffff',
-  '@layout-body-background': '#ffffff', 
-  '@layout-footer-background': '#eff8ff',
-  '@layout-header-background': '#ffffff',
-  '@layout-trigger-color': '#002140',
-  ...
-```
-
-> [Full Ant.Design variables list.](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
-
-In the `website/src/styles/variables.less` adjust the Ant.Design theme import, comment out the dark theme and uncomment the default (light):
-
-```
-@import '~antd/lib/style/themes/default.less'; 
-//@import '~antd/lib/style/themes/dark.less';
-```
-
-In `website/src/App.js` look for the `Sider` component tag and add the `theme="light"` attribute.
+The LESS variable settings can be found here: `website/src/styles/variables.less`.
 
 ## Screenshots
 

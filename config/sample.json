@@ -3,6 +3,9 @@
     "jobs": []
   },
   "settings": {
+    "api": {
+      "endpoint": "http://localhost:9000/services/"
+    },
     "public": {}
   },
   "smtp": {
@@ -45,7 +48,7 @@
     },
     {
       "path": "website",
-      "command": "npm run start",
+      "command": "npm run dev",
       "install": "npm install --force",
       "enabled": true
     }

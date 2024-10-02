@@ -4,18 +4,23 @@ import { Layout, Typography, Form, Input, Button, Checkbox, notification } from 
 import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
 import Config from '../../common/Config';
+import withRouter from '../../common/withRouter';
 import RecoverModal from './RecoverModal';
 
 import {
   FaFacebook, FaGoogle, FaDiscord, FaGithub
 } from "react-icons/fa";
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { loggedUserInfoAction } from '../../redux/actions';
+
 import './index.less';
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
 
-export default function Login(props) {
+function Login({loggedUserInfoAction}) {
   const servicePrefix = _service.config().prefix;
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -25,7 +30,7 @@ export default function Login(props) {
       window.scrollTo(0, 0);
     }
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   function onFinish(values) {
     setSubmitting(true);
@@ -38,11 +43,26 @@ export default function Login(props) {
     _auth.login({
       username,
       password,
-      success: () => {
+      data: (data) => {
+        // data.myparameter = 'myvalue';
+        return data;
+      },
+      success: (data) => {
+        loggedUserInfoAction(data.json.extra);
         setSubmitting(false);
       },
-      fail: () => {
+      fail: (data) => {
         setSubmitting(false);
+        if (data.isJSON) {
+          if (data.json.blocked) {
+            notification["error"]({
+              message: 'Login Bloqueado',
+              description:
+              'O login foi bloqueado, realize o processo de desbloqueamento ou contate o suporte.',
+            });
+            return;
+          }
+        }
         notification["error"]({
           message: 'Login Inválido',
           description:
@@ -148,3 +168,13 @@ export default function Login(props) {
     );
   }
 }
+
+const mapStateToProps = store => {
+  return { };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  loggedUserInfoAction
+}, dispatch);
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
