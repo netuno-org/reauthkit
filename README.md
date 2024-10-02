@@ -47,7 +47,7 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 4. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/database/psql/)
 
-5. Locate and replace the word `JWTRandomSecureSecret` by a secret code, as random as possible, since this is what ensures the security of users' credentials. For example: `#J&Az+7(8d+k/9q]` . [Recommended Secure Code Generation tool.](https://passwordsgenerator.net/)
+5. Locate `auth` > `jwt` > `secret` and must set a secret code with 32 characters, as random as possible, since this is what ensures the security of users' credentials. [Recommended Secure Code Generation tool.](https://passwordsgenerator.net/)
 
 6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/openapi/)
 
