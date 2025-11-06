@@ -8,7 +8,7 @@ import withRouter from '../../common/withRouter';
 import RecoverModal from './RecoverModal';
 
 import {
-  FaFacebook, FaGoogle, FaDiscord, FaGithub
+  FaGoogle, FaWindows, FaFacebook, FaDiscord, FaGithub
 } from "react-icons/fa";
 
 import { connect } from 'react-redux';
@@ -99,14 +99,18 @@ function Login({loggedUserInfoAction}) {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
             >
-              { Config.authProviders().facebook &&
-                <Form.Item>
-                  <Button href={`${servicePrefix}/_auth_provider/login/facebook`} icon={<FaFacebook />}>Entrar com o Facebook</Button>
-                </Form.Item> }
               { Config.authProviders().google &&
                 <Form.Item>
                   <Button href={`${servicePrefix}/_auth_provider/login/google`} icon={<FaGoogle />}>Entrar com o Google</Button>
                 </Form.Item> }
+              { Config.authProviders().microsoft &&
+                  <Form.Item>
+                    <Button href={`${servicePrefix}/_auth_provider/login/microsoft`} icon={<FaWindows />}>Entrar com o Microsoft</Button>
+                  </Form.Item> }
+              { Config.authProviders().facebook &&
+                  <Form.Item>
+                    <Button href={`${servicePrefix}/_auth_provider/login/facebook`} icon={<FaFacebook />}>Entrar com o Facebook</Button>
+                  </Form.Item> }
               { Config.authProviders().github &&
                 <Form.Item>
                   <Button href={`${servicePrefix}/_auth_provider/login/github`} icon={<FaGithub />}>Entrar com o GitHub</Button>
