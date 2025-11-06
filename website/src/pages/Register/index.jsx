@@ -6,7 +6,7 @@ import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
 
 import {
-  FaFacebook, FaGoogle, FaDiscord, FaGithub
+  FaGoogle, FaWindows, FaFacebook, FaDiscord, FaGithub
 } from "react-icons/fa";
 
 import Config from '../../common/Config';
@@ -102,14 +102,18 @@ export default function Register(props) {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            { Config.authProviders().facebook &&
-              <Form.Item>
-                <Button href={`${servicePrefix}/_auth_provider/register/facebook`} icon={<FaFacebook />}>Registrar com o Facebook</Button>
-              </Form.Item> }
             { Config.authProviders().google &&
               <Form.Item>
                 <Button href={`${servicePrefix}/_auth_provider/register/google`} icon={<FaGoogle />}>Registrar com o Google</Button>
               </Form.Item> }
+            { Config.authProviders().microsoft &&
+                <Form.Item>
+                  <Button href={`${servicePrefix}/_auth_provider/login/microsoft`} icon={<FaWindows />}>Entrar com o Microsoft</Button>
+                </Form.Item> }
+            { Config.authProviders().facebook &&
+                <Form.Item>
+                  <Button href={`${servicePrefix}/_auth_provider/register/facebook`} icon={<FaFacebook />}>Registrar com o Facebook</Button>
+                </Form.Item> }
             { Config.authProviders().github &&
               <Form.Item>
                 <Button href={`${servicePrefix}/_auth_provider/register/github`} icon={<FaGithub />}>Registrar com o GitHub</Button>
