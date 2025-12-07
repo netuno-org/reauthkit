@@ -54,7 +54,15 @@ function Login({loggedUserInfoAction}) {
       fail: (data) => {
         setSubmitting(false);
         if (data.isJSON) {
-          if (data.json.blocked) {
+          if (data.json['locked']) {
+            notification["error"]({
+              message: 'Acesso Bloqueado',
+              description:
+                  'O seu login foi bloqueado devido as muitas tentativas, volte a tentar mais tarde ou contate o suporte.',
+            });
+            return;
+          }
+          if (data.json['custom-blocked']) {
             notification["error"]({
               message: 'Login Bloqueado',
               description:
