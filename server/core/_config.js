@@ -21,25 +21,6 @@ if (_url.download.isDownloadable()) {
     }
 }
 
-
-if (_app.configReloaded()) {
-    const websiteConfig = _val.map()
-        .set("api", _app.settings.getValues("api", _val.map()))
-        .set(
-            "auth",
-            _val.map()
-                .set(
-                    "providers",
-                    _val.map()
-                        .set("facebook", _auth.isProviderEnabled("facebook"))
-                        .set("google", _auth.isProviderEnabled("google"))
-                        .set("github", _auth.isProviderEnabled("github"))
-                        .set("discord", _auth.isProviderEnabled("discord"))
-                )
-        )
-    websiteConfigFile.output().printAndClose(`window.reauthkit = { config: ${websiteConfig.toJSON(4)} };`)
-}
-
 let websiteBuildPath = ""
 if (_env.is("dev")) {
     websiteBuildPath = "website/public"
