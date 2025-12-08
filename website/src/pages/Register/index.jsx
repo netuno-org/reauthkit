@@ -22,6 +22,7 @@ export default function Register(props) {
   const [submitting, setSubmitting] = useState(false);
   const registerForm = useRef(null);
   const { provider } = useParams(null);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     if (_auth.isLogged()) {
@@ -44,7 +45,7 @@ export default function Register(props) {
       },
       success: (response) => {
         if (response.json.result) {
-          notification["success"]({
+          api.success({
             message: 'Conta Criada',
             description: 'A conta foi criada com sucesso, pode iniciar sessão.',
           });
@@ -56,19 +57,19 @@ export default function Register(props) {
         setSubmitting(false);
         if (e && e.status === 409 && e.json && e.json.error) {
           if (e.json.error === 'email-already-exists') {
-            return notification["warning"]({
+            return api.warning({
               message: 'E-mail Existente',
               description: 'Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
             });
           }
           if (e.json.error === 'user-already-exists') {
-            return notification["warning"]({
+            return api.warning({
               message: 'Utilizador Existente',
               description: 'Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
             });
           }
         }
-        return notification["error"]({
+        return api.error({
           message: 'Erro na Criação de Conta',
           description: 'Não foi possível criar a conta, contacte-nos através do chat de suporte.',
         });
@@ -89,6 +90,7 @@ export default function Register(props) {
   return (
     <Layout>
       <Content className="register-container">
+        {contextHolder}
         <div className="content-title">
           <Title>Criar conta.</Title>
         </div>

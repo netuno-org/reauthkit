@@ -12,6 +12,8 @@ export default function LoginCallback(props) {
   const [logged, setLogged] = useState(false);
   const [register, setRegister] = useState(false);
   const { provider } = useParams(null);
+  const [api, contextHolder] = notification.useNotification();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -28,7 +30,7 @@ export default function LoginCallback(props) {
             authConfig.token.load(authConfig, json.token);
             setLogged(true);
           } else if (json.provider && json.provider.new) {
-            notification["warning"]({
+            api.warning({
               message: 'Criar Nova Conta',
               description: 'Não tem a sua conta criada ainda, avance com a criação da conta.',
             });
@@ -38,7 +40,7 @@ export default function LoginCallback(props) {
       },
       fail: (error) => {
         console.error(error);
-        notification["error"]({
+        api.error({
           message: 'Erro no Callback da Autenticação',
           description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do chat de suporte.',
         });
@@ -53,6 +55,7 @@ export default function LoginCallback(props) {
   }
   return (
     <div className="login-callback">
+      {contextHolder}
       <Spin />
     </div>
   );

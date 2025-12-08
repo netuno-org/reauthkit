@@ -10,11 +10,11 @@ const { Title } = Typography;
 const { Content, Sider } = Layout;
 
 export default function Recovery(props) {
-
     const [ready, setReady] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [hash, setHash] = useState(false);
     const recoveryForm = useRef(null);
+    const [api, contextHolder] = notification.useNotification();
 
     const location = useLocation();
 
@@ -34,7 +34,7 @@ export default function Recovery(props) {
             },
             success: (response) => {
                 if (response.json.result) {
-                    notification["success"]({
+                    api.success({
                         message: 'Alteração de Palavra-Passe',
                         description: 'A sua palavra-passe foi alterada com sucesso.',
                     });
@@ -44,9 +44,9 @@ export default function Recovery(props) {
             },
             fail: () => {
                 setSubmitting(false);
-                notification["error"]({
+                api.error({
                     message: 'Erro na alteração de Palavra-Passe',
-                    description: 'Não foi possível alterar a sua palavra-passe, por favor contacte-nos através do chat de suporte.',
+                    description: 'Não foi possível alterar a sua palavra-passe, o link é inválido ou por favor contacte o suporte.',
                 });
             }
         });
@@ -62,6 +62,7 @@ export default function Recovery(props) {
         return (
             <Layout>
                 <Content className="recovery-container">
+                    {contextHolder}
                     <div className="content-title">
                         <Title>Recuperar Acesso</Title>
                     </div>
@@ -120,5 +121,17 @@ export default function Recovery(props) {
     /* else {
         return <NotFoundPage />;
     } */
-
+    return (
+        <Layout>
+            <Content className="recovery-container">
+                {contextHolder}
+                <div className="content-title">
+                    <Title>Recuperar Acesso</Title>
+                </div>
+                <div className="content-body">
+                    <p>O link não está correto.</p>
+                </div>
+            </Content>
+        </Layout>
+    );
 }

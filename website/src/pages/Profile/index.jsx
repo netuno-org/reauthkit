@@ -22,6 +22,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
   const profileForm = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   const layout = {
     wrapperCol: { xs: { span: 24 }, sm: { span: 24 }, md: { span: 24 }, lg: { span: 12 } }
@@ -57,7 +58,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
       },
       success: (response) => {
         if (response.json.result) {
-          notification["success"]({
+          api.success({
             message: 'Edição do Perfil',
             description: 'Os dados do seu perfil foram alterados com sucesso.',
           });
@@ -68,7 +69,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
           });
           loggedUserInfoReloadAction();
         } else {
-          notification["warning"]({
+          api.warning({
             message: 'Utilizador existente',
             description: response.json.error,
           });
@@ -81,7 +82,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
       },
       fail: () => {
         setSubmitting(false);
-        notification["error"]({
+        api.error({
           message: 'Erro na Edição do Perfil',
           description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do chat de suporte.',
         });
@@ -103,6 +104,7 @@ function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
 
   return (
     <div>
+      {contextHolder}
       <div className="content-title">
         <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
       </div>

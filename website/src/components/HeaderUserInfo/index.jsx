@@ -14,6 +14,7 @@ import './index.less';
 function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAction}) {
   const [loading, setLoading] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
+  const [api, contextHolder] = notification.useNotification();
   useEffect(() => {
     if (!loggedUserInfoReload && !!loggedUserInfo) {
       return;
@@ -27,7 +28,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
         if (response.json.result) {
           loggedUserInfoAction(response.json.data);
         } else {
-          notification["warning"]({
+          api.warning({
             message: 'Dados do Utilizador',
             description: response.json.error,
           });
@@ -37,7 +38,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
       fail: (e) => {
         console.error('Dados do Utilizador', e);
         setLoading(false);
-        notification["error"]({
+        api.error({
           message: 'Dados do Utilizador',
           description: 'Ocorreu um erro a carregar os dados, por favor tente novamente.',
         });
@@ -53,7 +54,8 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   }, [loggedUserInfo]);
   if (loading) {
     return (
-      <div className="dashboard-layout-content">
+      <div>
+        {contextHolder}
         <Spin/>
       </div>
     );
@@ -61,12 +63,17 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   if (loggedUserInfo) {
     return (
       <div className="header__user-info">
+        {contextHolder}
         {avatarImageURL && <img src={avatarImageURL}/>}
         <span>{loggedUserInfo.name}</span>
       </div>
     );
   }
-  return null;
+  return (
+      <div>
+        {contextHolder}
+      </div>
+  );
 }
 
 const mapStateToProps = store => {

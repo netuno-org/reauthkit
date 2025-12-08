@@ -8,6 +8,7 @@ export default function RecoverModal(props) {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(true);
   const recoverForm = useRef(null);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,7 +25,7 @@ export default function RecoverModal(props) {
       },
       success: (response) => {
         if (response.json.result) {
-          notification["success"]({
+          api.success({
             message: 'Alteração da Palavra-Passe ',
             description: 'Foi enviado um e-mail para a alteração da Palavra-Passe.',
           });
@@ -34,7 +35,7 @@ export default function RecoverModal(props) {
       },
       fail: () => {
         setSubmitting(false);
-        notification["error"]({
+        api.error({
           message: 'Erro na Alteração da Palavra-Passe',
           description: 'Não foi possível alterar a palavra-passe, contacte-nos através do chat de suporte.',
         });
@@ -79,6 +80,7 @@ export default function RecoverModal(props) {
         </Button>
       ]}
     >
+      {contextHolder}
       <Form
         ref={recoverForm}
         name="basic"

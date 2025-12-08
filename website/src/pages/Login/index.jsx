@@ -24,6 +24,7 @@ function Login({loggedUserInfoAction}) {
   const servicePrefix = _service.config().prefix;
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     if (_auth.isLogged()) {
@@ -55,7 +56,7 @@ function Login({loggedUserInfoAction}) {
         setSubmitting(false);
         if (data.isJSON) {
           if (data.json['locked']) {
-            notification["error"]({
+            api.error({
               message: 'Acesso Bloqueado',
               description:
                   'O seu login foi bloqueado devido as muitas tentativas, volte a tentar mais tarde ou contate o suporte.',
@@ -63,7 +64,7 @@ function Login({loggedUserInfoAction}) {
             return;
           }
           if (data.json['custom-blocked']) {
-            notification["error"]({
+            api.error({
               message: 'Login Bloqueado',
               description:
               'O login foi bloqueado, realize o processo de desbloqueamento ou contate o suporte.',
@@ -71,7 +72,7 @@ function Login({loggedUserInfoAction}) {
             return;
           }
         }
-        notification["error"]({
+        api.error({
           message: 'Login Inválido',
           description:
           'Por favor verifique as credenciais inseridas.',
@@ -98,6 +99,7 @@ function Login({loggedUserInfoAction}) {
           <div className="content-title">
             <Title>Iniciar sessão.</Title>
           </div>
+          {contextHolder}
           <div className="content-body">
             <p>Inicie sessão com os seus dados.</p>
             <Form
