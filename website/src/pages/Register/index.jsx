@@ -11,10 +11,12 @@ import {
 
 import Config from '../../common/Config';
 
-import './index.less';
+import isNetworkError from "is-network-error";
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
+
+import './index.less';
 
 export default function Register(props) {
   const servicePrefix = _service.config().prefix;
@@ -55,6 +57,13 @@ export default function Register(props) {
       },
       fail: (e) => {
         setSubmitting(false);
+        if (e.error && isNetworkError(e.error)) {
+          return api.error({
+            message: 'Conexão',
+            description:
+                'Há problemas de conexão com o servidor, tente novamente mais tarde.',
+          });
+        }
         if (e && e.status === 409 && e.json && e.json.error) {
           if (e.json.error === 'email-already-exists') {
             return api.warning({

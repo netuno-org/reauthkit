@@ -11,6 +11,8 @@ import {
   FaGoogle, FaWindows, FaFacebook, FaDiscord, FaGithub
 } from "react-icons/fa";
 
+import isNetworkError from "is-network-error";
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loggedUserInfoAction } from '../../redux/actions';
@@ -54,6 +56,14 @@ function Login({loggedUserInfoAction}) {
       },
       fail: (data) => {
         setSubmitting(false);
+        if (data.error && isNetworkError(data.error)) {
+          api.error({
+            message: 'Conexão',
+            description:
+                'Há problemas de conexão com o servidor, tente novamente mais tarde.',
+          });
+          return;
+        }
         if (data.isJSON) {
           if (data.json['locked']) {
             api.error({
