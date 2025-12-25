@@ -1,8 +1,6 @@
 import { defineConfig } from 'vite'
-import vitePluginImp from 'vite-plugin-imp';
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   server: {
     port: 3000,
@@ -13,7 +11,7 @@ export default defineConfig({
   ],
   build: {
     onwarn: (warning, warn) => {
-      if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || warning.code == 'EVAL') {
+      if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || warning.code === 'EVAL') {
         return
       }
       warn(warning);
