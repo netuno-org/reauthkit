@@ -16,13 +16,17 @@ import isNetworkError from "is-network-error";
 const { Title } = Typography;
 const { Content, Sider } = Layout;
 
+import 'altcha';
+
 import './index.less';
 
 export default function Register(props) {
   const servicePrefix = _service.config().prefix;
   const [ready, setReady] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [altchaPayload, setAltchaPayload] = useState(null);
   const registerForm = useRef(null);
+  const altcha = useRef(null);
   const { provider } = useParams(null);
   const [api, contextHolder] = notification.useNotification();
 
@@ -31,6 +35,19 @@ export default function Register(props) {
       window.scrollTo(0, 0);
     }
     window.scrollTo(0, 0);
+    if (altcha && altcha.current) {
+      function altchaVerified(ev) {
+        if (ev.detail.state === "verified") {
+          setAltchaPayload(ev.detail.payload);
+        }
+      }
+      altcha.current.addEventListener("statechange", altchaVerified, false);
+      return () => {
+        if (altcha.current != null) {
+          altcha.current.removeEventListener("statechange", altchaVerified, false);
+        }
+      }
+    }
   }, []);
 
   function onFinish(values) {
@@ -43,7 +60,8 @@ export default function Register(props) {
         name,
         username,
         password,
-        email
+        email,
+        altcha: altchaPayload
       },
       success: (response) => {
         if (response.json.result) {
@@ -190,6 +208,15 @@ export default function Register(props) {
               ]}
             >
               <Input.Password disabled={submitting} maxLength={25} />
+            </Form.Item>
+            <Form.Item>
+              <altcha-widget
+                  ref={altcha}
+                  challengeurl={_service.url('/_altcha')}
+                  delay={1}
+                  hidelogo={true}
+                  hidefooter={true}
+              ></altcha-widget>
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={submitting}>

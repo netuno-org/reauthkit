@@ -4,6 +4,7 @@ let email = _req.getString("email")
 const password = _req.getString("password")
 const code = _req.getString("code")
 const provider = _req.getString("provider")
+const altchaPayload = _req.getString("altcha")
 
 const noPass = code != '' && provider != '' && password == '' && email == ''
 
@@ -11,7 +12,7 @@ let avatar = ''
 
 if (noPass) {
   const dbProviderUser = _user.providerDataByUid(code)
-  if (dbProviderUser == null || dbProviderUser.getString('provider_code') != provider) {
+  if (dbProviderUser == null || dbProviderUser.getString('provider_code') !== provider) {
     _header.status(409)
     _out.json(
       _val.map()
@@ -21,7 +22,7 @@ if (noPass) {
   }
   email = dbProviderUser.getString('email')
   const urlAvatar = dbProviderUser.getString('avatar')
-  if (urlAvatar != '') {
+  if (urlAvatar !== '') {
     _log.info("AVATAR URL:"+ urlAvatar)
     const responseAvatar = _remote.init().asBinary().get(urlAvatar)
     if (responseAvatar.ok()) {
@@ -30,6 +31,13 @@ if (noPass) {
       _log.info("AVATAR")
     }
   }
+} else if (!_altcha.verifySolution(altchaPayload)) {
+  _header.status(409)
+  _out.json(
+      _val.map()
+          .set("error", `invalid-altcha-payload`)
+  )
+  _exec.stop()
 }
 
 const userEmailExists = _user.firstByMail(email)
