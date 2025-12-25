@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navigate, Link } from "react-router-dom";
 import { Layout, Typography, Form, Input, Button, Checkbox, notification } from 'antd';
 import _auth from '@netuno/auth-client';
@@ -17,6 +17,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loggedUserInfoAction } from '../../redux/actions';
 
+import 'altcha';
+
 import './index.less';
 
 const { Title } = Typography;
@@ -26,13 +28,28 @@ function Login({loggedUserInfoAction}) {
   const servicePrefix = _service.config().prefix;
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [altchaPayload, setAltchaPayload] = useState(null);
   const [api, contextHolder] = notification.useNotification();
+  const altcha = useRef(null);
 
   useEffect(() => {
     if (_auth.isLogged()) {
       window.scrollTo(0, 0);
     }
     window.scrollTo(0, 0);
+    if (altcha && altcha.current) {
+      function altchaVerified(ev) {
+        if (ev.detail.state === "verified") {
+          setAltchaPayload(ev.detail.payload);
+        }
+      }
+      altcha.current.addEventListener("statechange", altchaVerified, false);
+      return () => {
+        if (altcha.current != null) {
+          altcha.current.removeEventListener("statechange", altchaVerified, false);
+        }
+      }
+    }
   }, []);
 
   function onFinish(values) {
@@ -48,6 +65,7 @@ function Login({loggedUserInfoAction}) {
       password,
       data: (data) => {
         // data.myparameter = 'myvalue';
+        data.altcha = altchaPayload;
         return data;
       },
       success: (data) => {
@@ -99,7 +117,6 @@ function Login({loggedUserInfoAction}) {
   if (localStorage.getItem("login") != null) {
     initialValues = JSON.parse(localStorage.getItem("login"));
   }
-
   if (_auth.isLogged()) {
     return <Navigate to="/reserved-area" />;
   } else {
@@ -161,6 +178,16 @@ function Login({loggedUserInfoAction}) {
 
               <Form.Item name="remember" valuePropName="checked">
                 <Checkbox>Relembrar</Checkbox>
+              </Form.Item>
+
+              <Form.Item>
+                <altcha-widget
+                    ref={altcha}
+                    challengeurl={_service.url('/_altcha')}
+                    delay={1}
+                    hidelogo={true}
+                    hidefooter={true}
+                ></altcha-widget>
               </Form.Item>
 
               <Form.Item>
