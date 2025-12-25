@@ -49,7 +49,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   useEffect(() => {
     if (loggedUserInfo && loggedUserInfo.avatar) {
       setAvatarImageURL(null);
-      setTimeout(() => setAvatarImageURL(`${_service.config().prefix}/people/avatar?uid=${loggedUserInfo.uid}&${new Date().getTime()}`), 250);
+      setTimeout(() => setAvatarImageURL(_service.url(`/people/avatar?uid=${loggedUserInfo.uid}&${new Date().getTime()}`)), 250);
     }
   }, [loggedUserInfo]);
   if (loading) {

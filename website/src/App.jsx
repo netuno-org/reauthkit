@@ -78,7 +78,7 @@ export default function App(props) {
           primaryColor: '#1890ff',
           colorBgBase: '#eff8ff',
           colorBgLayout: '#ffffff',
-          colorBgMask: '#002140'
+          colorBgMask: 'rgba(0, 33, 64, 0.75)'
         }
       }}
     >
