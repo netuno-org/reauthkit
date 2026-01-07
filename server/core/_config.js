@@ -35,14 +35,15 @@ if (_app.isFolder(websiteBuildPath)) {
             .set(
                 "auth",
                 _val.map()
+                    .set("altcha", _auth.altchaEnabled())
                     .set(
                         "providers",
                         _val.map()
-                            .set("facebook", _auth.isProviderEnabled("facebook"))
-                            .set("google", _auth.isProviderEnabled("google"))
-                            .set("microsoft", _auth.isProviderEnabled("microsoft"))
-                            .set("github", _auth.isProviderEnabled("github"))
-                            .set("discord", _auth.isProviderEnabled("discord"))
+                            .set("facebook", _auth.providerEnabled("facebook"))
+                            .set("google", _auth.providerEnabled("google"))
+                            .set("microsoft", _auth.providerEnabled("microsoft"))
+                            .set("github", _auth.providerEnabled("github"))
+                            .set("discord", _auth.providerEnabled("discord"))
                     )
             )
         websiteConfigFile.output().printAndClose(`window.reauthkit = { config: ${websiteConfig.toJSON(4)} };`)
