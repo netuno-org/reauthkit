@@ -19,6 +19,11 @@ class Config {
     const { config } = window.reauthkit;
     return config.auth.providers;
   }
+
+  static authAltcha() {
+    const { config } = window.reauthkit;
+    return !!config.auth.altcha;
+  }
 }
 
 export default Config;
