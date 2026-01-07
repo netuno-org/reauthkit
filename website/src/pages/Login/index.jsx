@@ -37,7 +37,7 @@ function Login({loggedUserInfoAction}) {
       window.scrollTo(0, 0);
     }
     window.scrollTo(0, 0);
-    if (altcha && altcha.current) {
+    if (Config.authAltcha() && altcha && altcha.current) {
       function altchaVerified(ev) {
         if (ev.detail.state === "verified") {
           setAltchaPayload(ev.detail.payload);
@@ -65,7 +65,9 @@ function Login({loggedUserInfoAction}) {
       password,
       data: (data) => {
         // data.myparameter = 'myvalue';
-        data.altcha = altchaPayload;
+        if (Config.authAltcha()) {
+          data.altcha = altchaPayload;
+        }
         return data;
       },
       success: (data) => {
@@ -180,7 +182,7 @@ function Login({loggedUserInfoAction}) {
                 <Checkbox>Relembrar</Checkbox>
               </Form.Item>
 
-              <Form.Item>
+              { Config.authAltcha() && <Form.Item>
                 <altcha-widget
                     ref={altcha}
                     challengeurl={_service.url('/_altcha')}
@@ -188,7 +190,7 @@ function Login({loggedUserInfoAction}) {
                     hidelogo={true}
                     hidefooter={true}
                 ></altcha-widget>
-              </Form.Item>
+              </Form.Item> }
 
               <Form.Item>
                 <Button loading={submitting} type="primary" className="login-btn" htmlType="submit">
