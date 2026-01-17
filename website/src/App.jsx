@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Routes as Switch, Route, useLocation, useNavigate, Link, Navigate } from "react-router-dom";
+import { Routes as Switch, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
-import { ConfigProvider, Layout, Menu, Button } from 'antd';
-import { PieChartOutlined, LogoutOutlined, MenuOutlined, EditOutlined } from '@ant-design/icons';
+import { ConfigProvider, Layout, Menu } from 'antd';
+import { PieChartOutlined, MenuOutlined } from '@ant-design/icons';
 import antLocale_ptPT from 'antd/lib/locale/pt_PT';
 
 import { Provider } from 'react-redux';
@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import _auth from '@netuno/auth-client';
 import './common/Config';
 
-import HeaderUserInfo from './components/HeaderUserInfo';
+import HeaderBase from './base/HeaderBase';
 
 import LoginPage from './pages/Login';
 import Register from './pages/Register';
@@ -26,7 +26,7 @@ import NotFound from './pages/NotFound';
 
 import './styles/App.less';
 
-const { Header, Content, Sider, Footer } = Layout;
+const { Content, Sider, Footer } = Layout;
 
 const NavWithAuthCheck = () => {
   if (_auth.isLogged()) {
@@ -58,10 +58,6 @@ export default function App(props) {
   useEffect(() => {
     setHeaderButtonMode(location.pathname);
   }, [location]);
-
-  function onLogout() {
-    _auth.logout();
-  }
 
   function onCollapse() {
     setCollapsed(!collapsed);
@@ -113,50 +109,7 @@ export default function App(props) {
            </Sider>
           }
           <Layout>
-            <Header className={classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
-              {!_auth.isLogged() &&
-               <Link to="/" className="logo-container"><img alt="logo" src="/images/logo.png" /></Link>
-              }
-              {headerButtonMode === '/login' ?
-               <Link to="/register">
-                 <Button type="primary">Criar conta</Button>
-               </Link>
-               : headerButtonMode === '/register' ?
-               <Link to="/login">
-                 <Button type="primary">Iniciar sessão</Button>
-               </Link>
-               : _auth.isLogged() &&
-               <Menu
-                  mode="horizontal"
-                  items={[
-                    {
-                      key: "profile",
-                      label: <HeaderUserInfo />,
-                      className: "profile-menu",
-                      popupClassName: "profile-menu-popup",
-                      children: [
-                        {
-                            key: "1",
-                            label: (
-                                <Link to="/profile">
-                                <EditOutlined />&nbsp;&nbsp;&nbsp;Editar Perfil
-                                </Link>
-                            )
-                        },
-                        {
-                            key: "2",
-                            label: (
-                                <Button type="link" onClick={onLogout} danger>
-                                <LogoutOutlined /> Terminar Sessão
-                                </Button>
-                            )
-                        }
-                      ]
-                    }
-                  ]}
-               />
-              }
-            </Header>
+            <HeaderBase collapsed={collapsed} headerButtonMode={headerButtonMode} />
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
               <Switch>
                 <Route exact path="/" element={<NavWithAuthCheck/>}/>
