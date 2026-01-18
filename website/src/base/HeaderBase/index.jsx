@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import _auth from "@netuno/auth-client";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Button, Layout, Menu} from "antd";
 import HeaderUserInfo from "../../components/HeaderUserInfo/index.jsx";
 import {EditOutlined, LogoutOutlined} from "@ant-design/icons";
@@ -11,8 +11,13 @@ import "./index.less";
 const { Header } = Layout;
 
 function HeaderBase({ collapsed, headerButtonMode }) {
-    function onLogout() {
-        _auth.logout();
+    const navigate = useNavigate();
+    function onUserMenuClick({key}) {
+        if (key === "profile") {
+            navigate("/profile");
+        } else if (key === "logout") {
+            _auth.logout();
+        }
     }
     return (
         <Header className={'header-base ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
@@ -30,6 +35,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                     : _auth.isLogged() &&
                     <Menu
                         mode="horizontal"
+                        onClick={onUserMenuClick}
                         items={[
                             {
                                 key: "profile",
@@ -38,20 +44,15 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                                 popupClassName: "profile-menu-popup",
                                 children: [
                                     {
-                                        key: "1",
-                                        label: (
-                                            <Link to="/profile">
-                                                <EditOutlined />&nbsp;&nbsp;&nbsp;Editar Perfil
-                                            </Link>
-                                        )
+                                        key: "profile",
+                                        icon: <EditOutlined />,
+                                        label: 'Editar Perfil'
                                     },
                                     {
-                                        key: "2",
-                                        label: (
-                                            <Button type="link" onClick={onLogout} danger>
-                                                <LogoutOutlined /> Terminar Sessão
-                                            </Button>
-                                        )
+                                        key: "logout",
+                                        icon: <LogoutOutlined />,
+                                        danger: true,
+                                        label: 'Terminar Sessão'
                                     }
                                 ]
                             }
