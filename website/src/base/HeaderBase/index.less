@@ -6,7 +6,6 @@
   top: 0;
   padding: 0 calc((100vw - @desktop-width)/2);
   z-index: 100;
-  background-color: @layout-header-background;
   box-shadow: 10px 0 10px rgb(0 0 0 / 20%);
   display: flex;
   justify-content: space-between;
@@ -41,24 +40,16 @@
     float: right;
     clear: right;
     border: 0;
-    background-color: @layout-header-background !important;
 
     .profile-menu {
       margin-right: 0;
-
       .anticon {
         padding: 0 14px;
         margin: 0;
         font-size: 22px;
         color:#1677ff;
-
       }
     }
-
-    li {
-      background-color: @layout-header-background;
-    }
-
   }
 
   .logo-container {
