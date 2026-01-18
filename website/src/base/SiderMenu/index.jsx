@@ -8,11 +8,10 @@ import "./index.less";
 const { Sider } = Layout;
 
 function SiderMenu({collapsed, onCollapse}) {
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-
     const [sideMenuMobileMode, setSideMenuMobileMode] = useState(false);
+    function onMenuClick(e) {
+
+    }
     return (
         <>
             {_auth.isLogged() &&
@@ -27,18 +26,17 @@ function SiderMenu({collapsed, onCollapse}) {
                     onCollapse={onCollapse}
                     trigger={<MenuOutlined />}
                     className="sider-menu"
-                    style={{ background: colorBgContainer }}
                 >
                     <div className="logo-container"><img alt="logo" src="/images/logo.png" /></div>
                     <Menu
+                        onClick={onMenuClick}
                         defaultSelectedKeys={['1']}
                         mode="inline"
                         items={[
                             {
-                                key: "1",
-                                label: "Área Reservada",
-                                icon: <PieChartOutlined/>,
-                                className: "menu-item-reserved"
+                                key: "main",
+                                label: "Principal",
+                                icon: <PieChartOutlined/>
                             }
                         ]}
                     />

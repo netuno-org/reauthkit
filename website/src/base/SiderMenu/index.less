@@ -8,20 +8,6 @@
   height: 100vh;
   position: fixed;
 
-  .ant-layout-sider-children {
-    background-color: #f0f2f5 !important;
-  }
-
-  .ant-layout-sider-zero-width-trigger {
-    top: 0;
-    line-height: 55px;
-
-    .anticon {
-      font-size: 22px;
-
-    }
-  }
-
   @media screen and (max-width: (@mobile-width - 1px)) {
     position: fixed;
     left: 0;
@@ -43,6 +29,23 @@
       max-width: 90%;
       height: auto;
       object-fit: contain;
+    }
+  }
+
+  ul.ant-menu {
+    li {
+      &.ant-menu-item {
+        width: 100%;
+        margin-left: 0;
+        border-right: 3px solid rgba(0, 0, 0, 0.88);
+        border-radius: 0;
+        color: rgba(0, 0, 0, 0.88);
+      }
+      &.ant-menu-item-selected {
+        border-right: 3px solid #1890ff;
+        border-radius: 0;
+        color: #1677ff;
+      }
     }
   }
 }
