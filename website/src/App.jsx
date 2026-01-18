@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes as Switch, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
-import { ConfigProvider, Layout, Menu } from 'antd';
-import { PieChartOutlined, MenuOutlined } from '@ant-design/icons';
+import {ConfigProvider, Layout, theme} from 'antd';
 import antLocale_ptPT from 'antd/lib/locale/pt_PT';
 
 import { Provider } from 'react-redux';
@@ -14,6 +13,8 @@ import _auth from '@netuno/auth-client';
 import './common/Config';
 
 import HeaderBase from './base/HeaderBase';
+import SiderMenu from "./base/SiderMenu";
+import FooterBase from "./base/FooterBase";
 
 import LoginPage from './pages/Login';
 import Register from './pages/Register';
@@ -42,7 +43,6 @@ const NavWithAuthCheck = () => {
 export default function App(props) {
   const [headerButtonMode, setHeaderButtonMode] = useState('login');
   const [collapsed, setCollapsed] = useState(false);
-  const [sideMenuMobileMode, setSideMenuMobileMode] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -75,39 +75,19 @@ export default function App(props) {
           colorBgBase: '#eff8ff',
           colorBgLayout: '#ffffff',
           colorBgMask: 'rgba(0, 33, 64, 0.75)'
-        }
+        },
+        components: {
+          Layout: {
+            triggerBg: '#f0f2f5',
+            triggerColor: null,
+            siderBg: '#f0f2f5',
+          },
+        },
       }}
     >
       <Provider store={Store}>
         <Layout className={'page ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
-          {_auth.isLogged() &&
-           <Sider
-             onBreakpoint={mobile => {
-               setSideMenuMobileMode(mobile);
-             }}
-             collapsedWidth={sideMenuMobileMode ? '0' : '80'}
-             breakpoint={"md"}
-             collapsible
-             collapsed={collapsed}
-             onCollapse={onCollapse}
-             trigger={<MenuOutlined />}
-             theme="light"
-           >
-             <div className="logo-container"><img alt="logo" src="/images/logo.png" /></div>
-             <Menu
-              defaultSelectedKeys={['1']}
-              mode="inline"
-              items={[
-                {
-                  key: "1",
-                  label: "Área Reservada",
-                  icon: <PieChartOutlined/>,
-                  className: "menu-item-reserved"
-                }
-              ]}
-            />
-           </Sider>
-          }
+          <SiderMenu collapsed={collapsed} onCollapse={onCollapse} />
           <Layout>
             <HeaderBase collapsed={collapsed} headerButtonMode={headerButtonMode} />
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
@@ -123,9 +103,7 @@ export default function App(props) {
                 <Route path="*" element={<NotFound/>} />
               </Switch>
             </Content>
-            {!_auth.isLogged() &&
-             <Footer>© netuno.org {new Date().getFullYear()}</Footer>
-            }
+            <FooterBase />
           </Layout>
         </Layout>
       </Provider>
