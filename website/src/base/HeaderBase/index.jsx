@@ -22,7 +22,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     return (
         <Header className={'header-base ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
             {!_auth.isLogged() &&
-                <Link to="/" className="logo-container"><img alt="logo" src="/images/logo.png" /></Link>
+                <Link to="/" className="logo-container"><img alt="logo" src="/images/logo.svg" /></Link>
             }
             {headerButtonMode === '/login' ?
                 <Link to="/register">
