@@ -51,7 +51,7 @@ export default function LoginCallback(props) {
     return <Navigate to={`/register`} />;
   }
   if (logged && _auth.isLogged()) {
-    return <Navigate to="/reserved-area" />;
+    return <Navigate to="/dashboard" />;
   }
   return (
     <div className="login-callback">

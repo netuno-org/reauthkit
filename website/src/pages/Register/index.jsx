@@ -109,7 +109,7 @@ export default function Register(props) {
   }
 
   if (_auth.isLogged()) {
-    return <Navigate to="/reserved-area" />;
+    return <Navigate to="/dashboard" />;
   }
   if (ready) {
     return <Navigate to="/login" />;
