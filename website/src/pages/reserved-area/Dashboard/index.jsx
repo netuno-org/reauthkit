@@ -11,7 +11,7 @@ import './index.less';
 
 const { Title } = Typography;
 
-function ReservedArea({loggedUserInfo}) {
+function Dashboard({loggedUserInfo}) {
   if (_auth.isLogged()) {
     let content = null;
     if (!loggedUserInfo) {
@@ -42,5 +42,5 @@ const mapStateToProps = store => {
   };
 };
 
-export default connect(mapStateToProps, {})(ReservedArea);
+export default connect(mapStateToProps, {})(Dashboard);
 
