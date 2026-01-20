@@ -1,16 +1,16 @@
 import _auth from "@netuno/auth-client";
 import {Button, Typography} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
-import NotFound from "../NotFound/index.jsx";
-import Dashboard from "./Dashboard/index.jsx";
-import OtherPage from "./OtherPage/index.jsx";
+import NotFound from "../NotFound";
+import Dashboard from "./Dashboard";
+import OtherPage from "./OtherPage";
 
 import "./index.less";
 
 const {Title} = Typography;
 
 function ReservedArea() {
-    const naviage = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     if (_auth.isLogged()) {
         if (location.pathname === "/dashboard") {
@@ -27,7 +27,7 @@ function ReservedArea() {
             <p>
                 É necessário realizar a autenticação para aceder a área reservada.
             </p>
-            <Button type="primary" onClick={() => naviage("/login")}>
+            <Button type="primary" onClick={() => navigate("/login")}>
                 Ir para o Login
             </Button>
         </section>
