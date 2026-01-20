@@ -23,11 +23,11 @@ import RegisterCallback from './pages/RegisterCallback';
 import Recovery from './pages/Recovery';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
-import Dashboard from './pages/reserved-area/Dashboard';
+import ReservedArea from "./pages/ReservedArea";
 
 import './styles/App.less';
 
-const { Content, Sider, Footer } = Layout;
+const { Content } = Layout;
 
 const NavWithAuthCheck = () => {
   if (_auth.isLogged()) {
@@ -40,7 +40,7 @@ const NavWithAuthCheck = () => {
   );
 };
 
-export default function App(props) {
+export default function App() {
   const [headerButtonMode, setHeaderButtonMode] = useState('login');
   const [collapsed, setCollapsed] = useState(false);
 
@@ -99,14 +99,19 @@ export default function App(props) {
             <HeaderBase collapsed={collapsed} headerButtonMode={headerButtonMode} />
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
               <Switch>
+                {/** PUBLIC **/}
                 <Route exact path="/" element={<NavWithAuthCheck/>}/>
                 <Route path="/login/:provider" element={<LoginCallback/>} />
                 <Route path="/register/:provider" element={<RegisterCallback/>} />
-                <Route path="/dashboard" element={<Dashboard/>} />
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/register" element={<Register/>} />
                 <Route path="/recovery" element={<Recovery/>} />
+                {/** // PUBLIC **/}
+                {/** RESERVED AREA **/}
+                <Route path="/dashboard" element={<ReservedArea />} />
+                <Route path="/other-page" element={<ReservedArea />} />
+                {/** // RESERVED AREA **/}
                 <Route path="*" element={<NotFound/>} />
               </Switch>
             </Content>
