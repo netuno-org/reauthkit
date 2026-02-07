@@ -51,6 +51,21 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/openapi/)
 
+7. Install the front-end modules:
+
+  - Website:
+```bash
+cd website
+bun install
+bun pm trust --all
+```
+  - Backoffice UI:
+```bash
+cd website
+bun install
+bun pm trust --all
+```
+
 ## Running
 
 In the Netuno root directory run
