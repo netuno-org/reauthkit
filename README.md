@@ -54,17 +54,17 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 7. Install the front-end modules:
 
     - Website:
-```bash
-cd website
-bun install
-bun pm trust --all
-```
+    ```bash
+    cd website
+    bun install
+    bun pm trust --all
+    ```
    - Backoffice UI:
-```bash
-cd ui
-bun install
-bun pm trust --all
-```
+    ```bash
+    cd ui
+    bun install
+    bun pm trust --all
+    ```
 
 ## Running
 
