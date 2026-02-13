@@ -35,7 +35,7 @@ function SiderMenu({collapsed, onCollapse}) {
         } else {
             setSelectedMenuKeys([]);
         }
-    }, [location])
+    }, [location]);
     function onMenuClick(e) {
         const menuItem = menuItems.find((i) => i.key === e.key);
         if (menuItem) {
