@@ -68,7 +68,7 @@ export default function App() {
       locale={antLocale_ptPT}
       theme={{
         token: {
-          colorPrimary: '#1178FF',
+          colorPrimary: '#1890ff',
           fontSize: 16,
           borderRadius: 20,
           primaryColor: '#1890ff',
@@ -86,8 +86,14 @@ export default function App() {
           Menu: {
             colorBgElevated: '#f0f2f5',
             itemBg: '#f0f2f5',
-            itemColor: null,
-            itemSelectedColor: null,
+            itemColor: '#1890ff',
+            itemSelectedColor: '#caf7fc',
+            itemSelectedBg: '#1890ff',
+            itemHoverColor: '#1890ff',
+            itemHoverBg: '#caf7fc',
+            subMenuItemBorderRadius: 0,
+            borderRadius: 0,
+            borderRadiusLG: 0,
           }
         },
       }}
