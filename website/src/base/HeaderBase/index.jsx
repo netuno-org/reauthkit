@@ -1,17 +1,26 @@
 import classNames from "classnames";
 import _auth from "@netuno/auth-client";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 import {Button, Layout, Menu} from "antd";
 import HeaderUserInfo from "../../components/HeaderUserInfo/index.jsx";
 import {EditOutlined, LogoutOutlined} from "@ant-design/icons";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import "./index.less";
 
 const { Header } = Layout;
 
 function HeaderBase({ collapsed, headerButtonMode }) {
+    const [menuKeysSelected, setMenuKeysSelected] = useState([]);
+    const location = useLocation();
     const navigate = useNavigate();
+    useEffect(() => {
+        if (location.pathname === '/profile') {
+            setMenuKeysSelected(['profile']);
+        } else {
+            setMenuKeysSelected([]);
+        }
+    }, [location]);
     function onUserMenuClick({key}) {
         if (key === "profile") {
             navigate("/profile");
@@ -36,6 +45,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                     <Menu
                         mode="horizontal"
                         onClick={onUserMenuClick}
+                        selectedKeys={menuKeysSelected}
                         items={[
                             {
                                 key: "profile",
