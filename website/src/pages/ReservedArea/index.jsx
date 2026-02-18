@@ -1,3 +1,4 @@
+import React from "react";
 import _auth from "@netuno/auth-client";
 import {Button, Typography} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
@@ -5,6 +6,7 @@ import NotFound from "../NotFound";
 import ProfileEdit from "./profile/Edit";
 import ProfileView from "./profile/View";
 import Dashboard from "./Dashboard";
+import Messages from "./Messages";
 import OtherPage from "./OtherPage";
 
 import "./index.less";
@@ -23,6 +25,9 @@ function ReservedArea() {
         }
         if (location.pathname === "/dashboard") {
             return <Dashboard/>;
+        }
+        if (location.pathname === "/messages") {
+            return <Messages/>;
         }
         if (location.pathname === "/other-page") {
             return <OtherPage/>;
