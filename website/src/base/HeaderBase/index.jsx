@@ -15,15 +15,15 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
-        if (location.pathname === '/profile') {
-            setMenuKeysSelected(['profile']);
+        if (location.pathname === '/profile/edit') {
+            setMenuKeysSelected(['profileEdit']);
         } else {
             setMenuKeysSelected([]);
         }
     }, [location]);
     function onUserMenuClick({key}) {
-        if (key === "profile") {
-            navigate("/profile");
+        if (key === "profileEdit") {
+            navigate("/profile/edit");
         } else if (key === "logout") {
             _auth.logout();
         }
@@ -54,7 +54,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                                 popupClassName: "profile-menu-popup",
                                 children: [
                                     {
-                                        key: "profile",
+                                        key: "profileEdit",
                                         icon: <EditOutlined />,
                                         label: 'Editar Perfil'
                                     },
