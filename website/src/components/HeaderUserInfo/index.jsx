@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import { Spin, notification } from 'antd';
+import {Spin, Avatar, notification, Row, Col} from 'antd';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,6 +8,8 @@ import { loggedUserInfoAction } from '../../redux/actions';
 
 import _service from '@netuno/service-client';
 import _auth from '@netuno/auth-client';
+
+import WSBadge from "./WSBadge";
 
 import './index.less';
 
@@ -27,6 +29,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
         setLoading(false);
         if (response.json.result) {
           loggedUserInfoAction(response.json.data);
+
         } else {
           api.warning({
             message: 'Dados do Utilizador',
@@ -64,8 +67,15 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
     return (
       <div className="header__user-info">
         {contextHolder}
-        {avatarImageURL && <img src={avatarImageURL}/>}
-        <span>{loggedUserInfo.name}</span>
+        <Row>
+          <Col flex="50px" className="header__user-info__avatar">
+            {avatarImageURL && <Avatar size={40} icon={<img src={avatarImageURL}/>} />}
+            <div className="header__user-info__avatar__badge"><WSBadge/></div>
+          </Col>
+          <Col flex="auto" className="header__user-info__username">
+            {loggedUserInfo.name}
+          </Col>
+        </Row>
       </div>
     );
   }
