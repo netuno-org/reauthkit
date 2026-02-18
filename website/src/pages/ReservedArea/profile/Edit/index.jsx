@@ -6,7 +6,7 @@ import { PasswordInput } from "antd-password-input-strength";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loggedUserInfoReloadAction } from '../../redux/actions';
+import { loggedUserInfoReloadAction } from '../../../../redux/actions';
 
 import _service from '@netuno/service-client';
 
@@ -14,7 +14,7 @@ import Avatar from './Avatar';
 
 const { Title } = Typography;
 
-function Profile({loggedUserInfo, loggedUserInfoReloadAction}) {
+function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
@@ -203,4 +203,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   loggedUserInfoReloadAction
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdit);
