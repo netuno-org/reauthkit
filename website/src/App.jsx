@@ -21,7 +21,6 @@ import Register from './pages/Register';
 import LoginCallback from './pages/LoginCallback';
 import RegisterCallback from './pages/RegisterCallback';
 import Recovery from './pages/Recovery';
-import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import ReservedArea from "./pages/ReservedArea";
 
@@ -109,12 +108,13 @@ export default function App() {
                 <Route exact path="/" element={<NavWithAuthCheck/>}/>
                 <Route path="/login/:provider" element={<LoginCallback/>} />
                 <Route path="/register/:provider" element={<RegisterCallback/>} />
-                <Route path="/profile" element={<Profile/>} />
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/register" element={<Register/>} />
                 <Route path="/recovery" element={<Recovery/>} />
                 {/** // PUBLIC **/}
                 {/** RESERVED AREA **/}
+                <Route path="/profile/edit" element={<ReservedArea />} />
+                <Route path="/profile/view" element={<ReservedArea />} />
                 <Route path="/dashboard" element={<ReservedArea />} />
                 <Route path="/other-page" element={<ReservedArea />} />
                 {/** // RESERVED AREA **/}
