@@ -2,6 +2,8 @@ import _auth from "@netuno/auth-client";
 import {Button, Typography} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
 import NotFound from "../NotFound";
+import ProfileEdit from "./profile/Edit";
+import ProfileView from "./profile/View";
 import Dashboard from "./Dashboard";
 import OtherPage from "./OtherPage";
 
@@ -13,6 +15,12 @@ function ReservedArea() {
     const navigate = useNavigate();
     const location = useLocation();
     if (_auth.isLogged()) {
+        if (location.pathname === "/profile/edit") {
+            return <ProfileEdit/>;
+        }
+        if (location.pathname === "/profile/view") {
+            return <ProfileView/>;
+        }
         if (location.pathname === "/dashboard") {
             return <Dashboard/>;
         }
