@@ -3,8 +3,11 @@
     "jobs": []
   },
   "settings": {
-    "api": {
-      "endpoint": "http://localhost:9000/services/"
+    "services": {
+      "endpoint": "http://localhost:9000/services"
+    },
+    "websocket": {
+      "endpoint": "ws://localhost:9000/ws/private/"
     },
     "public": {}
   },
@@ -31,12 +34,6 @@
     "enabled": true
   },
   "language": "pt_PT",
-  "firebase": {
-    "app_name": "",
-    "database_url": "",
-    "key_file": "",
-    "listener_secret": ""
-  },
   "locale": "pt_PT",
   "remote": {},
   "commands": [
@@ -64,6 +61,17 @@
     }
   },
   "auth": {
+    "attempts": {
+      "enabled": true,
+      "interval": 60,
+      "maxFails": 5
+    },
+    "altcha": {
+      "enabled": true,
+      "admin": {
+        "enabled": true
+      }
+    },
     "jwt": {
       "enabled": true,
       "secret": "ThisSecretMustContains32Chars!!!",
@@ -72,6 +80,20 @@
         "refresh": 1440
       }
     }
+  },
+  "ws": {
+    "endpoints": [
+      {
+        "name": "user",
+        "enabled": true,
+        "sendTimeout": 10000,
+        "idleTimeout": 0,
+        "maxText": 15000,
+        "public": "/ws/private",
+        "path": "/",
+        "service": "/services/ws/private"
+      }
+    ]
   },
   "cors": [
     {
