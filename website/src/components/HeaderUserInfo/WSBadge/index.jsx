@@ -3,12 +3,14 @@ import {Badge} from "antd";
 
 import _ws from '@netuno/ws-client';
 
+import Config from "../../../common/Config.js";
+
 function WSBadge({children}) {
     const [state, setState] = useState(0);
     useEffect(() => {
         const accessToken = JSON.parse(sessionStorage.getItem("_auth_token")).access_token;
         _ws.config({
-            url: 'ws://localhost:9000/ws/private/?auth='+ accessToken,
+            url: Config.websocketEndpoint() + '?auth='+ accessToken,
             servicesPrefix: '/services',
             method: 'GET',
             autoReconnect: true,

@@ -5,7 +5,7 @@ class Config {
   static init() {
     const { config } = window.reauthkit;
     _service.config({
-      prefix: config.api.endpoint
+      prefix: config.services.endpoint
     });
     notification.config({
       placement: 'topRight',
@@ -18,6 +18,11 @@ class Config {
   static authProviders() {
     const { config } = window.reauthkit;
     return config.auth.providers;
+  }
+
+  static websocketEndpoint() {
+    const { config } = window.reauthkit;
+    return config.websocket.endpoint;
   }
 
   static authAltcha() {
