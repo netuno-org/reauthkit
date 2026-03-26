@@ -10,7 +10,7 @@ function WSBadge({children}) {
     useEffect(() => {
         const accessToken = JSON.parse(sessionStorage.getItem("_auth_token")).access_token;
         _ws.config({
-            url: Config.websocketEndpoint() + '?auth='+ accessToken,
+            url: Config.websocketURL() + '?auth='+ accessToken,
             servicesPrefix: '/services',
             method: 'GET',
             autoReconnect: true,

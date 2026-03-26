@@ -4,10 +4,10 @@
   },
   "settings": {
     "services": {
-      "endpoint": "http://localhost:9000/services"
+      "prefix": "http://localhost:9000/services"
     },
     "websocket": {
-      "endpoint": "ws://localhost:9000/ws/private/"
+      "url": "ws://localhost:9000/ws/private/"
     },
     "public": {}
   },
