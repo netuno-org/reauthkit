@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Navigate, Link } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button, Checkbox, notification } from 'antd';
+import { Layout, Typography, Form, Input, Button, Checkbox } from 'antd';
 import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
 import Config from '../../common/Config';
@@ -19,6 +19,8 @@ import { loggedUserInfoAction } from '../../redux/actions';
 
 import 'altcha';
 
+import globalNotification from "../../common/globalNotification.js";
+
 import './index.less';
 
 const { Title } = Typography;
@@ -29,7 +31,6 @@ function Login({loggedUserInfoAction}) {
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
   const [altchaPayload, setAltchaPayload] = useState(null);
-  const [api, contextHolder] = notification.useNotification();
   const altcha = useRef(null);
 
   useEffect(() => {
@@ -77,33 +78,32 @@ function Login({loggedUserInfoAction}) {
       fail: (data) => {
         setSubmitting(false);
         if (data.error && isNetworkError(data.error)) {
-          api.error({
-            message: 'Conexão',
-            description:
-                'Há problemas de conexão com o servidor, tente novamente mais tarde.',
+          globalNotification.error({
+            title: 'Conexão',
+            description: 'Há problemas de conexão com o servidor, tente novamente mais tarde.',
           });
           return;
         }
         if (data.isJSON) {
           if (data.json['locked']) {
-            api.error({
-              message: 'Acesso Bloqueado',
+            globalNotification.error({
+              title: 'Acesso Bloqueado',
               description:
                   'O seu login foi bloqueado devido as muitas tentativas, volte a tentar mais tarde ou contate o suporte.',
             });
             return;
           }
           if (data.json['custom-blocked']) {
-            api.error({
-              message: 'Login Bloqueado',
+            globalNotification.error({
+              title: 'Login Bloqueado',
               description:
               'O login foi bloqueado, realize o processo de desbloqueamento ou contate o suporte.',
             });
             return;
           }
         }
-        api.error({
-          message: 'Login Inválido',
+        globalNotification.error({
+          title: 'Login Inválido',
           description:
           'Por favor verifique as credenciais inseridas.',
         });
@@ -128,7 +128,6 @@ function Login({loggedUserInfoAction}) {
           <div className="content-title">
             <Title>Iniciar sessão.</Title>
           </div>
-          {contextHolder}
           <div className="content-body">
             <p>Inicie sessão com os seus dados.</p>
             <Form
