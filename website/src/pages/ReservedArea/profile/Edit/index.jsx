@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Typography, Form, Input, Button, Divider, notification } from 'antd';
+import { Typography, Form, Input, Button, Divider } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 
 import { connect } from 'react-redux';
@@ -9,6 +9,8 @@ import { bindActionCreators } from 'redux';
 import { loggedUserInfoReloadAction } from '../../../../redux/actions';
 
 import _service from '@netuno/service-client';
+
+import globalNotification from "../../../../common/globalNotification.js";
 
 import Avatar from './Avatar';
 
@@ -22,7 +24,6 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
   const profileForm = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const [api, contextHolder] = notification.useNotification();
 
   const layout = {
     wrapperCol: { xs: { span: 24 }, sm: { span: 24 }, md: { span: 24 }, lg: { span: 12 } }
@@ -58,8 +59,8 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
       },
       success: (response) => {
         if (response.json.result) {
-          api.success({
-            message: 'Edição do Perfil',
+          globalNotification.success({
+            title: 'Edição do Perfil',
             description: 'Os dados do seu perfil foram alterados com sucesso.',
           });
           setSubmitting(false);
@@ -69,8 +70,8 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
           });
           loggedUserInfoReloadAction();
         } else {
-          api.warning({
-            message: 'Utilizador existente',
+          globalNotification.warning({
+            title: 'Utilizador existente',
             description: response.json.error,
           });
           setSubmitting(false);
@@ -82,9 +83,9 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
       },
       fail: () => {
         setSubmitting(false);
-        api.error({
-          message: 'Erro na Edição do Perfil',
-          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do chat de suporte.',
+        globalNotification.serviceFail({
+          title: 'Erro na Edição do Perfil',
+          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
         });
       }
     });
@@ -104,7 +105,6 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
 
   return (
     <div>
-      {contextHolder}
       <div className="content-title">
         <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
       </div>
