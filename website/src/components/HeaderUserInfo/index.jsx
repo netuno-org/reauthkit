@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import {Spin, Avatar, notification, Row, Col} from 'antd';
+import {Spin, Avatar, Row, Col} from 'antd';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,6 +9,8 @@ import { loggedUserInfoAction } from '../../redux/actions';
 import _service from '@netuno/service-client';
 import _auth from '@netuno/auth-client';
 
+import globalNotification from "../../common/globalNotification.js";
+
 import WSBadge from "./WSBadge";
 
 import './index.less';
@@ -16,7 +18,6 @@ import './index.less';
 function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAction}) {
   const [loading, setLoading] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
-  const [api, contextHolder] = notification.useNotification();
   useEffect(() => {
     if (!loggedUserInfoReload && !!loggedUserInfo) {
       return;
@@ -29,10 +30,9 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
         setLoading(false);
         if (response.json.result) {
           loggedUserInfoAction(response.json.data);
-
         } else {
-          api.warning({
-            message: 'Dados do Utilizador',
+          globalNotification.warning({
+            title: 'Dados do Utilizador',
             description: response.json.error,
           });
           setLoading(false);
@@ -41,9 +41,9 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
       fail: (e) => {
         console.error('Dados do Utilizador', e);
         setLoading(false);
-        api.error({
-          message: 'Dados do Utilizador',
-          description: 'Ocorreu um erro a carregar os dados, por favor tente novamente.',
+        globalNotification.serviceFail({
+          title: 'Dados do Utilizador',
+          description: 'Ocorreu um erro a carregar os dados, por favor tente novamente mais tarde.',
         });
         _auth.logout();
       }
@@ -58,7 +58,6 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   if (loading) {
     return (
       <div>
-        {contextHolder}
         <Spin/>
       </div>
     );
@@ -66,7 +65,6 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   if (loggedUserInfo) {
     return (
       <div className="header__user-info">
-        {contextHolder}
         <Row>
           <Col flex="50px" className="header__user-info__avatar">
             {avatarImageURL && <Avatar size={40} icon={<img src={avatarImageURL}/>} />}
@@ -80,9 +78,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
     );
   }
   return (
-      <div>
-        {contextHolder}
-      </div>
+      <div></div>
   );
 }
 
