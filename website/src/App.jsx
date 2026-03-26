@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes as Switch, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
-import {ConfigProvider, Layout, theme} from 'antd';
+import {ConfigProvider, Layout, notification} from 'antd';
 import antLocale_ptPT from 'antd/lib/locale/pt_PT';
 
 import { Provider } from 'react-redux';
@@ -15,6 +15,8 @@ import './common/Config';
 import HeaderBase from './base/HeaderBase';
 import SiderMenu from "./base/SiderMenu";
 import FooterBase from "./base/FooterBase";
+
+import globalNotification from "./common/globalNotification.js";
 
 import LoginPage from './pages/Login';
 import Register from './pages/Register';
@@ -45,6 +47,7 @@ export default function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     _auth.config({
@@ -57,6 +60,10 @@ export default function App() {
   useEffect(() => {
     setHeaderButtonMode(location.pathname);
   }, [location]);
+
+  useEffect(() => {
+    globalNotification.api(api);
+  }, [api]);
 
   function onCollapse() {
     setCollapsed(!collapsed);
@@ -103,6 +110,7 @@ export default function App() {
           <Layout>
             <HeaderBase collapsed={collapsed} headerButtonMode={headerButtonMode} />
             <Content className={classNames({ 'auth ': _auth.isLogged() })}>
+              {contextHolder}
               <Switch>
                 {/** PUBLIC **/}
                 <Route exact path="/" element={<NavWithAuthCheck/>}/>
@@ -116,6 +124,7 @@ export default function App() {
                 <Route path="/profile/edit" element={<ReservedArea />} />
                 <Route path="/profile/view" element={<ReservedArea />} />
                 <Route path="/dashboard" element={<ReservedArea />} />
+                <Route path="/messages" element={<ReservedArea />} />
                 <Route path="/other-page" element={<ReservedArea />} />
                 {/** // RESERVED AREA **/}
                 <Route path="*" element={<NotFound/>} />
