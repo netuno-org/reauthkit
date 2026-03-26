@@ -31,7 +31,8 @@ if (_app.isFolder(websiteBuildPath)) {
     const websiteConfigFile = _app.file(`${websiteBuildPath}/reauthkit.js`)
     if (_app.configReloaded() || !websiteConfigFile.exists()) {
         const websiteConfig = _val.map()
-            .set("api", _app.settings.getValues("api", _val.map()))
+            .set("services", _app.settings.getValues("services", _val.map()))
+            .set("websocket", _app.settings.getValues("websocket", _val.map()))
             .set(
                 "auth",
                 _val.map()
