@@ -30,18 +30,21 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 > You can change the application name by changing the folder name and the `name` configuration parameter.
 
-2. According to your development environment, change the `.json` file in the `settings.api.endpoint` key to the correct address of Neptune services, example:
+2. According to your development environment, change the `.json` file in the `settings` key to the correct addresses of the Netuno app URLs, example:
 
 ```
   ...
-    "api": {
-      "endpoint": "http://localhost:9000/services/"
+    "services": {
+      "prefix": "http://localhost:9000/services"
+    },
+    "websocket": {
+      "url": "ws://localhost:9000/ws/private/"
     },
   ...
 
 ```
 
-> Attention: The API Endpoint configuration is exported so that the website can access the service addresses, by defining the URL prefix in the service client.
+> Attention: The WebSocket and Services endpoints configuration is automatically exported to the website, which can use these addresses directly.
 
 3. You'll need to configure an SMTP connection for the password recovery feature to function properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/sending-emails/)
 
