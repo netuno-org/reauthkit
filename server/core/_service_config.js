@@ -12,12 +12,19 @@ if (_service.path == 'samples/my-service') {
 }
 */
 
-if (_service.path == 'people/avatar/get'
-   || _service.path == 'people/post'
-   || _service.path == 'people/options'
-   || _service.path == 'recovery/put'
-   || _service.path == 'recovery/post'
-   || _service.path == 'recovery/options') {
+if (_service.path === 'people/avatar/get'
+   || _service.path === 'people/post'
+   || _service.path === 'people/options'
+   || _service.path === 'recovery/put'
+   || _service.path === 'recovery/post'
+   || _service.path === 'recovery/options') {
     _service.allow()
 }
 
+if (_service.path.startsWith('ws/private')) {
+    if (_auth.isJWT()) {
+        _service.allow()
+    } else {
+        _service.deny()
+    }
+}
