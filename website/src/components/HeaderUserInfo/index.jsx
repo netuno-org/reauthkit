@@ -68,7 +68,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
         <Row>
           <Col flex="50px" className="header__user-info__avatar">
             {avatarImageURL && <Avatar size={40} icon={<img src={avatarImageURL}/>} />}
-            <div className="header__user-info__avatar__badge"><WSBadge/></div>
+            <WSBadge/>
           </Col>
           <Col flex="auto" className="header__user-info__username">
             {loggedUserInfo.name}
