@@ -5,23 +5,29 @@ import {Row, Col, Typography, Input} from "antd";
 import Chat from "./Chat";
 
 import "./index.less";
+import FriendsList from "./FriendsList/index.jsx";
 
 const { Title } = Typography;
 
 function Messages() {
     const [messageSubmitting, setMessageSubmitting] = useState(false);
+    const [chatFriend, setChatFriend] = useState(null);
+    const onFriendSelected = (friend) => {
+        alert('a');
+        setChatFriend(friend);
+    };
     return (
         <section className="messages">
             <Title level={1}>Mensagens</Title>
             <div>
                 <p>Troca de mensagens entre os utilizadores.</p>
             </div>
-            <Row>
-                <Col span={4}>
-                    Amigos
+            <Row gutter={20}>
+                <Col span={8}>
+                    <FriendsList onFriendSelected={onFriendSelected} />
                 </Col>
-                <Col span={20}>
-                    <Chat />
+                <Col span={16}>
+                    <Chat friend={chatFriend} />
                 </Col>
             </Row>
         </section>
