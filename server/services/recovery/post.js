@@ -1,14 +1,10 @@
-const mail = _req.getString("mail")
+import {_req, _val, _db, _crypto, _time, _uid, _smtp, _template, _header, _out, _storage} from "@netuno/server-types";
 
-const dbPeople = _db.findFirst(
-  "people",
-  _val.map()
-    .set(
-      "where",
-      _val.map()
-        .set("email", mail)
-    )
-)
+const email = _req.getString("email")
+
+const dbPeople = _db.form("people")
+    .where(_db.where("email").equal(email))
+    .first()
 
 if (dbPeople != null && dbPeople.getBoolean("active")) {
   const recoveryKey = _crypto.sha512(_uid.generate())
