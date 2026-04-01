@@ -5,13 +5,16 @@ import _ws from '@netuno/ws-client';
 
 import Config from "../../../common/Config.js";
 
-function WSBadge({children}) {
+import "./index.less";
+
+function WSBadge() {
     const [state, setState] = useState(0);
+    const [messageUnreadTotal, setMessageUnreadTotal] = useState(0);
     useEffect(() => {
         const accessToken = JSON.parse(sessionStorage.getItem("_auth_token")).access_token;
         _ws.config({
             url: Config.websocketURL() + '?auth='+ accessToken,
-            servicesPrefix: '/services',
+            servicesPrefix: Config.websocketServicesPrefix(),
             method: 'GET',
             autoReconnect: true,
             connect: (event) => {
@@ -20,10 +23,12 @@ function WSBadge({children}) {
             },
             close: (event) => {
                 console.log('ws close', event);
+                setMessageUnreadTotal(0);
                 setState(-1);
             },
             error: (error) => {
                 console.log('ws error', error);
+                setMessageUnreadTotal(0);
                 setState(-1);
             },
             message: (data, event) => {
@@ -32,8 +37,34 @@ function WSBadge({children}) {
         });
         _ws.connect();
     }, []);
+    useEffect(() => {
+        if (state === 1) {
+            const listenerMessageUnreadCountRef = _ws.addListener({
+                method: "GET",
+                service: "message/unread/count",
+                success: (data) => {
+                    setMessageUnreadTotal(data.content.total);
+                }
+            });
+            _ws.sendService({
+                method: "GET",
+                service: "message/unread/count"
+            });
+            return () => {
+                _ws.removeListener(listenerMessageUnreadCountRef);
+            }
+        }
+    }, [state]);
     return (
-        <Badge dot={true} color={(state === 0 && 'orange') || (state === 1 && 'green') || (state === -1 && 'red')}>{children}</Badge>
+        <div className="header__user-info__avatar__badge"
+            style={{
+                backgroundColor: (state === 0 && '#d87a16') || (state === 1 && '#49aa19') || (state === -1 && '#dc4446'),
+                width: messageUnreadTotal > 99 ? '26px' : messageUnreadTotal > 10 ? '22px' : '16px',
+                right: messageUnreadTotal > 99 ? '0' : messageUnreadTotal > 10 ? '2px' : '5px',
+            }}
+        >
+            {messageUnreadTotal === 0 ? null : messageUnreadTotal > 99 ? '+99' : messageUnreadTotal}
+        </div>
     );
 }
 
