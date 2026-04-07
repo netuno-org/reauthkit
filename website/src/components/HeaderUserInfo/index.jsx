@@ -19,7 +19,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   const [loading, setLoading] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
   useEffect(() => {
-    if (!loggedUserInfoReload && !!loggedUserInfo) {
+    if (!loggedUserInfoReload && !!loggedUserInfo && loggedUserInfo.uid) {
       return;
     }
     setLoading(true);
