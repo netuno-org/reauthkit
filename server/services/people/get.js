@@ -1,3 +1,5 @@
+import {_db, _val, _user, _group, _header, _exec, _out} from "@netuno/server-types"
+
 const dbPeople = _db.queryFirst(`
   SELECT *
   FROM people

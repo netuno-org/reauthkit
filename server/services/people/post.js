@@ -1,3 +1,5 @@
+import {_req, _db, _val, _auth, _user, _group, _header, _exec, _log, _remote, _out} from "@netuno/server-types"
+
 const name = _req.getString("name")
 const username = _req.getString("username")
 let email = _req.getString("email")
@@ -6,7 +8,7 @@ const code = _req.getString("code")
 const provider = _req.getString("provider")
 const altchaPayload = _req.getString("altcha")
 
-const noPass = code != '' && provider != '' && password == '' && email == ''
+const noPass = code !== '' && provider !== '' && password === '' && email === ''
 
 let avatar = ''
 

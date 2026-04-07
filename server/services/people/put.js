@@ -1,3 +1,4 @@
+import {_req, _db, _val, _user, _image, _out} from "@netuno/server-types"
 
 const name = _req.getString("name")
 const username = _req.getString("username")
@@ -28,7 +29,6 @@ if (password.length > 0) {
     userData
   )
 }
-
 
 const peopleData = _val.map()
       .set("name", name)

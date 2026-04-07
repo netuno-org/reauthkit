@@ -1,3 +1,4 @@
+import {_req, _db, _header, _exec, _storage, _out} from "@netuno/server-types"
 
 let dbPeople = null
 
@@ -18,7 +19,7 @@ const storageAvatarFile = _storage.database(
   dbAvatarName
 )
 
-if (storageAvatarFile.extension() == "jpg" || storageAvatarFile.extension() == "jpeg") {
+if (storageAvatarFile.extension() === "jpg" || storageAvatarFile.extension() === "jpeg") {
   _header.contentTypeJPG()
 } else {
   _header.contentTypePNG()
