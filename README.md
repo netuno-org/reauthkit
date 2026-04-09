@@ -10,7 +10,7 @@ A ready to use boilerplate solution for user registration, authentication, profi
 
 #### Netuno
 
-[Follow the steps here](https://doc.netuno.org/docs/en/installation/)
+[Follow the steps here](https://doc.netuno.org/docs/get-started/installation)
 
 #### ReAuthKit App
 
@@ -43,13 +43,13 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 > Attention: The API Endpoint configuration is exported so that the website can access the service addresses, by defining the URL prefix in the service client.
 
-3. You'll need to configure an SMTP connection for the password recovery feature to function properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/sending-emails/)
+3. You'll need to configure an SMTP connection for the password recovery feature to function properly, [learn how to do it here.](https://doc.netuno.org/docs/academy/server/services/sending-emails/)
 
-4. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/database/psql/)
+4. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/academy/server/database/psql)
 
-5. Locate `auth` > `jwt` > `secret` and must set a secret code with 32 characters, as random as possible, since this is what ensures the security of users' credentials. [Recommended Secure Code Generation tool.](https://passwordsgenerator.net/)
+5. Locate `auth` > `jwt` > `secret` and must set a secret code with 32 characters, as random as possible, since this is what ensures the security of users' credentials. [Recommended Secure Code Generation tool.](https://www.lastpass.com/features/password-generator)
 
-6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/en/academy/server/services/openapi/)
+6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/academy/server/services/openapi)
 
 7. Install the front-end modules using [Bun](https://bun.sh/):
 
