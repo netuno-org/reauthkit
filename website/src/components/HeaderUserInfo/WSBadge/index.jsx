@@ -6,14 +6,14 @@ import _ws from '@netuno/ws-client';
 import Config from "../../../common/Config.js";
 
 import "./index.less";
+import _auth from "@netuno/auth-client";
 
 function WSBadge() {
     const [state, setState] = useState(0);
     const [messageUnreadTotal, setMessageUnreadTotal] = useState(0);
     useEffect(() => {
-        const accessToken = JSON.parse(sessionStorage.getItem("_auth_token")).access_token;
         _ws.config({
-            url: Config.websocketURL() + '?auth='+ accessToken,
+            url: Config.websocketURL() + '?auth='+ _auth.accessToken(),
             servicesPrefix: Config.websocketServicesPrefix(),
             method: 'GET',
             autoReconnect: true,
