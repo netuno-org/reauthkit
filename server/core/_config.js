@@ -1,3 +1,4 @@
+import {_config, _env, _url, _req, _val, _header, _app, _auth, _log} from '@netuno/server-types'
 
 _config.set("_lang", _config.get("_lang:default"))
 

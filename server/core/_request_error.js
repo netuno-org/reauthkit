@@ -1,3 +1,4 @@
+import {_out} from '@netuno/server-types'
 
 if (!_out.isClosed()) {
     _out.print(
