@@ -162,8 +162,7 @@ function Login({loggedUserInfoAction}) {
                 label="Utilizador"
                 name="username"
                 rules={[
-                  { required: true, message: 'Insira o seu usuário.' },
-                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-z]+[a-z0-9]{1,24}$" }
+                  { required: true, message: 'Insira o seu usuário.' }
               ]}
               >
                 <Input />
