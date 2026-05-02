@@ -4,7 +4,6 @@ import { Layout, Typography, Form, Input, Button, Checkbox } from 'antd';
 import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
 import Config from '../../common/Config';
-import withRouter from '../../common/withRouter';
 import RecoverModal from './RecoverModal';
 
 import {
@@ -13,25 +12,23 @@ import {
 
 import isNetworkError from "is-network-error";
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loggedUserInfoAction } from '../../redux/actions';
-
 import 'altcha';
 
 import globalNotification from "../../common/globalNotification.js";
 
 import './index.less';
+import usePeople from "../../common/usePeople.js";
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
 
-function Login({loggedUserInfoAction}) {
+function Login() {
   const servicePrefix = _service.config().prefix;
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
   const [altchaPayload, setAltchaPayload] = useState(null);
   const altcha = useRef(null);
+  const people = usePeople();
 
   useEffect(() => {
     if (_auth.isLogged()) {
@@ -71,8 +68,8 @@ function Login({loggedUserInfoAction}) {
         }
         return data;
       },
-      success: (data) => {
-        loggedUserInfoAction(data.json.extra);
+      success: ({json}) => {
+        people.set(json.extra);
         setSubmitting(false);
       },
       fail: (data) => {
@@ -220,12 +217,4 @@ function Login({loggedUserInfoAction}) {
   }
 }
 
-const mapStateToProps = store => {
-  return { };
-};
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loggedUserInfoAction
-}, dispatch);
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default Login;

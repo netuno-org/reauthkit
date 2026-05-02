@@ -37,6 +37,9 @@ function usePeople() {
     };
     return {
         data,
+        set: (data) => {
+            dispatch(peopleLoadAction(data));
+        },
         load,
         unload: () => {
             dispatch(peopleLoadAction(null));

@@ -2,59 +2,29 @@ import React, {useState, useEffect} from 'react';
 
 import {Spin, Avatar, Row, Col} from 'antd';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loggedUserInfoAction } from '../../redux/actions';
-
 import _service from '@netuno/service-client';
-import _auth from '@netuno/auth-client';
 
-import globalNotification from "../../common/globalNotification.js";
+import usePeople from "../../common/usePeople.js";
 
 import WSBadge from "./WSBadge";
 
 import './index.less';
 
-function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAction}) {
+function HeaderUserInfo() {
   const [loading, setLoading] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
+  const people = usePeople();
   useEffect(() => {
-    if (!loggedUserInfoReload && !!loggedUserInfo && loggedUserInfo.uid) {
-      return;
-    }
-    setLoading(true);
-    _service({
-      method: 'GET',
-      url: 'people',
-      success: (response) => {
-        setLoading(false);
-        if (response.json.result) {
-          loggedUserInfoAction(response.json.data);
-        } else {
-          globalNotification.warning({
-            title: 'Dados do Utilizador',
-            description: response.json.error,
-          });
-          setLoading(false);
-        }
-      },
-      fail: (e) => {
-        console.error('Dados do Utilizador', e);
-        setLoading(false);
-        globalNotification.serviceFail({
-          title: 'Dados do Utilizador',
-          description: 'Ocorreu um erro a carregar os dados, por favor tente novamente mais tarde.',
-        });
-        _auth.logout();
-      }
-    });
-  }, [loggedUserInfoReload]);
-  useEffect(() => {
-    if (loggedUserInfo && loggedUserInfo.avatar) {
+    if (people.data == null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
       setAvatarImageURL(null);
-      setTimeout(() => setAvatarImageURL(_service.url(`/people/avatar?uid=${loggedUserInfo.uid}&${new Date().getTime()}`)), 250);
+      if (people.data.avatar) {
+        setTimeout(() => setAvatarImageURL(_service.url(`/people/avatar?uid=${people.data.uid}&${new Date().getTime()}`)), 250);
+      }
     }
-  }, [loggedUserInfo]);
+  }, [people.data]);
   if (loading) {
     return (
       <div>
@@ -62,7 +32,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
       </div>
     );
   }
-  if (loggedUserInfo) {
+  if (people.data) {
     return (
       <div className="header__user-info">
         <Row>
@@ -71,7 +41,7 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
             <WSBadge/>
           </Col>
           <Col flex="auto" className="header__user-info__username">
-            {loggedUserInfo.name}
+            {people.data.name}
           </Col>
         </Row>
       </div>
@@ -82,15 +52,4 @@ function HeaderUserInfo({loggedUserInfo, loggedUserInfoReload, loggedUserInfoAct
   );
 }
 
-const mapStateToProps = store => {
-  const { loggedUserInfo, loggedUserInfoReload } = store.loggedUserInfoState;
-  return {
-    loggedUserInfo, loggedUserInfoReload
-  };
-};
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loggedUserInfoAction
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderUserInfo);
+export default HeaderUserInfo;

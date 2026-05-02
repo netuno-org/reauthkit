@@ -1,48 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Typography, Form, Input, Button, Divider } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
-
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loggedUserInfoReloadAction } from '../../../../redux/actions';
 
 import _service from '@netuno/service-client';
 
 import globalNotification from "../../../../common/globalNotification.js";
 
+import usePeople from "../../../../common/usePeople.js";
+
 import Avatar from './Avatar';
 
 const { Title } = Typography;
 
-function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
+function ProfileEdit() {
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
   const profileAvatar = useRef(null);
   const profileForm = useRef(null);
-  const location = useLocation();
   const navigate = useNavigate();
+
+  const people = usePeople();
 
   const layout = {
     wrapperCol: { xs: { span: 24 }, sm: { span: 24 }, md: { span: 24 }, lg: { span: 12 } }
   };
 
   useEffect(() => {
-    if (loggedUserInfo) {
-      if (profileForm.current) {
-        profileForm.current.setFieldsValue({
-          name: loggedUserInfo?.name,
-          username: loggedUserInfo?.username,
-          email: loggedUserInfo?.email
-        });
-      }
-      if (loggedUserInfo.avatar) {
-        setAvatarImageURL(_service.url(`/people/avatar?uid=${loggedUserInfo.uid}`));
-      }
+    if (people.data.avatar) {
+      setAvatarImageURL(_service.url(`/people/avatar?uid=${people.data.uid}`));
     }
-  }, [location, loggedUserInfo]);
+  }, []);
 
   function onFinish(values) {
     setSubmitting(true);
@@ -68,7 +58,7 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
             password: "",
             password_confirm: ""
           });
-          loggedUserInfoReloadAction();
+          people.reload();
         } else {
           globalNotification.warning({
             title: 'Utilizador existente',
@@ -120,7 +110,11 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
           ref={profileForm}
           layout="vertical"
           name="basic"
-          initialValues={{ remember: true }}
+          initialValues={{
+            name: people.data.name,
+            username: people.data.username,
+            email: people.data.email
+          }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -192,15 +186,4 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
   );
 }
 
-const mapStateToProps = store => {
-  const { loggedUserInfo } = store.loggedUserInfoState;
-  return {
-    loggedUserInfo
-  };
-};
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loggedUserInfoReloadAction
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdit);
+export default ProfileEdit;
