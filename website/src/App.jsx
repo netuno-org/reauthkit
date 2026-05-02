@@ -5,7 +5,7 @@ import {ConfigProvider, Layout, notification} from 'antd';
 import antLocale_ptPT from 'antd/lib/locale/pt_PT';
 
 import { Provider } from 'react-redux';
-import { Store } from './redux/store';
+import { store } from './redux/store';
 
 import classNames from 'classnames';
 
@@ -104,7 +104,7 @@ export default function App() {
         },
       }}
     >
-      <Provider store={Store}>
+      <Provider store={store}>
         <Layout className={'page ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
           <SiderMenu collapsed={collapsed} onCollapse={onCollapse} />
           <Layout>

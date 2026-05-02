@@ -1,14 +1,9 @@
 import {
-  LOGGED_USER_INFO,
-  LOGGED_USER_INFO_RELOAD
+  PEOPLE_LOAD
 } from './actionTypes';
 
-export const loggedUserInfoAction = (data) => ({
-  type: LOGGED_USER_INFO,
+export const peopleLoadAction = (data) => ({
+  type: PEOPLE_LOAD,
   payload: { ...data }
 });
 
-export const loggedUserInfoReloadAction = () => ({
-  type: LOGGED_USER_INFO_RELOAD,
-  payload: { }
-});
