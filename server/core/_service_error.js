@@ -1,4 +1,4 @@
-import {_log, _service, _error} from '@netuno/server-types'
+import {_log, _service, _error} from "@netuno/server-types";
 
 /*
 // Print error:

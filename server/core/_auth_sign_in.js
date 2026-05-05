@@ -1,17 +1,28 @@
-import {_val, _auth, _exec} from '@netuno/server-types';
+import {_val, _auth, _exec} from "@netuno/server-types";
 
-import people from "#core/lib/people.js";
+import profile from "#core/lib/profile.js";
 
-const data = people.getLoginData();
-
-if (!data) {
+const onAbort = () => {
   _auth.signInAbortWithData(
-    _val.map()
-      .set('error', 'invalid-user')
+      _val.map()
+          .set('result', false)
+          .set('error', 'invalid-user')
   );
   _exec.stop();
+};
+
+const dbProfile = profile.getLogged();
+
+if (!dbProfile) {
+  onAbort();
+}
+
+const fullData = profile.getFullDataByUID(dbProfile.getUID("uid"));
+
+if (!fullData) {
+  onAbort();
 }
 
 // _log.info(_req.getString('my-parameter'));
 
-_auth.signInExtraData(data);
+_auth.signInExtraData(fullData);

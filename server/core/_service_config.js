@@ -1,31 +1,31 @@
-import {_env, _service, _auth} from '@netuno/server-types'
+import {_env, _service, _auth} from "@netuno/server-types";
 
 /**
  *  When service need public access...
  */
 if (_env.is("dev")) {
-    _service.allow()
+  _service.allow();
 }
 
 /*
 if (_service.path == 'samples/my-service') {
-    _service.allow()
+  _service.allow()
 }
 */
 
 if (_service.path === 'people/avatar/get'
-   || _service.path === 'people/post'
-   || _service.path === 'people/options'
-   || _service.path === 'recovery/put'
-   || _service.path === 'recovery/post'
-   || _service.path === 'recovery/options') {
-    _service.allow()
+  || _service.path === 'people/post'
+  || _service.path === 'people/options'
+  || _service.path === 'recovery/put'
+  || _service.path === 'recovery/post'
+  || _service.path === 'recovery/options') {
+  _service.allow()
 }
 
 if (_service.path.startsWith('ws/private')) {
-    if (_auth.isJWT()) {
-        _service.allow()
-    } else {
-        _service.deny()
-    }
+  if (_auth.isJWT()) {
+    _service.allow()
+  } else {
+    _service.deny()
+  }
 }

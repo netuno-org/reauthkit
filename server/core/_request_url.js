@@ -1,4 +1,4 @@
-import {_url, _log, _header} from '@netuno/server-types'
+import {_url, _log, _header} from "@netuno/server-types";
 
 // _log.info(_url.url())
 
@@ -12,4 +12,4 @@ _header.response.set("Access-Control-Allow-Headers", "content-type,x-requested-w
 _header.response.set("Access-Control-Allow-Credentials", true)
 */
 
-_url.to(_url.request())
+_url.to(_url.request());
