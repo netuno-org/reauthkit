@@ -14,7 +14,7 @@ function Message({friend, data}) {
                     <Row align="middle">
                         <Col flex="50px">
                             <Avatar size={40} icon={<img src={
-                                friend.avatar ? _service.url(`/people/avatar?uid=${friend.uid}&${new Date().getTime()}`) : '/images/profile-default.png'
+                                friend.avatar ? _service.url(`/profile/avatar?uid=${friend.uid}&${new Date().getTime()}`) : '/images/profile-default.png'
                             }/>} />
                         </Col>
                         <Col flex="auto">

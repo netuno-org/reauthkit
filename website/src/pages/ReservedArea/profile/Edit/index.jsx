@@ -30,7 +30,7 @@ function ProfileEdit() {
 
   useEffect(() => {
     if (people.data.avatar) {
-      setAvatarImageURL(_service.url(`/people/avatar?uid=${people.data.uid}`));
+      setAvatarImageURL(_service.url(`/profile/avatar?uid=${people.data.uid}`));
     }
   }, []);
 
@@ -39,7 +39,7 @@ function ProfileEdit() {
     const { name, username, password, email } = values;
     _service({
       method: 'PUT',
-      url: 'people',
+      url: 'profile',
       data: {
         name,
         username,
@@ -87,7 +87,7 @@ function ProfileEdit() {
     } else {
       setPasswordRequired(false);
     }
-  };
+  }
 
   function onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);

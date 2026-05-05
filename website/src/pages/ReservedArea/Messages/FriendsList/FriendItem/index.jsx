@@ -10,7 +10,7 @@ function FriendItem({ uid, name, avatar, onClick }) {
             <Row align="middle">
                 <Col flex="50px" className="messages__friends-list__item__avatar">
                     <Avatar size={40} icon={<img src={
-                        avatar ? _service.url(`/people/avatar?uid=${uid}&${new Date().getTime()}`) : '/images/profile-default.png'
+                        avatar ? _service.url(`/profile/avatar?uid=${uid}&${new Date().getTime()}`) : '/images/profile-default.png'
                     }/>} />
                     <div className="messages__friends-list__item__avatar__badge">
                         <Badge dot={true} color={'green'}></Badge>

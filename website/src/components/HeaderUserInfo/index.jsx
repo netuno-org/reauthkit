@@ -21,7 +21,7 @@ function HeaderUserInfo() {
       setLoading(false);
       setAvatarImageURL(null);
       if (people.data.avatar) {
-        setTimeout(() => setAvatarImageURL(_service.url(`/people/avatar?uid=${people.data.uid}&${new Date().getTime()}`)), 250);
+        setTimeout(() => setAvatarImageURL(_service.url(`/profile/avatar?uid=${people.data.uid}&${new Date().getTime()}`)), 250);
       }
     }
   }, [people.data]);

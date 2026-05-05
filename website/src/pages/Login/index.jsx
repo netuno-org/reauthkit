@@ -16,8 +16,9 @@ import 'altcha';
 
 import globalNotification from "../../common/globalNotification.js";
 
-import './index.less';
 import usePeople from "../../common/usePeople.js";
+
+import './index.less';
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
