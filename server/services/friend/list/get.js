@@ -1,39 +1,38 @@
-import {_db, _user, _val, _out} from '@netuno/server-types'
+import {_db, _user, _val, _out} from "@netuno/server-types";
 
 const dbFriends = _db.query(`
-    SELECT friend.uid, people.name, people.avatar, msg.latest_message, msg.unread_messages
+    SELECT friend.uid, profile.name, profile.avatar, msg.latest_message, msg.unread_messages
     FROM friend
         LEFT JOIN (
-            SELECT to_people_id, from_people_id, (
+            SELECT to_profile_id, from_profile_id, (
                     SELECT sent_on
                     FROM message AS m
-                    WHERE m.to_people_id = message.to_people_id
-                      AND m.from_people_id = message.from_people_id
+                    WHERE m.to_profile_id = message.to_profile_id
+                      AND m.from_profile_id = message.from_profile_id
                     ORDER BY sent_on DESC
                     LIMIT 1
                 ) AS latest_message, COUNT(id) AS unread_messages
             FROM message
-            WHERE to_people_id = ?
+            WHERE to_profile_id = ?
                 AND read_on IS NULL
-            GROUP BY to_people_id, from_people_id
-        ) AS msg ON msg.from_people_id = friend.friend_id
-        INNER JOIN people ON friend.friend_id = people.id
-    WHERE friend.people_id = ?
+            GROUP BY to_profile_id, from_profile_id
+        ) AS msg ON msg.from_profile_id = friend.profile_id
+        INNER JOIN profile ON friend.friend_profile_id = profile.id
+    WHERE friend.profile_id = ?
     ORDER BY msg.latest_message DESC NULLS LAST
-`, _user.id, _user.id)
+`, _user.id, _user.id);
 
-const friends = _val.list()
+const friends = _val.list();
 
-const dbCrowd = _db.form(`people`).all()
+const dbProfiles = _db.form(`profile`).all();
 
-for (const dbPeople of dbCrowd) {
-    friends.add(
-        _val.map()
-            .set("uid", dbPeople.getString("uid"))
-            .set("name", dbPeople.getString("name"))
-            .set("avatar", dbPeople.getString("avatar") !== '')
-    )
+for (const dbProfile of dbProfiles) {
+  friends.add(
+    _val.map()
+      .set("uid", dbProfile.getString("uid"))
+      .set("name", dbProfile.getString("name"))
+      .set("avatar", dbProfile.getString("avatar") !== '')
+  );
 }
 
-
-_out.json(friends)
+_out.json(friends);

@@ -1,10 +1,10 @@
-import { _db, _ws } from "@netuno/server-types"
+import { _db, _ws } from "@netuno/server-types";
 
-import people from "#core/lib/people.js"
+import profile from "#core/lib/profile.js";
 
-const dbPeople = people.getLogged()
+const dbProfile = profile.getLogged();
 
 _db.form("people_ws_session")
-    .set("people_id", dbPeople.getInt("id"))
-    .set("session_id", _ws.sessionId())
-    .insert()
+  .set("people_id", dbProfile.getInt("id"))
+  .set("session_id", _ws.sessionId())
+  .insert();

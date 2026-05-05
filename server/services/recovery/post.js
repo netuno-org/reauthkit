@@ -1,57 +1,57 @@
 import {_req, _val, _db, _crypto, _time, _uid, _smtp, _template, _header, _out, _storage} from "@netuno/server-types";
 
-const email = _req.getString("email")
+const email = _req.getString("email");
 
-const dbPeople = _db.form("people")
-    .where(_db.where("email").equal(email))
-    .first()
+const dbProfile = _db.form("profile")
+  .where(_db.where("email").equal(email))
+  .first();
 
-if (dbPeople != null && dbPeople.getBoolean("active")) {
-  const recoveryKey = _crypto.sha512(_uid.generate())
-  const recoveryLimit = _time.localDateTime().plusDays(1)
+if (dbProfile != null && dbProfile.getBoolean("active")) {
+  const recoveryKey = _crypto.sha512(_uid.generate());
+  const recoveryLimit = _time.localDateTime().plusDays(1);
   _db.update(
-    "people",
-    dbPeople.getInt("id"),
+    "profile",
+    dbProfile.getInt("id"),
     _val.map()
       .set("recovery_key", recoveryKey)
       .set("recovery_limit", _db.timestamp(recoveryLimit))
-  )
-  dbPeople.set("recovery_key", recoveryKey);
-  dbPeople.set("recovery_link", `${_header.getString("Origin")}/recovery#${recoveryKey}`)
+  );
+  dbProfile.set("recovery_key", recoveryKey);
+  dbProfile.set("recovery_link", `${_header.getString("Origin")}/recovery#${recoveryKey}`);
 
-  const smtp = _smtp.init()
-  smtp.to = dbPeople.getString("email")
-  smtp.subject = `ReAuthKit - Recuperação de password`
+  const smtp = _smtp.init();
+  smtp.to = dbProfile.getString("email");
+  smtp.subject = `ReAuthKit - Recuperação de password`;
   smtp.text = `
-    Caro ${dbPeople.getString("name")},
+    Caro ${dbProfile.getString("name")},
 
-    Para fazer a recuperação da password clique neste link: ${dbPeople.getString("recovery_link")}
+    Para fazer a recuperação da password clique neste link: ${dbProfile.getString("recovery_link")}
     Obrigado,
     netuno.org
-  `
+  `;
   smtp.html = _template.getOutput(
-    "recovery-mail", dbPeople
-  )
+    "recovery-mail", dbProfile
+  );
   smtp.attachment(
     "logo.png",
     "image/png",
     _storage.filesystem("server", "images", "mail-logo.png").file(),
     "logo"
-  )
-  smtp.send()
+  );
+  smtp.send();
   _out.json(
     _val.map().set("result", true)
-  )
-} else if (dbPeople != null && !dbPeople.getBoolean("active")) {
-  _header.status(409)
+  );
+} else if (dbProfile != null && !dbProfile.getBoolean("active")) {
+  _header.status(409);
   _out.json(
     _val.map()
       .set("error", "user-not-active")
-  )
+  );
 } else {
-  _header.status(404)
+  _header.status(404);
   _out.json(
     _val.map()
       .set("error", "not-exists")
-  )
+  );
 }
