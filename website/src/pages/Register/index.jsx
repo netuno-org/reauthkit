@@ -56,7 +56,7 @@ export default function Register(props) {
     const { username, password, email, name } = values;
     _service({
       method: 'POST',
-      url: 'people',
+      url: 'profile',
       data: {
         name,
         username,

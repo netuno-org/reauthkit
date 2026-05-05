@@ -9,7 +9,7 @@ import Dashboard from "./Dashboard";
 import Messages from "./Messages";
 import OtherPage from "./OtherPage";
 
-import usePeople from "../../common/usePeople.js";
+import useProfile from "../../common/useProfile.js";
 
 import "./index.less";
 
@@ -20,11 +20,11 @@ function ReservedArea() {
     const location = useLocation();
     if (_auth.isLogged()) {
         const [loading, setLoading] = useState(true);
-        const people = usePeople();
+        const profile = useProfile();
 
         useEffect(() => {
-            if (people.data == null) {
-                people.load((result)=> {
+            if (profile.data == null) {
+                profile.load((result)=> {
                     if (result) {
                         setLoading(false);
                     } else {
@@ -34,7 +34,7 @@ function ReservedArea() {
             } else {
                 setLoading(false);
             }
-        }, [people.data]);
+        }, [profile.data]);
         if (loading) {
             return (
                 <section className="reserved-area">

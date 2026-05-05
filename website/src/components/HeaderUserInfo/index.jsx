@@ -4,7 +4,7 @@ import {Spin, Avatar, Row, Col} from 'antd';
 
 import _service from '@netuno/service-client';
 
-import usePeople from "../../common/usePeople.js";
+import useProfile from "../../common/useProfile.js";
 
 import WSBadge from "./WSBadge";
 
@@ -13,18 +13,18 @@ import './index.less';
 function HeaderUserInfo() {
   const [loading, setLoading] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
-  const people = usePeople();
+  const profile = useProfile();
   useEffect(() => {
-    if (people.data == null) {
+    if (profile.data == null) {
       setLoading(true);
     } else {
       setLoading(false);
       setAvatarImageURL(null);
-      if (people.data.avatar) {
-        setTimeout(() => setAvatarImageURL(_service.url(`/profile/avatar?uid=${people.data.uid}&${new Date().getTime()}`)), 250);
+      if (profile.data.avatar) {
+        setTimeout(() => setAvatarImageURL(_service.url(`/profile/avatar?uid=${profile.data.uid}&${new Date().getTime()}`)), 250);
       }
     }
-  }, [people.data]);
+  }, [profile.data]);
   if (loading) {
     return (
       <div>
@@ -32,7 +32,7 @@ function HeaderUserInfo() {
       </div>
     );
   }
-  if (people.data) {
+  if (profile.data) {
     return (
       <div className="header__user-info">
         <Row>
@@ -41,7 +41,7 @@ function HeaderUserInfo() {
             <WSBadge/>
           </Col>
           <Col flex="auto" className="header__user-info__username">
-            {people.data.name}
+            {profile.data.name}
           </Col>
         </Row>
       </div>

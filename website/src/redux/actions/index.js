@@ -1,9 +1,9 @@
 import {
-  PEOPLE_LOAD
+  PROFILE_LOAD
 } from './actionTypes';
 
-export const peopleLoadAction = (data) => ({
-  type: PEOPLE_LOAD,
+export const profileLoadAction = (data) => ({
+  type: PROFILE_LOAD,
   payload: { ...data }
 });
 

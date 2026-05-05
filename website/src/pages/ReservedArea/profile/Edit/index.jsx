@@ -8,7 +8,7 @@ import _service from '@netuno/service-client';
 
 import globalNotification from "../../../../common/globalNotification.js";
 
-import usePeople from "../../../../common/usePeople.js";
+import useProfile from "../../../../common/useProfile.js";
 
 import Avatar from './Avatar';
 
@@ -22,15 +22,15 @@ function ProfileEdit() {
   const profileForm = useRef(null);
   const navigate = useNavigate();
 
-  const people = usePeople();
+  const profile = useProfile();
 
   const layout = {
     wrapperCol: { xs: { span: 24 }, sm: { span: 24 }, md: { span: 24 }, lg: { span: 12 } }
   };
 
   useEffect(() => {
-    if (people.data.avatar) {
-      setAvatarImageURL(_service.url(`/profile/avatar?uid=${people.data.uid}`));
+    if (profile.data.avatar) {
+      setAvatarImageURL(_service.url(`/profile/avatar?uid=${profile.data.uid}`));
     }
   }, []);
 
@@ -58,7 +58,7 @@ function ProfileEdit() {
             password: "",
             password_confirm: ""
           });
-          people.reload();
+          profile.reload();
         } else {
           globalNotification.warning({
             title: 'Utilizador existente',
@@ -111,9 +111,9 @@ function ProfileEdit() {
           layout="vertical"
           name="basic"
           initialValues={{
-            name: people.data.name,
-            username: people.data.username,
-            email: people.data.email
+            name: profile.data.name,
+            username: profile.data.username,
+            email: profile.data.email
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}

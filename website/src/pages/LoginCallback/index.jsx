@@ -6,7 +6,7 @@ import _service from '@netuno/service-client';
 
 import globalNotification from "../../common/globalNotification.js";
 
-import usePeople from "../../common/usePeople.js";
+import useProfile from "../../common/useProfile.js";
 
 import './index.less';
 
@@ -14,7 +14,7 @@ export default function LoginCallback(props) {
   const [logged, setLogged] = useState(false);
   const [register, setRegister] = useState(false);
   const { provider } = useParams(null);
-  const people = usePeople();
+  const profile = useProfile();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -30,7 +30,7 @@ export default function LoginCallback(props) {
           if (json.token) {
             const authConfig = await _auth.config();
             authConfig.token.load(authConfig, json.token);
-            people.set(json.token.extra);
+            profile.set(json.token.extra);
             setLogged(true);
           } else if (json.provider && json.provider.new) {
             globalNotification.warning({

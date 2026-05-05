@@ -1,19 +1,19 @@
-import {peopleLoadAction} from "../redux/actions/index.js";
+import {profileLoadAction} from "../redux/actions/index.js";
 import {useDispatch, useSelector} from "react-redux";
 import _service from "@netuno/service-client";
 import globalNotification from "./globalNotification.js";
 import _auth from "@netuno/auth-client";
 
-function usePeople() {
+function useProfile() {
     const dispatch = useDispatch();
-    const data = useSelector((state) => state.people.data);
+    const data = useSelector((state) => state.profile.data);
     const load = (onFinish) => {
         _service({
             method: 'GET',
             url: 'profile',
             success: (response) => {
                 if (response.json.result) {
-                    dispatch(peopleLoadAction(response.json.data));
+                    dispatch(profileLoadAction(response.json.data));
                     onFinish && onFinish(true);
                 } else {
                     globalNotification.warning({
@@ -38,17 +38,17 @@ function usePeople() {
     return {
         data,
         set: (data) => {
-            dispatch(peopleLoadAction(data));
+            dispatch(profileLoadAction(data));
         },
         load,
         unload: () => {
-            dispatch(peopleLoadAction(null));
+            dispatch(profileLoadAction(null));
         },
         reload: () => {
-            dispatch(peopleLoadAction(null));
+            dispatch(profileLoadAction(null));
             load();
         }
     };
 }
 
-export default usePeople;
+export default useProfile;

@@ -5,7 +5,7 @@ import {Button, Layout, Menu} from "antd";
 import {EditOutlined, LogoutOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 
-import usePeople from "../../common/usePeople.js";
+import useProfile from "../../common/useProfile.js";
 
 import HeaderUserInfo from "../../components/HeaderUserInfo";
 
@@ -17,7 +17,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     const [menuKeysSelected, setMenuKeysSelected] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
-    const people = usePeople();
+    const profile = useProfile();
 
     useEffect(() => {
         if (location.pathname === '/profile/edit') {
@@ -30,7 +30,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
         if (key === "profileEdit") {
             navigate("/profile/edit");
         } else if (key === "logout") {
-            people.unload();
+            profile.unload();
             _auth.logout();
         }
     }

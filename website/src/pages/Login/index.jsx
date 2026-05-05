@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, Link } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button, Checkbox } from 'antd';
-import _auth from '@netuno/auth-client';
-import _service from '@netuno/service-client';
-import Config from '../../common/Config';
-import RecoverModal from './RecoverModal';
+import { Layout, Typography, Form, Input, Button, Checkbox } from "antd";
+import _auth from "@netuno/auth-client";
+import _service from "@netuno/service-client";
+import Config from "../../common/Config";
+import RecoverModal from "./RecoverModal";
 
 import {
   FaGoogle, FaWindows, FaFacebook, FaDiscord, FaGithub
@@ -12,11 +12,11 @@ import {
 
 import isNetworkError from "is-network-error";
 
-import 'altcha';
+import "altcha";
 
 import globalNotification from "../../common/globalNotification.js";
 
-import usePeople from "../../common/usePeople.js";
+import useProfile from "../../common/useProfile.js";
 
 import './index.less';
 
@@ -29,7 +29,7 @@ function Login() {
   const [visible, setVisible] = useState(false);
   const [altchaPayload, setAltchaPayload] = useState(null);
   const altcha = useRef(null);
-  const people = usePeople();
+  const profile = useProfile();
 
   useEffect(() => {
     if (_auth.isLogged()) {
@@ -70,7 +70,7 @@ function Login() {
         return data;
       },
       success: ({json}) => {
-        people.set(json.extra);
+        profile.set(json.extra);
         setSubmitting(false);
       },
       fail: (data) => {

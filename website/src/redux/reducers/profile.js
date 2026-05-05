@@ -1,12 +1,12 @@
-import {PEOPLE_LOAD} from '../actions/actionTypes';
+import {PROFILE_LOAD} from '../actions/actionTypes';
 
 const initialState = {
   data: null,
 };
 
-export const peopleReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
-  case PEOPLE_LOAD:
+  case PROFILE_LOAD:
     return {
       ...state,
       data: action.payload
