@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Typography, Form, Input, Button, Divider } from 'antd';
+import { Typography, Form, Input, Button, Divider, Spin } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 
 import _service from '@netuno/service-client';
@@ -93,10 +93,18 @@ function ProfileEdit() {
     console.log('Failed:', errorInfo);
   }
 
+  if (profile.data == null) {
+    return (
+      <div className="content-body--centered">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="content-title">
-        <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
+        <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar</Button>
       </div>
       <div className="content-title">
         <Title level={2}>Editar Perfil</Title>

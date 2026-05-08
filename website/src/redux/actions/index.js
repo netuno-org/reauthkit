@@ -4,6 +4,6 @@ import {
 
 export const profileLoadAction = (data) => ({
   type: PROFILE_LOAD,
-  payload: { ...data }
+  payload: data ? { ...data } : null
 });
 
