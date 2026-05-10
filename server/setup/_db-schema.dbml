@@ -28,7 +28,7 @@ Table profile {
   Note: 'Perfil'
 }
 
-Table people_ws_session {
+Table profile_ws_session {
   id int [pk, increment]
   profile_id int [not null, ref: > profile.id, note: 'Profile']
   session_id varchar(250) [not null, note: 'Sessão ID']

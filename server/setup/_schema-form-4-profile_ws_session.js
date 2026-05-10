@@ -22,7 +22,7 @@ _form.createIfNotExists(
 		.set("export_xls", true)
 		.set("export_xml", true)
 		.set("firebase", "")
-		.set("name", "people_ws_session")
+		.set("name", "profile_ws_session")
 		.set("parent_uid", "0028953a-b610-4e37-9f25-87bdad2e37dd")
 		.set("reorder", 0)
 		.set("report", false)
