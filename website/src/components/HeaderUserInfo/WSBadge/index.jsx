@@ -1,42 +1,24 @@
 import React, {useEffect, useState} from "react";
-import {Badge} from "antd";
-
 import _ws from '@netuno/ws-client';
-
-import Config from "../../../common/Config.js";
+import useWS from "../../../common/useWS.js";
 
 import "./index.less";
-import _auth from "@netuno/auth-client";
 
 function WSBadge() {
     const [state, setState] = useState(0);
     const [messageUnreadTotal, setMessageUnreadTotal] = useState(0);
+    const ws = useWS();
     useEffect(() => {
-        _ws.config({
-            url: Config.websocketURL() + '?auth='+ _auth.accessToken(),
-            servicesPrefix: Config.websocketServicesPrefix(),
-            method: 'GET',
-            autoReconnect: true,
-            connect: (event) => {
-                console.log('ws connect', event);
-                setState(1);
-            },
-            close: (event) => {
-                console.log('ws close', event);
-                setMessageUnreadTotal(0);
-                setState(-1);
-            },
-            error: (error) => {
-                console.log('ws error', error);
-                setMessageUnreadTotal(0);
-                setState(-1);
-            },
-            message: (data, event) => {
-                console.log('ws message', {data, event});
-            }
-        });
-        _ws.connect();
-    }, []);
+      setMessageUnreadTotal(0);
+      if (!ws.data) {
+        setState(0);
+      }
+      if (ws.data?.connected) {
+        setState(1);
+      } else {
+        setState(-1);
+      }
+    }, [ws.data]);
     useEffect(() => {
         if (state === 1) {
             const listenerMessageUnreadCountRef = _ws.addListener({
