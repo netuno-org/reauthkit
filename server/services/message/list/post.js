@@ -41,5 +41,5 @@ for (const dbMessage of dbMessagesPage.getList("items")) {
 }
 
 _out.json(
-  messages
+  messages.reversed()
 );
