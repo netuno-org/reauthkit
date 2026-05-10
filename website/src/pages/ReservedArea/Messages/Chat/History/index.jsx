@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 import {Spin} from "antd";
 
@@ -11,6 +11,7 @@ import "./index.less";
 function History({friend, reload}) {
     const [loading, setLoading] = useState(true);
     const [messages, setMessages] = useState([]);
+    const refList = useRef(null);
     useEffect(() => {
         const listenerMessageRef = _ws.addListener({
             method: "POST",
@@ -28,6 +29,9 @@ function History({friend, reload}) {
             _ws.removeListener(listenerMessageRef);
         }
     }, [friend]);
+  useEffect(() => {
+    refList.current.scrollTo({top: refList.current.scrollHeight});
+  }, [messages]);
     useEffect(() => {
         if (reload > 0) {
             onLoad();
@@ -43,7 +47,7 @@ function History({friend, reload}) {
         });
     };
     return (
-        <ul className="messages__chat__history">
+        <ul className="messages__chat__history" ref={refList}>
             {loading && <li><Spin /></li>}
             { messages.map((message) => (
                 <Message key={message.uid} friend={friend} data={message} />

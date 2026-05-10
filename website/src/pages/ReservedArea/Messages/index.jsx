@@ -13,7 +13,6 @@ function Messages() {
     const [messageSubmitting, setMessageSubmitting] = useState(false);
     const [chatFriend, setChatFriend] = useState(null);
     const onFriendSelected = (friend) => {
-        alert('a');
         setChatFriend(friend);
     };
     return (

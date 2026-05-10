@@ -5,10 +5,12 @@ import _ws from "@netuno/ws-client";
 import FriendItem from "./FriendItem";
 
 import "./index.less";
+import useWS from "../../../../common/useWS.js";
 
 function FriendsList({onFriendSelected}) {
     const [loading, setLoading] = useState(true);
     const [list, setList] = useState(null);
+    const ws = useWS();
     useEffect(() => {
         const listenerRef = _ws.addListener({
             service: "friend/list",
@@ -26,7 +28,7 @@ function FriendsList({onFriendSelected}) {
         return () => {
             _ws.removeListener(listenerRef);
         }
-    }, []);
+    }, [ws.data]);
     return (
         <div className="messages__friends-list">
             {loading && <Spin />}
