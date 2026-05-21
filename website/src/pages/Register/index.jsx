@@ -16,7 +16,7 @@ import isNetworkError from "is-network-error";
 const { Title } = Typography;
 const { Content, Sider } = Layout;
 
-import 'altcha';
+import "altcha/i18n";
 
 import globalNotification from "../../common/globalNotification.js";
 
