@@ -15,7 +15,7 @@ function WSBadge() {
       }
       if (ws.data?.connected) {
         setState(1);
-      } else {
+      } else if (ws.data?.connected == false) {
         setState(-1);
       }
     }, [ws.data]);
