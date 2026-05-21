@@ -48,6 +48,9 @@ function ReservedArea() {
         </section>
       );
     }
+    if (profile.data == null) {
+      return null; // On logout reaches here.
+    }
     if (location.pathname === "/profile/edit") {
       return <ProfileEdit/>;
     }
