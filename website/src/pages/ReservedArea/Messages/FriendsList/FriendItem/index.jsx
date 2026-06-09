@@ -12,9 +12,9 @@ function FriendItem({ uid, name, avatar, online, onClick }) {
                     <Avatar size={40} icon={<img src={
                         avatar ? _service.url(`/profile/avatar?uid=${uid}&${new Date().getTime()}`) : '/images/profile-default.png'
                     }/>} />
-                    <div className="messages__friends-list__item__avatar__badge">
-                        <Badge dot={true} color={online ? 'green' : 'red'}></Badge>
-                    </div>
+                    { online && <div className="messages__friends-list__item__avatar__badge">
+                        <Badge dot={true} color="green"></Badge>
+                    </div> }
                 </Col>
                 <Col flex="auto" className="messages__friends-list__item__name">
                     {name}
