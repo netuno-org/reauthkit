@@ -32,6 +32,7 @@ function Login() {
   const profile = useProfile();
 
   useEffect(() => {
+    profile.reset();
     if (_auth.isLogged()) {
       window.scrollTo(0, 0);
     }
