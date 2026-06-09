@@ -13,7 +13,6 @@ import Dashboard from "./Dashboard";
 import Messages from "./Messages";
 import OtherPage from "./OtherPage";
 
-
 import "./index.less";
 
 const {Title} = Typography;
@@ -23,23 +22,36 @@ function ReservedArea() {
   const location = useLocation();
   if (_auth.isLogged()) {
     const [loading, setLoading] = useState(true);
+    const [wsConnecting, setWSConnecting] = useState(false);
     const profile = useProfile();
     const ws = useWS();
 
     useEffect(() => {
+      if (profile.isUnloaded()) {
+        ws.close();
+        _auth.logout();
+        navigate("/login");
+        return;
+      }
       if (profile.data == null) {
         profile.load((result) => {
           if (result) {
             ws.load((result) => {
               setLoading(false);
             });
-          } else {
-            navigate("/login");
+            return;
           }
+          navigate("/login");
         });
-      } else {
-        setLoading(false);
+        return;
       }
+      if (loading === true && !ws.isConnecting()) {
+        ws.load((result) => {
+          setLoading(false);
+        });
+        return;
+      }
+      setLoading(false);
     }, [profile.data]);
     if (loading) {
       return (
