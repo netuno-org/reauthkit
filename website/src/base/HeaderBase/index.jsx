@@ -31,7 +31,6 @@ function HeaderBase({ collapsed, headerButtonMode }) {
             navigate("/profile/edit");
         } else if (key === "logout") {
             profile.unload();
-            _auth.logout();
         }
     }
     return (
