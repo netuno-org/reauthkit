@@ -1,7 +1,12 @@
 import {_db, _user, _val, _out} from "@netuno/server-types";
 
+import profile from "#core/lib/profile.js";
+
+const dbProfile = profile.getLogged();
+
 const dbFriends = _db.query(`
-    SELECT friend.uid, profile.name, profile.avatar, msg.latest_message, msg.unread_messages
+    SELECT profile.uid, profile.name, profile.avatar, msg.latest_message, msg.unread_messages,
+        (SELECT COUNT(id) FROM profile_ws_session WHERE profile_id = profile.id) AS "sessions"
     FROM friend
         LEFT JOIN (
             SELECT to_profile_id, from_profile_id, (
@@ -20,18 +25,19 @@ const dbFriends = _db.query(`
         INNER JOIN profile ON friend.friend_profile_id = profile.id
     WHERE friend.profile_id = ?
     ORDER BY msg.latest_message DESC NULLS LAST
-`, _user.id, _user.id);
+`, dbProfile.getInt("id"), dbProfile.getInt("id"));
 
 const friends = _val.list();
 
-const dbProfiles = _db.form(`profile`).all();
-
-for (const dbProfile of dbProfiles) {
+for (const dbFriend of dbFriends) {
   friends.add(
     _val.map()
-      .set("uid", dbProfile.getString("uid"))
-      .set("name", dbProfile.getString("name"))
-      .set("avatar", dbProfile.getString("avatar") !== '')
+      .set("uid", dbFriend.getString("uid"))
+      .set("name", dbFriend.getString("name"))
+      .set("avatar", dbFriend.getString("avatar") !== '')
+      .set("online", dbFriend.getInt("sessions") > 0)
+      .set("latest_message", dbFriend.getSQLTimestamp("latest_message"))
+      .set("unread_messages", dbFriend.getInt("unread_messages"))
   );
 }
 
