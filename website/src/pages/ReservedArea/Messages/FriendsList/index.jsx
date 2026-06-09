@@ -33,13 +33,11 @@ function FriendsList({onFriendSelected}) {
         <div className="messages__friends-list">
             {loading && <Spin />}
             {list && <ul>
-                {list.map(({uid, name, avatar}) => (
+                {list.map((item) => (
                     <FriendItem
-                        key={uid}
-                        uid={uid}
-                        name={name}
-                        avatar={avatar}
-                        onClick={() => onFriendSelected && onFriendSelected({uid, name, avatar})}
+                        key={item.uid}
+                        {...item}
+                        onClick={() => onFriendSelected && onFriendSelected(item)}
                     />
                 ))}
             </ul>}

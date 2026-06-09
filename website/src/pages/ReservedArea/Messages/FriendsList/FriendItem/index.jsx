@@ -4,7 +4,7 @@ import _service from "@netuno/service-client";
 
 import "./index.less";
 
-function FriendItem({ uid, name, avatar, onClick }) {
+function FriendItem({ uid, name, avatar, online, onClick }) {
     return (
         <li onClick={onClick} className="messages__friends-list__item">
             <Row align="middle">
@@ -13,7 +13,7 @@ function FriendItem({ uid, name, avatar, onClick }) {
                         avatar ? _service.url(`/profile/avatar?uid=${uid}&${new Date().getTime()}`) : '/images/profile-default.png'
                     }/>} />
                     <div className="messages__friends-list__item__avatar__badge">
-                        <Badge dot={true} color={'green'}></Badge>
+                        <Badge dot={true} color={online ? 'green' : 'red'}></Badge>
                     </div>
                 </Col>
                 <Col flex="auto" className="messages__friends-list__item__name">
