@@ -8,6 +8,7 @@ const dbFriends = _db.query(`
     SELECT profile.uid, profile.name, profile.avatar, msg.latest_message, msg.unread_messages,
         (SELECT COUNT(id) FROM profile_ws_session WHERE profile_id = profile.id) AS "sessions"
     FROM friend
+        INNER JOIN profile ON friend.friend_profile_id = profile.id
         LEFT JOIN (
             SELECT to_profile_id, from_profile_id, (
                     SELECT sent_on
@@ -21,8 +22,7 @@ const dbFriends = _db.query(`
             WHERE to_profile_id = ?
                 AND read_on IS NULL
             GROUP BY to_profile_id, from_profile_id
-        ) AS msg ON msg.from_profile_id = friend.profile_id
-        INNER JOIN profile ON friend.friend_profile_id = profile.id
+        ) AS msg ON msg.from_profile_id = friend.friend_profile_id
     WHERE friend.profile_id = ?
     ORDER BY msg.latest_message DESC NULLS LAST
 `, dbProfile.getInt("id"), dbProfile.getInt("id"));
@@ -37,7 +37,7 @@ for (const dbFriend of dbFriends) {
       .set("avatar", dbFriend.getString("avatar") !== '')
       .set("online", dbFriend.getInt("sessions") > 0)
       .set("latest_message", dbFriend.getSQLTimestamp("latest_message"))
-      .set("unread_messages", dbFriend.getInt("unread_messages"))
+      .set("unread_messages", dbFriend.getInt("unread_messages", 0))
   );
 }
 
