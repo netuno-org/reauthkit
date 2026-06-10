@@ -1,9 +1,28 @@
 import {_db, _val, _out, _req} from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
+import message from "#core/lib/message.js";
 
 const dbProfileLogged = profile.getLogged();
 const dbProfileFriend = profile.getByUID(_req.getString("with"));
+
+const totalMessagesMarkedAsRead = _db.execute(`
+  UPDATE message SET read_on = CURRENT_TIMESTAMP
+  WHERE read_on IS NULL AND from_profile_id = ?::int AND to_profile_id = ?::int
+`, dbProfileFriend.getInt("id"), dbProfileLogged.getInt("id"));
+
+if (totalMessagesMarkedAsRead > 0) {
+  profile.wsSendService(
+    dbProfileLogged,
+    _val.map()
+      .set("service", "message/unread/count")
+  );
+  profile.wsSendService(
+    dbProfileLogged,
+    _val.map()
+      .set("service", "friend/list")
+  );
+}
 
 const dbMessagesPage = _db.form("message")
   .where(
@@ -17,7 +36,6 @@ const dbMessagesPage = _db.form("message")
           .or("to_profile_id").equal(dbProfileFriend.getInt("id"))
       )
   ).order("sent_on", "desc")
-  .debug(true)
   .page(1, 10);
 
 const messages = _val.list();
@@ -30,13 +48,7 @@ for (const dbMessage of dbMessagesPage.getList("items")) {
       dbProfileTo = dbProfileLogged;
     }
     messages.add(
-      _val.map()
-        .set("uid", dbMessage.getString("uid"))
-        .set("from", dbProfileFrom.getString("uid"))
-        .set("to", dbProfileTo.getString("uid"))
-        .set("message", dbMessage.getString("message"))
-        .set("sent_on", dbMessage.getSQLTimestamp("sent_on"))
-        .set("read_on", dbMessage.getSQLTimestamp("read_on"))
+      message.toData(dbProfileFrom, dbProfileTo, dbMessage)
     );
 }
 
