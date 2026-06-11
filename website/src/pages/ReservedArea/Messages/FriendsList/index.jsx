@@ -6,6 +6,7 @@ import FriendItem from "./FriendItem";
 
 import "./index.less";
 import useWS from "../../../../common/useWS.js";
+import globalNotification from "../../../../common/globalNotification.js";
 
 function FriendsList({onFriendSelected}) {
   const [loading, setLoading] = useState(true);
@@ -14,11 +15,20 @@ function FriendsList({onFriendSelected}) {
   useEffect(() => {
     const listenerList = _ws.addListener({
       service: "friend/list",
+      start: () => {
+        setLoading(true);
+      },
       success: (data) => {
         setList(data.content);
-        setLoading(false);
       },
       fail: (error) => {
+        console.error(error);
+        globalNotification.serviceFail({
+          title: "Lista de Amigos",
+          description: "Houve uma falha ao tentar atualizar a listagem de amigos.",
+        });
+      },
+      end: ()=> {
         setLoading(false);
       }
     });
@@ -27,11 +37,38 @@ function FriendsList({onFriendSelected}) {
     });
     const listenerStatusChanged = _ws.addListener({
       service: "friend/status/changed",
-      success: (data) => {
+      success: ({content}) => {
         setList((prev) =>
           prev.map((item) => {
-            if (item.uid === data.content.uid) {
-              return {...item, ...data.content}
+            if (item.uid === content.uid) {
+              return {...item, ...content}
+            }
+            return item;
+          })
+        );
+      }
+    });
+    const listenerNewMessage = _ws.addListener({
+      method: "POST",
+      service: "message/new",
+      success: ({data}) => {
+        setList((prev) =>
+          prev.map((item) => {
+            if (item.uid === data.with) {
+              return {...item, unread_messages: item.unread_messages + 1}
+            }
+            return item;
+          })
+        );
+      }
+    });
+    const listenerMessageReadMark = _ws.addListener({
+      service: "message/read/mark",
+      success: ({data}) => {
+        setList((prev) =>
+          prev.map((item) => {
+            if (item.uid === data.from) {
+              return {...item, unread_messages: item.unread_messages - 1}
             }
             return item;
           })
@@ -41,6 +78,8 @@ function FriendsList({onFriendSelected}) {
     return () => {
       _ws.removeListener(listenerList);
       _ws.removeListener(listenerStatusChanged);
+      _ws.removeListener(listenerNewMessage);
+      _ws.removeListener(listenerMessageReadMark);
     }
   }, [ws.data]);
   return (
