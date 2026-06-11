@@ -3,6 +3,9 @@ import { Routes as Switch, Route, useLocation, useNavigate, Navigate } from "rea
 
 import {ConfigProvider, Layout, notification} from 'antd';
 import antLocale_ptPT from 'antd/lib/locale/pt_PT';
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import RelativeTime from 'dayjs/plugin/relativeTime';
 
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
@@ -26,7 +29,13 @@ import Recovery from './pages/Recovery';
 import NotFound from './pages/NotFound';
 import ReservedArea from "./pages/ReservedArea";
 
+import 'dayjs/locale/pt';
+
 import './styles/App.less';
+
+dayjs.locale('pt');
+dayjs.extend(LocalizedFormat);
+dayjs.extend(RelativeTime);
 
 const { Content } = Layout;
 
