@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-import {Row, Col, Typography, Input} from "antd";
+import {Row, Col, Typography} from "antd";
 
 import Chat from "./Chat";
 
@@ -10,7 +10,6 @@ import FriendsList from "./FriendsList/index.jsx";
 const { Title } = Typography;
 
 function Messages() {
-    const [messageSubmitting, setMessageSubmitting] = useState(false);
     const [chatFriend, setChatFriend] = useState(null);
     const onFriendSelected = (friend) => {
         setChatFriend(friend);
