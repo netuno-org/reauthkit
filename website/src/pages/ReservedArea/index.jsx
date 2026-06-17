@@ -3,6 +3,8 @@ import _auth from "@netuno/auth-client";
 import {Button, Spin, Typography} from "antd";
 import {useNavigate, useLocation, Link} from "react-router-dom";
 
+import Config from "../../common/Config.js";
+
 import useProfile from "../../common/useProfile.js";
 import useWS from "../../common/useWS.js";
 
@@ -22,7 +24,6 @@ function ReservedArea() {
   const location = useLocation();
   if (_auth.isLogged()) {
     const [loading, setLoading] = useState(true);
-    const [wsConnecting, setWSConnecting] = useState(false);
     const profile = useProfile();
     const ws = useWS();
 
@@ -37,6 +38,7 @@ function ReservedArea() {
         profile.load((result) => {
           if (result) {
             ws.load((result) => {
+              Config.push();
               setLoading(false);
             });
             return;
