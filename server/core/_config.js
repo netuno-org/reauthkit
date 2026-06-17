@@ -33,6 +33,7 @@ if (_app.isFolder(websiteBuildPath)) {
     const websiteConfig = _val.map()
       .set("services", _app.settings.getValues("services", _val.map()))
       .set("websocket", _app.settings.getValues("websocket", _val.map()))
+      .set("push", _val.map().set("key", _push.init().applicationServerKey()))
       .set(
         "auth",
         _val.map()
