@@ -20,6 +20,7 @@ bun.lock
 
 config/_development.json
 config/_production.json
+config/*.keys
 
 storage/database
 
