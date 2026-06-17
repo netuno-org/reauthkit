@@ -1,9 +1,19 @@
 
-import {_req, _db, _val, _out} from "@netuno/server-types";
+import {_req, _db, _val, _out, _header, _exec} from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 
 const dbProfile = profile.getLogged();
+
+if (!dbProfile) {
+  _header.status(404);
+  _out.json(
+    _val.map()
+      .set("result", false)
+      .set("error", "not-exist")
+  );
+  _exec.stop();
+}
 
 const endpoint = _req.getString("endpoint");
 const keys = _req.getValues("keys");
