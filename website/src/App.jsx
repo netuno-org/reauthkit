@@ -42,7 +42,7 @@ const { Content } = Layout;
 const NavWithAuthCheck = () => {
   if (_auth.isLogged()) {
     return (
-      <Navigate to="/reserved-area" />
+      <Navigate to="/dashboard" />
     );
   }
   return(
