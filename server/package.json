@@ -28,6 +28,6 @@
     }
   },
   "dependencies": {
-    "@netuno/server-types": "^1.4.1"
+    "@netuno/server-types": "^1.4.2"
   }
 }
