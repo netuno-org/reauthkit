@@ -7,8 +7,8 @@ const dbProfileLogged = profile.getLogged();
 const dbProfileFriend = profile.getByUID(_req.getString("with"));
 
 const totalMessagesMarkedAsRead = _db.execute(`
-  UPDATE message SET read_on = CURRENT_TIMESTAMP
-  WHERE read_on IS NULL AND from_profile_id = ?::int AND to_profile_id = ?::int
+  UPDATE message SET read_at = CURRENT_TIMESTAMP
+  WHERE read_at IS NULL AND from_profile_id = ?::int AND to_profile_id = ?::int
 `, dbProfileFriend.getInt("id"), dbProfileLogged.getInt("id"));
 
 if (totalMessagesMarkedAsRead > 0) {
@@ -35,7 +35,7 @@ const dbMessagesPage = _db.form("message")
         _db.where("to_profile_id").equal(dbProfileLogged.getInt("id"))
           .or("to_profile_id").equal(dbProfileFriend.getInt("id"))
       )
-  ).order("sent_on", "desc")
+  ).order("sent_at", "desc")
   .page(1, 10);
 
 const messages = _val.list();

@@ -8,8 +8,8 @@ const dbProfileFrom = profile.getByUID(_req.getString("from"));
 const dbMessage = message.getByUID(_req.getString("uid"));
 
 _db.execute(`
-  UPDATE message SET read_on = CURRENT_TIMESTAMP
-  WHERE read_on IS NULL AND id = ?::int AND from_profile_id = ?::int
+  UPDATE message SET read_at = CURRENT_TIMESTAMP
+  WHERE read_at IS NULL AND id = ?::int AND from_profile_id = ?::int
 `, dbMessage.getInt("id"), dbProfileFrom.getInt("id"));
 
 _out.json(

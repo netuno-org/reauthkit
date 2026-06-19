@@ -23,8 +23,8 @@ function Message({friend, data}) {
                     </Row>
                     <blockquote style={{margin: "10px 0 0 0"}}>{data.message}</blockquote>
                     {/*
-                    <span>{data.sent_on}</span>
-                    &middot; <span>{data.read_on}</span>
+                    <span>{data.sent_at}</span>
+                    &middot; <span>{data.read_at}</span>
                     */}
                 </Card>
             </li>
@@ -35,8 +35,8 @@ function Message({friend, data}) {
             <Card className="messages__chat__history__message__user" style={{ width: "70%", marginLeft: "auto", textAlign: "right" }}>
                 <blockquote style={{margin: "0"}}>{data.message}</blockquote>
                 {/*
-                <span>{data.sent_on}</span>
-                &middot; <span>{data.read_on}</span>
+                <span>{data.sent_at}</span>
+                &middot; <span>{data.read_at}</span>
                 */}
             </Card>
         </li>

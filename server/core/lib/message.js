@@ -8,7 +8,7 @@ export default {
   },
   getUnreadTotal: (dbProfile) => {
     const dbMessagesUnread = _db.queryFirst(`
-      SELECT COUNT(id) AS total FROM message WHERE to_profile_id = ? AND read_on IS NULL
+      SELECT COUNT(id) AS total FROM message WHERE to_profile_id = ? AND read_at IS NULL
     `, dbProfile.getInt("id"))
     return dbMessagesUnread.getInt("total", 0)
   },
@@ -18,7 +18,7 @@ export default {
       .set("from", dbProfileFrom.getString("uid"))
       .set("to", dbProfileTo.getString("uid"))
       .set("message", dbMessage.getString("message"))
-      .set("sent_on", dbMessage.getSQLTimestamp("sent_on"))
-      .set("read_on", dbMessage.getSQLTimestamp("read_on"));
+      .set("sent_at", dbMessage.getSQLTimestamp("sent_at"))
+      .set("read_at", dbMessage.getSQLTimestamp("read_at"));
   }
 }

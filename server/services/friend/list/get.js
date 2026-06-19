@@ -11,16 +11,16 @@ const dbFriends = _db.query(`
         INNER JOIN profile ON friend.friend_profile_id = profile.id
         LEFT JOIN (
             SELECT to_profile_id, from_profile_id, (
-                    SELECT sent_on
+                    SELECT sent_at
                     FROM message AS m
                     WHERE m.to_profile_id = message.to_profile_id
                       AND m.from_profile_id = message.from_profile_id
-                    ORDER BY sent_on DESC
+                    ORDER BY sent_at DESC
                     LIMIT 1
                 ) AS latest_message, COUNT(id) AS unread_messages
             FROM message
             WHERE to_profile_id = ?
-                AND read_on IS NULL
+                AND read_at IS NULL
             GROUP BY to_profile_id, from_profile_id
         ) AS msg ON msg.from_profile_id = friend.friend_profile_id
     WHERE friend.profile_id = ?

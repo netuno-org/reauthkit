@@ -11,7 +11,7 @@ const dbMessageInserted = _db.form("message")
   .set("from_profile_id", dbProfileFrom.getInt("id"))
   .set("to_profile_id", dbProfileTo.getInt("id"))
   .set("message", inputMessage)
-  .set("sent_on", _db.timestamp())
+  .set("sent_at", _db.timestamp())
   .insert();
 
 const dbMessage = _db.form("message")
