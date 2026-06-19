@@ -11,7 +11,11 @@ self.addEventListener('push', (e) => {
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
   if (event.notification.data) {
-    if (event.notification.data.navigateTo) {
+    const type = event.notification.data.type;
+    if (type) {
+      const navigateTo = "/"+ {
+        generic: "dashboard",
+      }[type];
       event.waitUntil(
         clients
           .matchAll({
@@ -19,12 +23,12 @@ self.addEventListener('notificationclick', function(event) {
           })
           .then((clientList) => {
             for (const client of clientList) {
-              if (client.url.endsWith(event.notification.data.navigateTo) && "focus" in client) {
+              if (client.url.endsWith(navigateTo) && "focus" in client) {
                 return client.focus();
               }
             }
             if (clients.openWindow) {
-              return clients.openWindow(event.notification.data.navigateTo);
+              return clients.openWindow(navigateTo);
             }
           }),
       );
