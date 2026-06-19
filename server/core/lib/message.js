@@ -6,10 +6,10 @@ export default {
       .where(_db.where("uid").equal(uid))
       .first();
   },
-  getUnreadTotal: (dbPeople) => {
+  getUnreadTotal: (dbProfile) => {
     const dbMessagesUnread = _db.queryFirst(`
       SELECT COUNT(id) AS total FROM message WHERE to_profile_id = ? AND read_on IS NULL
-    `, dbPeople.getInt("id"))
+    `, dbProfile.getInt("id"))
     return dbMessagesUnread.getInt("total", 0)
   },
   toData: (dbProfileFrom, dbProfileTo, dbMessage) => {
