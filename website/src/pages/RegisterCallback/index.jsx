@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Navigate, useParams } from "react-router-dom";
-import { Layout, Spin, Typography, Form, Input, Button, notification } from 'antd';
+import { Layout, Spin, Typography, Form, Input, Button } from 'antd';
 import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
+
+import globalNotification from "../../common/globalNotification.js";
 
 import './index.less';
 
@@ -17,7 +19,6 @@ export default function Register(props) {
   const [loadingProviderData, setLoadingProviderData] = useState(true);
   const registerForm = useRef(null);
   const { provider } = useParams(null);
-  const [api, contextHolder] = notification.useNotification();
 
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
@@ -33,8 +34,8 @@ export default function Register(props) {
       success: async ({ json }) => {
         if (json) {
           if (json.exists) {
-            api.warning({
-              message: 'Conta Já Existe',
+            globalNotification.warning({
+              title: 'Conta Já Existe',
               description: 'Já foi criada uma conta com este e-mail, efetue o login ou a recuperação do acesso.',
             });
             setToLogin(true);
@@ -46,8 +47,8 @@ export default function Register(props) {
       },
       fail: (error) => {
         console.error(error);
-        api.error({
-          message: 'Erro na Criação da Conta',
+        globalNotification.error({
+          title: 'Erro na Criação da Conta',
           description: 'Ocorreu um erro na criação da conta, por favor contacte-nos através do suporte.',
         });
         setLoadingProviderData(false);
@@ -60,7 +61,7 @@ export default function Register(props) {
     const { username, email, name } = values;
     _service({
       method: 'POST',
-      url: 'people',
+      url: 'profile',
       data: {
         name,
         username,
@@ -69,8 +70,8 @@ export default function Register(props) {
       },
       success: (response) => {
         if (response.json.result) {
-          api.success({
-            message: 'Conta Criada',
+          globalNotification.success({
+            title: 'Conta Criada',
             description: 'A conta foi criada com sucesso.',
           });
           setSubmitting(false);
@@ -88,8 +89,8 @@ export default function Register(props) {
                   authConfig.token.load(authConfig, json.token);
                   setLogged(true);
                 } else {
-                  api.error({
-                    message: 'Falha no Login',
+                  globalNotification.error({
+                    title: 'Falha no Login',
                     description: 'Não foi possível logar automaticamente.',
                   });
                   setToLogin(true);
@@ -98,9 +99,9 @@ export default function Register(props) {
             },
             fail: (error) => {
               console.error(error);
-              api.error({
-                message: 'Erro na Autenticação',
-                description: 'Ocorreu um erro grave de autenticação, por favor contacte-nos através do chat de suporte.',
+              globalNotification.serviceFail({
+                title: 'Erro na Autenticação',
+                description: 'Ocorreu um erro grave de autenticação, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
               });
             }
           });
@@ -110,20 +111,20 @@ export default function Register(props) {
         setSubmitting(false);
         if (e && e.status === 409 && e.json && e.json.error) {
           if (e.json.error === 'email-already-exists') {
-            return api.warning({
-              message: 'E-mail Existente',
+            return globalNotification.warning({
+              title: 'E-mail Existente',
               description: 'Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
             });
           }
           if (e.json.error === 'user-already-exists') {
-            return api.warning({
-              message: 'Utilizador Existente',
+            return globalNotification.warning({
+              title: 'Utilizador Existente',
               description: 'Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
             });
           }
         }
-        return api.error({
-          message: 'Erro na Criação de Conta',
+        return globalNotification.error({
+          title: 'Erro na Criação de Conta',
           description: 'Não foi possível criar a conta, contacte-nos através do chat de suporte.',
         });
       }
@@ -137,7 +138,6 @@ export default function Register(props) {
   if (loadingProviderData) {
     return (
       <div className="register-container">
-        {contextHolder}
         <Spin />
       </div>
     );
@@ -151,7 +151,6 @@ export default function Register(props) {
   return (
     <Layout>
       <Content className="register-container">
-        {contextHolder}
         <div className="content-title">
           <Title>Criar conta.</Title>
         </div>

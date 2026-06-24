@@ -1,54 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Typography, Form, Input, Button, Divider, notification } from 'antd';
+import { Typography, Form, Input, Button, Divider, Spin } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loggedUserInfoReloadAction } from '../../../../redux/actions';
-
 import _service from '@netuno/service-client';
+
+import globalNotification from "../../../../common/globalNotification.js";
+
+import useProfile from "../../../../common/useProfile.js";
 
 import Avatar from './Avatar';
 
 const { Title } = Typography;
 
-function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
+function ProfileEdit() {
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
   const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
   const profileAvatar = useRef(null);
   const profileForm = useRef(null);
-  const location = useLocation();
   const navigate = useNavigate();
-  const [api, contextHolder] = notification.useNotification();
+
+  const profile = useProfile();
 
   const layout = {
     wrapperCol: { xs: { span: 24 }, sm: { span: 24 }, md: { span: 24 }, lg: { span: 12 } }
   };
 
   useEffect(() => {
-    if (loggedUserInfo) {
-      if (profileForm.current) {
-        profileForm.current.setFieldsValue({
-          name: loggedUserInfo?.name,
-          username: loggedUserInfo?.username,
-          email: loggedUserInfo?.email
-        });
-      }
-      if (loggedUserInfo.avatar) {
-        setAvatarImageURL(_service.url(`/people/avatar?uid=${loggedUserInfo.uid}`));
-      }
+    if (profile.data.avatar) {
+      setAvatarImageURL(_service.url(`/profile/avatar?uid=${profile.data.uid}`));
     }
-  }, [location, loggedUserInfo]);
+  }, []);
 
   function onFinish(values) {
     setSubmitting(true);
     const { name, username, password, email } = values;
     _service({
       method: 'PUT',
-      url: 'people',
+      url: 'profile',
       data: {
         name,
         username,
@@ -58,8 +49,8 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
       },
       success: (response) => {
         if (response.json.result) {
-          api.success({
-            message: 'Edição do Perfil',
+          globalNotification.success({
+            title: 'Edição do Perfil',
             description: 'Os dados do seu perfil foram alterados com sucesso.',
           });
           setSubmitting(false);
@@ -67,10 +58,10 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
             password: "",
             password_confirm: ""
           });
-          loggedUserInfoReloadAction();
+          profile.reload();
         } else {
-          api.warning({
-            message: 'Utilizador existente',
+          globalNotification.warning({
+            title: 'Utilizador existente',
             description: response.json.error,
           });
           setSubmitting(false);
@@ -82,9 +73,9 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
       },
       fail: () => {
         setSubmitting(false);
-        api.error({
-          message: 'Erro na Edição do Perfil',
-          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do chat de suporte.',
+        globalNotification.serviceFail({
+          title: 'Erro na Edição do Perfil',
+          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
         });
       }
     });
@@ -96,17 +87,24 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
     } else {
       setPasswordRequired(false);
     }
-  };
+  }
 
   function onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
   }
 
+  if (profile.data == null) {
+    return (
+      <div className="content-body--centered">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {contextHolder}
       <div className="content-title">
-        <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar atrás</Button>
+        <Button className="go-back-btn" type="link" onClick={() => navigate(-1)}><ArrowLeftOutlined /> Voltar</Button>
       </div>
       <div className="content-title">
         <Title level={2}>Editar Perfil</Title>
@@ -120,7 +118,11 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
           ref={profileForm}
           layout="vertical"
           name="basic"
-          initialValues={{ remember: true }}
+          initialValues={{
+            name: profile.data.name,
+            username: profile.data.username,
+            email: profile.data.email
+          }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -192,15 +194,4 @@ function ProfileEdit({loggedUserInfo, loggedUserInfoReloadAction}) {
   );
 }
 
-const mapStateToProps = store => {
-  const { loggedUserInfo } = store.loggedUserInfoState;
-  return {
-    loggedUserInfo
-  };
-};
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loggedUserInfoReloadAction
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdit);
+export default ProfileEdit;

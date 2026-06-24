@@ -1,6 +1,6 @@
 import _auth from "@netuno/auth-client";
-import {MenuOutlined, DashboardOutlined, BlockOutlined} from "@ant-design/icons";
-import {Menu, Layout} from "antd";
+import {MenuOutlined, DashboardOutlined, BlockOutlined, MessageOutlined} from "@ant-design/icons";
+import {Menu, Layout, Badge, Tag} from "antd";
 import {useLocation, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
@@ -14,6 +14,12 @@ const menuItems = [
         label: "Principal",
         icon: <DashboardOutlined/>,
         link: "/dashboard"
+    },
+    {
+        key: "messages",
+        label: <><Tag color="#ff0000">3</Tag> Mensagens</>,
+        icon: <MessageOutlined />,
+        link: "/messages"
     },
     {
         key: "other-page",

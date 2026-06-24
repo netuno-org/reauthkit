@@ -1,0 +1,72 @@
+Table friend {
+  id int [pk, increment]
+  accepted_on timestamp [note: 'Aceitado Em']
+  friend_profile_id int [not null, ref: > profile.id, note: 'Amigo']
+  profile_id int [not null, ref: > profile.id, note: 'Perfil']
+  request_on timestamp [not null, note: 'Pedido Em']
+  Note: 'Amigo'
+}
+
+Table message {
+  id int [pk, increment]
+  from_profile_id int [not null, ref: > profile.id, note: 'De']
+  message text [note: 'Mensagem']
+  read_at timestamp [note: 'Lido Em']
+  sent_at timestamp [not null, note: 'Enviado Em']
+  to_profile_id int [not null, ref: > profile.id, note: 'Para']
+  Note: 'Mensagem'
+}
+
+Table notification {
+  id int [pk, increment]
+  content text [note: 'Conteúdo']
+  extra text [note: 'Dados Adicionais']
+  profile_id int [not null, ref: > profile.id, note: 'Perfil']
+  read_at timestamp [note: 'Lido Em']
+  sent_at timestamp [not null, note: 'Enviado Em']
+  title varchar(250) [not null, note: 'Título']
+  type_id int [not null, ref: > notification_type.id, note: 'Tipo']
+  Note: 'Notificação'
+}
+
+Table notification_settings {
+  id int [pk, increment]
+  profile_id int [not null, ref: > profile.id, note: 'Perfil']
+  type_id int [not null, ref: > notification_type.id, note: 'Tipo']
+  Note: 'Configurações'
+}
+
+Table notification_subscription {
+  id int [pk, increment]
+  auth varchar(250) [not null, note: 'Auth']
+  endpoint varchar(250) [not null, unique, note: 'Endpoint']
+  p256dh varchar(250) [not null, note: 'p256dh']
+  profile_id int [not null, ref: > profile.id, note: 'Perfil']
+  Note: 'Subscrição'
+}
+
+Table notification_type {
+  id int [pk, increment]
+  code varchar(250) [not null, unique, note: 'Código']
+  name varchar(250) [not null, unique, note: 'Name']
+  Note: 'Tipo'
+}
+
+Table profile {
+  id int [pk, increment]
+  avatar text [note: 'Avatar']
+  email varchar(250) [unique, note: 'Email']
+  name varchar(250) [not null, note: 'Nome']
+  profile_user_id int [not null, unique, note: 'Utilizador']
+  recovery_key varchar(250) [note: 'Chave de Recuperação']
+  recovery_limit timestamp [note: 'Limite de Recuperação']
+  Note: 'Perfil'
+}
+
+Table profile_ws_session {
+  id int [pk, increment]
+  profile_id int [not null, ref: > profile.id, note: 'Perfil']
+  session_id varchar(250) [not null, note: 'Sessão ID']
+  Note: 'WS Sessão'
+}
+

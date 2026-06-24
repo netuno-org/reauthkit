@@ -1,25 +1,28 @@
-const dbPeople = _db.queryFirst(`
-  SELECT *
-  FROM people
-  WHERE people_user_id = ${_db.param("int")}
-`, _user.id)
+import {_val, _auth, _exec} from "@netuno/server-types";
 
-if (!dbPeople) {
+import profile from "#core/lib/profile.js";
+
+const onAbort = () => {
   _auth.signInAbortWithData(
-    _val.map()
-      .set('error', 'invalid-user')
-  )
-  _exec.stop()
+      _val.map()
+          .set('result', false)
+          .set('error', 'invalid-user')
+  );
+  _exec.stop();
+};
+
+const dbProfile = profile.getLogged();
+
+if (!dbProfile) {
+  onAbort();
 }
 
-// _log.info(_req.getString('myparameter'))
+const fullData = profile.getFullDataByUID(dbProfile.getUID("uid"));
 
-const data = _val.map()
-      .set("uid", dbPeople.getString("uid"))
-      .set("name", dbPeople.getString("name"))
-      .set("email", dbPeople.getString("email"))
-      .set("username", _user.get(_user.id()).getString("user"))
-      .set("avatar", dbPeople.getString("avatar") != '')
-      .set("group", _group.code())
+if (!fullData) {
+  onAbort();
+}
 
-_auth.signInExtraData(data)
+// _log.info(_req.getString('my-parameter'));
+
+_auth.signInExtraData(fullData);

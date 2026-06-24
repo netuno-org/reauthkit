@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useParams } from "react-router-dom";
-import { Spin, Typography, notification } from 'antd';
+import { Spin } from 'antd';
 import _auth from '@netuno/auth-client';
 import _service from '@netuno/service-client';
 
-import './index.less';
+import globalNotification from "../../common/globalNotification.js";
 
-const { Title } = Typography;
+import useProfile from "../../common/useProfile.js";
+
+import './index.less';
 
 export default function LoginCallback(props) {
   const [logged, setLogged] = useState(false);
   const [register, setRegister] = useState(false);
   const { provider } = useParams(null);
-  const [api, contextHolder] = notification.useNotification();
+  const profile = useProfile();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -28,10 +30,11 @@ export default function LoginCallback(props) {
           if (json.token) {
             const authConfig = await _auth.config();
             authConfig.token.load(authConfig, json.token);
+            profile.set(json.token.extra);
             setLogged(true);
           } else if (json.provider && json.provider.new) {
-            api.warning({
-              message: 'Criar Nova Conta',
+            globalNotification.warning({
+              title: 'Criar Nova Conta',
               description: 'Não tem a sua conta criada ainda, avance com a criação da conta.',
             });
             setRegister(true);
@@ -40,9 +43,9 @@ export default function LoginCallback(props) {
       },
       fail: (error) => {
         console.error(error);
-        api.error({
-          message: 'Erro no Callback da Autenticação',
-          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do chat de suporte.',
+        globalNotification.serviceFail({
+          title: 'Erro no Callback da Autenticação',
+          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
         });
       }
     });
@@ -55,7 +58,6 @@ export default function LoginCallback(props) {
   }
   return (
     <div className="login-callback">
-      {contextHolder}
       <Spin />
     </div>
   );

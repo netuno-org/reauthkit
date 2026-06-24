@@ -1,7 +1,9 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 
-import { loggedUserInfoReducer } from './loggedUserInfo';
+import {profileReducer} from "./profile.js";
+import {wsReducer} from "./ws.js";
 
-export const Reducers = combineReducers({
-  loggedUserInfoState: loggedUserInfoReducer,
+export const rootReducer = combineReducers({
+  profile: profileReducer,
+  ws: wsReducer,
 });

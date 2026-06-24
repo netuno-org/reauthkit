@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Button, Form, Input, notification } from 'antd';
+import { Modal, Button, Form, Input } from 'antd';
 
 import _service from '@netuno/service-client';
+
+import globalNotification from "../../../common/globalNotification.js";
 
 export default function RecoverModal(props) {
 
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(true);
   const recoverForm = useRef(null);
-  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   function onFinish(values) {
     setSubmitting(true);
@@ -25,8 +26,8 @@ export default function RecoverModal(props) {
       },
       success: (response) => {
         if (response.json.result) {
-          api.success({
-            message: 'Alteração da Palavra-Passe ',
+          globalNotification.success({
+            title: 'Alteração da Palavra-Passe ',
             description: 'Foi enviado um e-mail para a alteração da Palavra-Passe.',
           });
           setSubmitting(false);
@@ -35,9 +36,9 @@ export default function RecoverModal(props) {
       },
       fail: () => {
         setSubmitting(false);
-        api.error({
-          message: 'Erro na Alteração da Palavra-Passe',
-          description: 'Não foi possível alterar a palavra-passe, contacte-nos através do chat de suporte.',
+        globalNotification.serviceFail({
+          title: 'Erro na Alteração da Palavra-Passe',
+          description: 'Não foi possível alterar a palavra-passe, contacte-nos através do suporte ou tente novamente mais tarde.',
         });
       }
     });
@@ -80,7 +81,6 @@ export default function RecoverModal(props) {
         </Button>
       ]}
     >
-      {contextHolder}
       <Form
         ref={recoverForm}
         name="basic"
@@ -97,7 +97,6 @@ export default function RecoverModal(props) {
           <Input disabled={submitting} maxLength={250} />
         </Form.Item>
       </Form>
-
     </Modal>
   );
 }

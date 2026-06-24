@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Navigate, useLocation } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button, notification } from 'antd';
+import { Layout, Typography, Form, Input, Button } from 'antd';
 import { PasswordInput } from "antd-password-input-strength";
 import _service from '@netuno/service-client';
 
-//import './index.less';
+import globalNotification from "../../common/globalNotification.js";
+
+import './index.less';
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
@@ -14,7 +16,6 @@ export default function Recovery(props) {
     const [submitting, setSubmitting] = useState(false);
     const [hash, setHash] = useState(false);
     const recoveryForm = useRef(null);
-    const [api, contextHolder] = notification.useNotification();
 
     const location = useLocation();
 
@@ -34,8 +35,8 @@ export default function Recovery(props) {
             },
             success: (response) => {
                 if (response.json.result) {
-                    api.success({
-                        message: 'Alteração de Palavra-Passe',
+                    globalNotification.success({
+                        title: 'Alteração de Palavra-Passe',
                         description: 'A sua palavra-passe foi alterada com sucesso.',
                     });
                     setSubmitting(false);
@@ -44,8 +45,8 @@ export default function Recovery(props) {
             },
             fail: () => {
                 setSubmitting(false);
-                api.error({
-                    message: 'Erro na alteração de Palavra-Passe',
+                globalNotification.error({
+                    title: 'Erro na alteração de Palavra-Passe',
                     description: 'Não foi possível alterar a sua palavra-passe, o link é inválido ou por favor contacte o suporte.',
                 });
             }
@@ -62,7 +63,6 @@ export default function Recovery(props) {
         return (
             <Layout>
                 <Content className="recovery-container">
-                    {contextHolder}
                     <div className="content-title">
                         <Title>Recuperar Acesso</Title>
                     </div>
@@ -124,7 +124,6 @@ export default function Recovery(props) {
     return (
         <Layout>
             <Content className="recovery-container">
-                {contextHolder}
                 <div className="content-title">
                     <Title>Recuperar Acesso</Title>
                 </div>

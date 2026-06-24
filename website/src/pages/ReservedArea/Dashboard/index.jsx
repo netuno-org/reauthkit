@@ -1,39 +1,23 @@
 import React from 'react';
 
-import { Typography, Spin } from 'antd';
+import { Typography } from 'antd';
 
-import { connect } from 'react-redux';
+import useProfile from "../../../common/useProfile.js";
 
 import './index.less';
 
 const { Title } = Typography;
 
-function Dashboard({loggedUserInfo}) {
-  let content = null;
-  if (!loggedUserInfo) {
-    content = <Spin/>;
-  } else {
-    content = (
-      <>
-        <Title level={2}>Olá {loggedUserInfo.name}!</Title>
-        <Title level={3} style={{ marginTop: 0 }}>Bem-vindo(a) à sua Área Reservada!</Title>
-        <img alt="reserved-area" src={"/images/reserved-area.png"} />
-      </>
-    );
-  }
+function Dashboard() {
+  const profile = useProfile();
   return (
     <div className="dashboard-layout-content">
-      {content}
+      <Title level={2}>Olá {profile.data.name}!</Title>
+      <Title level={3} style={{ marginTop: 0 }}>Bem-vindo(a) à sua Área Reservada!</Title>
+      <img alt="reserved-area" src={"/images/reserved-area.png"} />
     </div>
   );
 }
 
-const mapStateToProps = store => {
-  const { loggedUserInfo } = store.loggedUserInfoState;
-  return {
-    loggedUserInfo
-  };
-};
-
-export default connect(mapStateToProps, {})(Dashboard);
+export default Dashboard;
 

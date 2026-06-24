@@ -2,9 +2,12 @@ import classNames from "classnames";
 import _auth from "@netuno/auth-client";
 import {Link, useNavigate, useLocation} from "react-router-dom";
 import {Button, Layout, Menu} from "antd";
-import HeaderUserInfo from "../../components/HeaderUserInfo/index.jsx";
 import {EditOutlined, LogoutOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
+
+import useProfile from "../../common/useProfile.js";
+
+import HeaderUserInfo from "../../components/HeaderUserInfo";
 
 import "./index.less";
 
@@ -14,6 +17,8 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     const [menuKeysSelected, setMenuKeysSelected] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
+    const profile = useProfile();
+
     useEffect(() => {
         if (location.pathname === '/profile/edit') {
             setMenuKeysSelected(['profileEdit']);
@@ -25,7 +30,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
         if (key === "profileEdit") {
             navigate("/profile/edit");
         } else if (key === "logout") {
-            _auth.logout();
+            profile.unload();
         }
     }
     return (

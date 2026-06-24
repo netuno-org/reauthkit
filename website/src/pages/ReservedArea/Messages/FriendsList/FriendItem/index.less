@@ -1,0 +1,49 @@
+@import '../../../../../styles/variables.less';
+
+.messages__friends-list__item {
+  margin: 0 0 5px 0;
+  padding: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  border-right: 6px solid @primary-color;
+  color: @primary-color;
+
+  &:hover {
+    cursor: pointer;
+    border-right: 6px solid @secondary-color;
+    background-color: @primary-color;
+    color: @secondary-color;
+  }
+
+  &.active {
+    background-color: @secondary-color;
+  }
+
+  &__avatar {
+    position: relative;
+    &__badge {
+      position: absolute;
+      display: block;
+      bottom: -5px;
+      right: 12px;
+      > span {
+        > span {
+          outline: 1px solid #f6f7f8;
+        }
+      }
+    }
+  }
+
+  &__messages {
+    text-align: right;
+    &__latest {
+      font-size: 10px;
+      color: @text-color;
+    }
+    .ant-badge > sup {
+      font-size: 10px;
+    }
+  }
+}

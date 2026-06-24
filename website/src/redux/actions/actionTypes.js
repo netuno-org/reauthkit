@@ -1,3 +1,3 @@
 
-export const LOGGED_USER_INFO = "LOGGED_USER_INFO";
-export const LOGGED_USER_INFO_RELOAD = "LOGGED_USER_INFO_RELOAD";
+export const PROFILE_LOAD = "PROFILE_LOAD";
+export const WS_LOAD = "WS_LOAD";

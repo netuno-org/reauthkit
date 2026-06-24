@@ -6,7 +6,7 @@ const { Title } = Typography;
 
 function OtherPage() {
     return (
-        <section class={"other-page"}>
+        <section className="other-page">
             <Title level={1}>Outra Página</Title>
             <div>
                 <p>Exemplo de uma outra página na área reservada.</p>

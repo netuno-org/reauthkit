@@ -1,14 +1,15 @@
 import {
-  LOGGED_USER_INFO,
-  LOGGED_USER_INFO_RELOAD
+  PROFILE_LOAD,
+  WS_LOAD
 } from './actionTypes';
 
-export const loggedUserInfoAction = (data) => ({
-  type: LOGGED_USER_INFO,
-  payload: { ...data }
+export const profileLoadAction = (data) => ({
+  type: PROFILE_LOAD,
+  payload: data ? { ...data } : null
 });
 
-export const loggedUserInfoReloadAction = () => ({
-  type: LOGGED_USER_INFO_RELOAD,
-  payload: { }
+export const wsLoadAction = (data) => ({
+  type: WS_LOAD,
+  payload: data ? { ...data } : null
 });
+

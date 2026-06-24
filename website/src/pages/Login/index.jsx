@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, Link } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button, Checkbox, notification } from 'antd';
-import _auth from '@netuno/auth-client';
-import _service from '@netuno/service-client';
-import Config from '../../common/Config';
-import withRouter from '../../common/withRouter';
-import RecoverModal from './RecoverModal';
+import { Layout, Typography, Form, Input, Button, Checkbox } from "antd";
+import _auth from "@netuno/auth-client";
+import _service from "@netuno/service-client";
+import Config from "../../common/Config";
+import RecoverModal from "./RecoverModal";
 
 import {
   FaGoogle, FaWindows, FaFacebook, FaDiscord, FaGithub
@@ -13,26 +12,27 @@ import {
 
 import isNetworkError from "is-network-error";
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loggedUserInfoAction } from '../../redux/actions';
+import "altcha/i18n";
 
-import 'altcha';
+import globalNotification from "../../common/globalNotification.js";
+
+import useProfile from "../../common/useProfile.js";
 
 import './index.less';
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
 
-function Login({loggedUserInfoAction}) {
+function Login() {
   const servicePrefix = _service.config().prefix;
   const [submitting, setSubmitting] = useState(false);
   const [visible, setVisible] = useState(false);
   const [altchaPayload, setAltchaPayload] = useState(null);
-  const [api, contextHolder] = notification.useNotification();
   const altcha = useRef(null);
+  const profile = useProfile();
 
   useEffect(() => {
+    profile.reset();
     if (_auth.isLogged()) {
       window.scrollTo(0, 0);
     }
@@ -70,40 +70,39 @@ function Login({loggedUserInfoAction}) {
         }
         return data;
       },
-      success: (data) => {
-        loggedUserInfoAction(data.json.extra);
+      success: ({json}) => {
+        profile.set(json.extra);
         setSubmitting(false);
       },
       fail: (data) => {
         setSubmitting(false);
         if (data.error && isNetworkError(data.error)) {
-          api.error({
-            message: 'Conexão',
-            description:
-                'Há problemas de conexão com o servidor, tente novamente mais tarde.',
+          globalNotification.error({
+            title: 'Conexão',
+            description: 'Há problemas de conexão com o servidor, tente novamente mais tarde.',
           });
           return;
         }
         if (data.isJSON) {
           if (data.json['locked']) {
-            api.error({
-              message: 'Acesso Bloqueado',
+            globalNotification.error({
+              title: 'Acesso Bloqueado',
               description:
                   'O seu login foi bloqueado devido as muitas tentativas, volte a tentar mais tarde ou contate o suporte.',
             });
             return;
           }
           if (data.json['custom-blocked']) {
-            api.error({
-              message: 'Login Bloqueado',
+            globalNotification.error({
+              title: 'Login Bloqueado',
               description:
               'O login foi bloqueado, realize o processo de desbloqueamento ou contate o suporte.',
             });
             return;
           }
         }
-        api.error({
-          message: 'Login Inválido',
+        globalNotification.error({
+          title: 'Login Inválido',
           description:
           'Por favor verifique as credenciais inseridas.',
         });
@@ -128,7 +127,6 @@ function Login({loggedUserInfoAction}) {
           <div className="content-title">
             <Title>Iniciar sessão.</Title>
           </div>
-          {contextHolder}
           <div className="content-body">
             <p>Inicie sessão com os seus dados.</p>
             <Form
@@ -163,8 +161,7 @@ function Login({loggedUserInfoAction}) {
                 label="Utilizador"
                 name="username"
                 rules={[
-                  { required: true, message: 'Insira o seu usuário.' },
-                  { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-z]+[a-z0-9]{1,24}$" }
+                  { required: true, message: 'Insira o seu usuário.' }
               ]}
               >
                 <Input />
@@ -185,10 +182,11 @@ function Login({loggedUserInfoAction}) {
               { Config.authAltcha() && <Form.Item>
                 <altcha-widget
                     ref={altcha}
-                    challengeurl={_service.url('/_altcha')}
+                    challenge={_service.url('/_altcha')}
+                    language="pt"
                     delay={1}
-                    hidelogo={true}
-                    hidefooter={true}
+                    hideLogo={true}
+                    hideFooter={true}
                 ></altcha-widget>
               </Form.Item> }
 
@@ -222,12 +220,4 @@ function Login({loggedUserInfoAction}) {
   }
 }
 
-const mapStateToProps = store => {
-  return { };
-};
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loggedUserInfoAction
-}, dispatch);
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default Login;
