@@ -18,7 +18,9 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 ## Configuration
 
-> The following process is oriented to Linux development environments with a few notes also destined to Microsoft Windows development environments.
+For a description of every sample configuration key, see the [complete configuration reference](docs/configuration.md). For every local HTTP/WebSocket route, implementation status, server-core export, and lifecycle hook, see the [API and extension reference](docs/api.md).
+
+> The following process is oriented to Linux and macOS development environments, with notes for Microsoft Windows where needed.
 
 1. Copy the app sample configuration file by running (in the app root directory):
 
@@ -26,21 +28,24 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
     * `cp config/sample.json config/_production.json` (for a production environment)
 
-    and adjust the `_development.json` and/or `_production_.json` file accordingly to your environment.
+    and adjust `_development.json` and/or `_production.json` for your environment.
 
 > You can change the application name by changing the folder name and the `name` configuration parameter.
 
-2. According to your development environment, change the `.json` file in the `settings` key to the correct addresses of the Netuno app URLs, example:
+2. In the selected configuration file, set `settings.website.services.prefix` and `settings.website.websocket` to the correct Netuno endpoints. For example:
 
 ```
-  ...
-    "services": {
-      "prefix": "http://localhost:9000/services"
-    },
-    "websocket": {
-      "url": "ws://localhost:9000/ws/private/"
-    },
-  ...
+  "settings": {
+    "website": {
+      "services": {
+        "prefix": "http://localhost:9000/services"
+      },
+      "websocket": {
+        "url": "ws://localhost:9000/ws/private/",
+        "servicesPrefix": "/services"
+      }
+    }
+  }
 
 ```
 
@@ -50,7 +55,7 @@ Clone this project to `(Netuno Root directory)/apps/reauthkit/`.
 
 4. You'll need to configure a PostgreSQL database type connection for this app to work properly, [learn how to do it here.](https://doc.netuno.org/docs/academy/server/database/psql)
 
-5. Locate `auth` > `jwt` > `secret` and must set a secret code with 32 characters, as random as possible, since this is what ensures the security of users' credentials. [Recommended Secure Code Generation tool.](https://www.lastpass.com/features/password-generator)
+5. Replace the sample value at `auth` > `jwt` > `secret` with a random secret of at least 16 characters; 32 or more is recommended. [Secure password generator.](https://www.lastpass.com/features/password-generator)
 
 6. To configure OpenAPI definition look at `openapi` settings, [learn how to do it here.](https://doc.netuno.org/docs/academy/server/services/openapi)
 
@@ -99,24 +104,17 @@ In production, change the Netuno environment to `production`, this is done in th
 config.env = 'production'
 ```
 
-In the application configuration, in the `config/_production.json` file, disable the `commands`, set the value of all `enabled` commands to `false`, because in production we do not want NPM commands being executed together with Netuno.
+In `config/_production.json`, set `enabled` to `false` for every entry in `commands`, because the development watchers should not run with Netuno in production.
 
-Inside the website folder run:
-
-```
-npm install
-
-```
-
-To create the optimized production version of the website, simply run `bash build.sh` in the directory `(application root directory)/website/`. The `build.bat` file is also found in `(application root directory)/website/` intended for development environments on Microsoft Windows.
+To install the website dependencies and create its optimized `website/dist` build, run `bash build.sh` from `(application root directory)/website/`. On Microsoft Windows, run `build.bat` from the same directory. These production scripts use npm.
 
 ## Style
 
-To customize the website in general, change the Ant.Design theme settings.
+To customize the website in general, change the Ant Design theme settings.
 
 In the `website/src/App.jsx`  file, look for the `ConfigProvider` component and adapt the `theme` attribute values.
 
-> See the [official Ant.Design documentation on theme customization](https://ant.design/docs/react/customize-theme).
+> See the [official Ant Design documentation on theme customization](https://ant.design/docs/react/customize-theme).
 
 The LESS variable settings can be found here: `website/src/styles/variables.less`.
 
