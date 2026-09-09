@@ -5,6 +5,7 @@ import message from "#core/lib/message.js";
 
 const dbProfileLogged = profile.getLogged();
 const messageUid = _req.getString("uid");
+const reaction = _req.getString("reaction", "");
 
 if (!messageUid) {
   _out.json(_val.map().set("result", false).set("error", "missing_uid"));
@@ -18,16 +19,15 @@ if (!dbMessage) {
   _exec.stop();
 }
 
-if (dbMessage.getInt("from_profile_id") !== dbProfileLogged.getInt("id")) {
+if (dbMessage.getInt("to_profile_id") !== dbProfileLogged.getInt("id")) {
   _out.json(_val.map().set("result", false).set("error", "unauthorized"));
   _exec.stop();
 }
 
-const dbProfileTo = _db.get("profile", dbMessage.getInt("to_profile_id"));
+let cleanReaction = reaction ? reaction.replace(/\uFE0F/g, "") : "";
 
 _db.form("message")
-  .set("deleted_at", _db.timestamp())
-  .set("active", false)
+  .set("reaction", cleanReaction)
   .where(_db.where("id").equal(dbMessage.getInt("id")))
   .update();
 
@@ -35,13 +35,15 @@ const dbMessageUpdated = _db.form("message")
   .where(_db.where("id").equal(dbMessage.getInt("id")))
   .first();
 
-const formattedMessage = message.toData(dbProfileLogged, dbProfileTo, dbMessageUpdated);
+const dbProfileFrom = _db.get("profile", dbMessage.getInt("from_profile_id"));
 
-if (dbProfileTo) {
+const formattedMessage = message.toData(dbProfileFrom, dbProfileLogged, dbMessageUpdated);
+
+if (dbProfileFrom) {
   profile.wsSendAsService(
-    dbProfileTo,
+    dbProfileFrom,
     _val.map()
-      .set("method", "DELETE")
+      .set("method", "PUT")
       .set("service", "message")
       .set(
         "data",

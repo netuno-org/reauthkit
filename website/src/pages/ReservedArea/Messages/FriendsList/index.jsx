@@ -8,10 +8,11 @@ import "./index.less";
 import useWS from "../../../../common/useWS.js";
 import globalNotification from "../../../../common/globalNotification.js";
 
-function FriendsList({onFriendSelected}) {
+function FriendsList({ selectedFriend, onFriendSelected }) {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState(null);
   const ws = useWS();
+
   useEffect(() => {
     const listenerList = _ws.addListener({
       service: "friend/list",
@@ -19,7 +20,10 @@ function FriendsList({onFriendSelected}) {
         setLoading(true);
       },
       success: (data) => {
-        setList(data.content);
+        setList(data.content || []);
+        if (data.content && data.content.length > 0 && !selectedFriend) {
+          onFriendSelected && onFriendSelected(data.content[0]);
+        }
       },
       fail: (error) => {
         console.error(error);
@@ -28,72 +32,90 @@ function FriendsList({onFriendSelected}) {
           description: "Houve uma falha ao tentar atualizar a listagem de amigos.",
         });
       },
-      end: ()=> {
+      end: () => {
         setLoading(false);
-      }
+      },
     });
+
     _ws.sendService({
-      service: "friend/list"
+      service: "friend/list",
     });
+
     const listenerStatusChanged = _ws.addListener({
       service: "friend/status/changed",
-      success: ({content}) => {
+      success: ({ content }) => {
         setList((prev) =>
           prev.map((item) => {
             if (item.uid === content.uid) {
-              return {...item, ...content}
+              return { ...item, ...content };
             }
             return item;
           })
         );
-      }
+      },
     });
+
     const listenerNewMessage = _ws.addListener({
       method: "POST",
       service: "message/new",
-      success: ({data}) => {
+      success: ({ data }) => {
         setList((prev) =>
           prev.map((item) => {
             if (item.uid === data.with) {
-              return {...item, unread_messages: item.unread_messages + 1}
+              return { ...item, unread_messages: (item.unread_messages || 0) + 1 };
             }
             return item;
           })
         );
-      }
+      },
     });
+
     const listenerMessageReadMark = _ws.addListener({
       service: "message/read/mark",
-      success: ({data}) => {
+      success: ({ data }) => {
         setList((prev) =>
           prev.map((item) => {
             if (item.uid === data.from) {
-              return {...item, unread_messages: item.unread_messages - 1}
+              return { ...item, unread_messages: Math.max(0, (item.unread_messages || 0) - 1) };
             }
             return item;
           })
         );
-      }
+      },
     });
+
     return () => {
       _ws.removeListener(listenerList);
       _ws.removeListener(listenerStatusChanged);
       _ws.removeListener(listenerNewMessage);
       _ws.removeListener(listenerMessageReadMark);
-    }
+    };
   }, [ws.data]);
+
   return (
     <div className="messages__friends-list">
-      {loading && <Spin/>}
-      {list && <ul>
-        {list.map((item) => (
-          <FriendItem
-            key={item.uid + ":" + item.online}
-            {...item}
-            onClick={() => onFriendSelected && onFriendSelected(item)}
-          />
-        ))}
-      </ul>}
+      {loading && (
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          <Spin />
+        </div>
+      )}
+      {!loading && (!list || list.length === 0) && (
+        <div style={{ padding: "20px", textAlign: "center", color: "#8c8c8c" }}>
+          Nenhum amigo encontrado.
+        </div>
+      )}
+      {list && list.length > 0 && (
+        <ul>
+          {list.map((item) => (
+            <FriendItem
+              key={item.uid}
+              {...item}
+              className={selectedFriend && selectedFriend.uid === item.uid ? "active" : ""}
+              onClick={() => onFriendSelected && onFriendSelected(item)}
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

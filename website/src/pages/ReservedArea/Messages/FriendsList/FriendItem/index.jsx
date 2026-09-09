@@ -5,9 +5,9 @@ import _service from "@netuno/service-client";
 
 import "./index.less";
 
-function FriendItem({ uid, name, avatar, online, latest_message, unread_messages, onClick }) {
+function FriendItem({ uid, name, avatar, online, latest_message, unread_messages, className, onClick }) {
     return (
-        <li onClick={onClick} className="messages__friends-list__item">
+        <li onClick={onClick} className={`messages__friends-list__item ${className || ""}`}>
             <Row align="middle">
                 <Col flex="50px" className="messages__friends-list__item__avatar">
                     <Avatar size={40} icon={<img src={

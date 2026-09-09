@@ -16,13 +16,10 @@ function Messages() {
     };
     return (
         <section className="messages">
-            <Title level={1}>Mensagens</Title>
-            <div>
-                <p>Troca de mensagens entre os utilizadores.</p>
-            </div>
-            <Row gutter={20}>
+            <Title level={2}>Mensagens</Title>
+            <Row gutter={16}>
                 <Col span={8}>
-                    <FriendsList onFriendSelected={onFriendSelected} />
+                    <FriendsList selectedFriend={chatFriend} onFriendSelected={onFriendSelected} />
                 </Col>
                 <Col span={16}>
                     <Chat friend={chatFriend} />

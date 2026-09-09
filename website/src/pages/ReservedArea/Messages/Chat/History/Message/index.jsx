@@ -1,46 +1,236 @@
-import React from "react";
-
-import {Avatar, Col, Row, Card, Button, Popover} from "antd";
+import React, { useState } from "react";
+import { Avatar, Typography, Popover, Dropdown, Input, Button, Popconfirm } from "antd";
+import { SmileOutlined, EditOutlined, DeleteOutlined, RollbackOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 import _service from "@netuno/service-client";
+import useProfile from "../../../../../../common/useProfile.js";
 
 import "./index.less";
 
-function Message({friend, data}) {
+const { Text } = Typography;
+const { TextArea } = Input;
 
-    if (friend.uid === data.from) {
-        return (
-            <li className="messages__chat__history__message">
-                <Card style={{ width: "70%" }}>
-                    <Row align="middle">
-                        <Col flex="50px">
-                            <Avatar size={40} icon={<img src={
-                                friend.avatar ? _service.url(`/profile/avatar?uid=${friend.uid}&${new Date().getTime()}`) : '/images/profile-default.png'
-                            }/>} />
-                        </Col>
-                        <Col flex="auto">
-                            {friend.name}
-                        </Col>
-                    </Row>
-                    <blockquote style={{margin: "10px 0 0 0"}}>{data.message}</blockquote>
-                    {/*
-                    <span>{data.sent_at}</span>
-                    &middot; <span>{data.read_at}</span>
-                    */}
-                </Card>
-            </li>
-        );
+const EMOJI_LIST = ["👍", "❤️", "😂", "😮", "😢", "🔥", "🎉", "👏", "🙏", "💯"];
+
+function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(data.message || "");
+  const [reactionPopoverOpen, setReactionPopoverOpen] = useState(false);
+  const profile = useProfile();
+
+  const isIncoming = friend.uid === data.from;
+  const isDeleted = Boolean(data.deleted_at);
+
+  const handleSaveEdit = () => {
+    if (editText.trim() && editText !== data.message) {
+      onEdit && onEdit(data.uid, editText.trim());
     }
-    return (
-        <li className="messages__chat__history__message">
-            <Card className="messages__chat__history__message__user" style={{ width: "70%", marginLeft: "auto", textAlign: "right" }}>
-                <blockquote style={{margin: "0"}}>{data.message}</blockquote>
-                {/*
-                <span>{data.sent_at}</span>
-                &middot; <span>{data.read_at}</span>
-                */}
-            </Card>
-        </li>
-    )
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditText(data.message || "");
+    setIsEditing(false);
+  };
+
+  const handleReactionSelect = (emoji) => {
+    setReactionPopoverOpen(false);
+    const updated = data.reaction === emoji ? "" : emoji;
+    onReact && onReact(data.uid, updated);
+  };
+
+  const emojiPickerContent = (
+    <div className="messages__emoji-picker" onClick={(e) => e.stopPropagation()}>
+      {EMOJI_LIST.map((emoji) => (
+        <button
+          key={emoji}
+          type="button"
+          className={`messages__emoji-picker__btn ${data.reaction === emoji ? "messages__emoji-picker__btn--active" : ""}`}
+          onClick={() => handleReactionSelect(emoji)}
+        >
+          {emoji}
+        </button>
+      ))}
+    </div>
+  );
+
+  const sentMoment = data.sent_at ? dayjs(data.sent_at) : null;
+  const canEdit = !isIncoming && !isDeleted && sentMoment && dayjs().diff(sentMoment, "hour") < 1;
+
+  const menuItems = [
+    ...(isIncoming && !isDeleted
+      ? [
+          {
+            key: "react",
+            label: "Reagir",
+            icon: <SmileOutlined />,
+            children: EMOJI_LIST.map((emoji) => ({
+              key: `emoji_${emoji}`,
+              label: (
+                <span style={{ fontSize: "16px" }}>
+                  {emoji} {data.reaction === emoji ? "(Remover)" : ""}
+                </span>
+              ),
+              onClick: () => handleReactionSelect(emoji),
+            })),
+          },
+          {
+            key: "reply",
+            label: "Responder",
+            icon: <RollbackOutlined />,
+            onClick: () => onReply && onReply(data),
+          },
+        ]
+      : []),
+    ...(!isIncoming && !isDeleted
+      ? [
+          ...(canEdit
+            ? [
+                {
+                  key: "edit",
+                  label: "Editar",
+                  icon: <EditOutlined />,
+                  onClick: () => {
+                    setEditText(data.message || "");
+                    setIsEditing(true);
+                  },
+                },
+              ]
+            : []),
+          {
+            key: "delete",
+            label: "Eliminar",
+            icon: <DeleteOutlined />,
+            danger: true,
+            onClick: () => onDelete && onDelete(data.uid),
+          },
+        ]
+      : []),
+  ];
+
+  const userAvatarURL = profile.data?.avatar
+    ? _service.url(`/profile/avatar?uid=${profile.data.uid}&${new Date().getTime()}`)
+    : "/images/profile-default.png";
+
+  const friendAvatarURL = friend.avatar
+    ? _service.url(`/profile/avatar?uid=${friend.uid}&${new Date().getTime()}`)
+    : "/images/profile-default.png";
+
+  return (
+    <li className={`messages__message ${isIncoming ? "messages__message--incoming" : "messages__message--outgoing"}`}>
+      <div className="messages__message-row">
+        {isIncoming && (
+          <Avatar
+            size={36}
+            className="messages__message-avatar"
+            icon={<img src={friendAvatarURL} alt={friend.name} />}
+          />
+        )}
+
+        <div className="messages__message-content">
+          {isEditing ? (
+            <div className="messages__message-edit-wrapper">
+              <TextArea
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                autoSize={{ minRows: 2, maxRows: 6 }}
+                autoFocus
+                className="messages__message-edit-input"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSaveEdit();
+                  }
+                  if (e.key === "Escape") {
+                    handleCancelEdit();
+                  }
+                }}
+              />
+              <div className="messages__message-edit-buttons">
+                <Button size="small" type="primary" icon={<CheckOutlined />} onClick={handleSaveEdit}>
+                  Salvar
+                </Button>
+                <Button size="small" icon={<CloseOutlined />} onClick={handleCancelEdit}>
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="messages__message-bubble-wrapper" style={{ position: "relative" }}>
+              <Dropdown menu={{ items: menuItems }} trigger={["click", "contextMenu"]} disabled={isDeleted}>
+                <div
+                  className={`messages__message-bubble ${
+                    isDeleted ? "messages__message-bubble--deleted" : ""
+                  }`}
+                  style={{ cursor: isDeleted ? "default" : "pointer" }}
+                >
+                  {!isDeleted && data.parent && (
+                    <div className="messages__message-reply-quote">
+                      <span className="messages__message-reply-quote-sender">
+                        {data.parent.from || "Utilizador"}
+                      </span>
+                      <span className="messages__message-reply-quote-text">
+                        {data.parent.message}
+                      </span>
+                    </div>
+                  )}
+
+                  {isDeleted ? (
+                    <Text italic className="messages__message-text">
+                      Mensagem apagada
+                    </Text>
+                  ) : (
+                    <Text className="messages__message-text">
+                      {data.message}
+                    </Text>
+                  )}
+
+                  {!isDeleted && (
+                    <div className="messages__message-bubble-meta">
+                      <span className="messages__message-bubble-meta-text">
+                        {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
+                        {data.edited_at ? " (editada)" : ""}
+                        {!isIncoming && (data.read_at ? " ✓✓" : " ✓")}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </Dropdown>
+
+              {!isDeleted && data.reaction && (
+                <Popover
+                  content={emojiPickerContent}
+                  trigger="click"
+                  open={reactionPopoverOpen}
+                  onOpenChange={setReactionPopoverOpen}
+                  placement="top"
+                >
+                  <div
+                    className="messages__message-reaction-badge"
+                    style={{
+                      [isIncoming ? "left" : "right"]: "8px",
+                    }}
+                    title="Reação"
+                  >
+                    <span>{data.reaction}</span>
+                  </div>
+                </Popover>
+              )}
+            </div>
+          )}
+        </div>
+
+        {!isIncoming && (
+          <Avatar
+            size={36}
+            className="messages__message-avatar"
+            style={{ marginLeft: 8, marginRight: 0 }}
+            icon={<img src={userAvatarURL} alt="Você" />}
+          />
+        )}
+      </div>
+    </li>
+  );
 }
 
 export default Message;
