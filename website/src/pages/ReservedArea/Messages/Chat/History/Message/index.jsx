@@ -12,7 +12,7 @@ const { TextArea } = Input;
 
 const EMOJI_LIST = ["👍", "❤️", "😂", "😮", "😢", "🔥", "🎉", "👏", "🙏", "💯"];
 
-function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
+function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClick }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(data.message || "");
   const [reactionPopoverOpen, setReactionPopoverOpen] = useState(false);
@@ -37,6 +37,13 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
     setReactionPopoverOpen(false);
     const updated = data.reaction === emoji ? "" : emoji;
     onReact && onReact(data.uid, updated);
+  };
+
+  const handleQuoteClick = (e) => {
+    e.stopPropagation();
+    if (data.parent && data.parent.uid) {
+      onQuoteClick && onQuoteClick(data.parent.uid);
+    }
   };
 
   const emojiPickerContent = (
@@ -117,7 +124,10 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
     : "/images/profile-default.png";
 
   return (
-    <li className={`messages__message ${isIncoming ? "messages__message--incoming" : "messages__message--outgoing"}`}>
+    <li
+      id={`msg-${data.uid}`}
+      className={`messages__message ${isIncoming ? "messages__message--incoming" : "messages__message--outgoing"}`}
+    >
       <div className="messages__message-row">
         {isIncoming && (
           <Avatar
@@ -165,7 +175,11 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
                   style={{ cursor: isDeleted ? "default" : "pointer" }}
                 >
                   {!isDeleted && data.parent && (
-                    <div className="messages__message-reply-quote">
+                    <div
+                      className="messages__message-reply-quote"
+                      onClick={handleQuoteClick}
+                      title="Ir para a mensagem original"
+                    >
                       <span className="messages__message-reply-quote-sender">
                         {data.parent.from || "Utilizador"}
                       </span>
@@ -190,7 +204,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
                       <span className="messages__message-bubble-meta-text">
                         {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
                         {data.edited_at ? " (editada)" : ""}
-                        {!isIncoming && (data.read_at ? " ✓✓" : " ✓")}
+                        {!isIncoming && data.read_at ? " (lida)" : ""}
                       </span>
                     </div>
                   )}

@@ -1,49 +1,69 @@
 @import '../../../../../styles/variables.less';
 
 .messages__friends-list__item {
-  margin: 0 0 5px 0;
-  padding: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  border-right: 6px solid @primary-color;
-  color: @primary-color;
+  margin: 0 0 6px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-left: 4px solid transparent;
+  color: @text-color;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  user-select: none;
 
   &:hover {
-    cursor: pointer;
-    border-right: 6px solid @secondary-color;
-    background-color: @primary-color;
-    color: @secondary-color;
+    background-color: #f6f9fe;
+    border-color: #e0ecff;
+    border-left-color: @primary-color;
   }
 
   &.active {
-    background-color: @secondary-color;
+    background-color: #e6f7ff;
+    border-color: #91d5ff;
+    border-left: 4px solid @primary-color;
+    font-weight: 500;
+
+    .messages__friends-list__item__name {
+      color: @primary-color;
+      font-weight: 600;
+    }
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #262626;
+    padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s;
   }
 
   &__avatar {
-    position: relative;
-    &__badge {
-      position: absolute;
-      display: block;
-      bottom: -5px;
-      right: 12px;
-      > span {
-        > span {
-          outline: 1px solid #f6f7f8;
-        }
-      }
+    display: flex;
+    align-items: center;
+
+    .ant-badge-dot {
+      width: 10px;
+      height: 10px;
+      box-shadow: 0 0 0 2px #fff;
     }
   }
 
   &__messages {
     text-align: right;
+
     &__latest {
-      font-size: 10px;
-      color: @text-color;
+      font-size: 11px;
+      color: #8c8c8c;
+      margin-bottom: 2px;
     }
+
     .ant-badge > sup {
       font-size: 10px;
     }
   }
 }
+

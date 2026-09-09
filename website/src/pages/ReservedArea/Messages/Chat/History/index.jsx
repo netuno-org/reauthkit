@@ -272,6 +272,66 @@ function History({ friend, newSentMessage, onReply }) {
     });
   };
 
+  const scrollToMessage = (targetUid) => {
+    if (!targetUid) return;
+    const targetElement = document.getElementById(`msg-${targetUid}`);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      targetElement.classList.add("messages__message--highlight");
+      setTimeout(() => {
+        targetElement.classList.remove("messages__message--highlight");
+      }, 3500);
+      return;
+    }
+
+    if (!hasMore || loadingMore) return;
+
+    fetchAndFindMessage(targetUid, page + 1);
+  };
+
+  const fetchAndFindMessage = (targetUid, nextPage) => {
+    setLoadingMore(true);
+    if (refList.current) {
+      previousScrollHeight.current = refList.current.scrollHeight;
+    }
+
+    _ws.sendService({
+      method: "POST",
+      service: "message/list",
+      data: {
+        with: friend.uid,
+        page: nextPage,
+        pageSize: 10,
+      },
+      success: ({ content }) => {
+        const items = (content && content.items) || (Array.isArray(content) ? content : []);
+        setMessages((prev) => [...items, ...prev]);
+        setPage(nextPage);
+        const moreAvailable = items.length >= 10;
+        setHasMore(moreAvailable);
+
+        setTimeout(() => {
+          const el = document.getElementById(`msg-${targetUid}`);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.classList.add("messages__message--highlight");
+            setTimeout(() => {
+              el.classList.remove("messages__message--highlight");
+            }, 3500);
+          } else if (moreAvailable) {
+            fetchAndFindMessage(targetUid, nextPage + 1);
+          }
+        }, 100);
+      },
+      fail: (error) => {
+        console.error(error);
+      },
+      end: () => {
+        setLoadingMore(false);
+      },
+    });
+  };
+
   return (
     <div className="messages__chat__history-container">
       <ul className="messages__chat__history" ref={refList} onScroll={handleScroll}>
@@ -299,6 +359,7 @@ function History({ friend, newSentMessage, onReply }) {
             onEdit={handleEdit}
             onDelete={handleDelete}
             onReact={handleReact}
+            onQuoteClick={scrollToMessage}
           />
         ))}
       </ul>

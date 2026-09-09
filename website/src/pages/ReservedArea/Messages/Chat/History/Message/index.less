@@ -79,6 +79,13 @@
     overflow: hidden;
     border-left: 3px solid;
     box-sizing: border-box;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(0.99);
+    }
 
     &-sender {
       font-weight: 600;
@@ -95,6 +102,27 @@
       max-width: 100%;
     }
   }
+
+  &--highlight {
+    animation: message-flash 3.5s ease-out;
+  }
+
+@keyframes message-flash {
+  0% {
+    background-color: rgba(24, 144, 255, 0.35);
+    border-radius: 12px;
+    box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.2);
+  }
+  60% {
+    background-color: rgba(24, 144, 255, 0.25);
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
 
   &--incoming {
     .messages__message-row {

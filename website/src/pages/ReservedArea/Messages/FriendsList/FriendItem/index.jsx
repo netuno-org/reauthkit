@@ -9,13 +9,12 @@ function FriendItem({ uid, name, avatar, online, latest_message, unread_messages
     return (
         <li onClick={onClick} className={`messages__friends-list__item ${className || ""}`}>
             <Row align="middle">
-                <Col flex="50px" className="messages__friends-list__item__avatar">
-                    <Avatar size={40} icon={<img src={
-                        avatar ? _service.url(`/profile/avatar?uid=${uid}&${new Date().getTime()}`) : '/images/profile-default.png'
-                    }/>} />
-                    { online && <div className="messages__friends-list__item__avatar__badge">
-                        <Badge dot={true} color="green"></Badge>
-                    </div> }
+                <Col flex="46px" className="messages__friends-list__item__avatar">
+                    <Badge dot={online} color="#52c41a" offset={[-4, 32]}>
+                        <Avatar size={40} icon={<img src={
+                            avatar ? _service.url(`/profile/avatar?uid=${uid}&${new Date().getTime()}`) : '/images/profile-default.png'
+                        }/>} />
+                    </Badge>
                 </Col>
                 <Col flex="auto" className="messages__friends-list__item__name">
                     {name}
