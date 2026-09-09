@@ -1,3 +1,11 @@
+.messages__chat__history-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .messages__chat__history {
   flex: 1;
   overflow-y: auto;
@@ -7,3 +15,25 @@
   display: flex;
   flex-direction: column;
 }
+
+.messages__chat__scroll-bottom-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  height: 34px;
+  font-size: 13px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  }
+}
+

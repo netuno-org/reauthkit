@@ -181,7 +181,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact }) {
                     </Text>
                   ) : (
                     <Text className="messages__message-text">
-                      {data.message}
+                      {data.message || data.text || data.content || ""}
                     </Text>
                   )}
 

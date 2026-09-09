@@ -13,16 +13,16 @@ const QUICK_EMOJIS = ["😀", "😂", "❤️", "👍", "🔥", "🎉", "😮", 
 
 function Chat({ friend }) {
   const [messageSubmitting, setMessageSubmitting] = useState(false);
-  const [historyReload, setHistoryReload] = useState(0);
   const [replyingTo, setReplyingTo] = useState(null);
   const [emojiPopoverOpen, setEmojiPopoverOpen] = useState(false);
   const [messageText, setMessageText] = useState("");
+  const [newSentMessage, setNewSentMessage] = useState(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setHistoryReload(0);
     setReplyingTo(null);
     setMessageText("");
+    setNewSentMessage(null);
     form.resetFields();
   }, [friend]);
 
@@ -38,11 +38,14 @@ function Chat({ friend }) {
         ...(replyingTo ? { parent_uid: replyingTo.uid } : {}),
       },
       start: () => setMessageSubmitting(true),
-      success: () => {
+      success: (response) => {
         form.resetFields(["message"]);
         setMessageText("");
         setReplyingTo(null);
-        setHistoryReload((prev) => prev + 1);
+        const payload = response?.content?.content || response?.content || response?.data;
+        if (payload && payload.uid) {
+          setNewSentMessage(payload);
+        }
       },
       fail: (error) => {
         console.error(error);
@@ -100,7 +103,7 @@ function Chat({ friend }) {
         {friend.online && <span className="messages__chat__header__status">Online</span>}
       </div>
 
-      <History friend={friend} reload={historyReload} onReply={(msg) => setReplyingTo(msg)} />
+      <History friend={friend} newSentMessage={newSentMessage} onReply={(msg) => setReplyingTo(msg)} />
 
       {replyingTo && (
         <div className="messages__chat__reply-bar">
