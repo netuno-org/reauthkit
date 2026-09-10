@@ -1,32 +1,33 @@
-import React, {useState} from "react";
-
-import {Row, Col, Typography} from "antd";
+import React, { useState } from "react";
+import { Row, Col, Card } from "antd";
 
 import Chat from "./Chat";
-
-import "./index.less";
 import FriendsList from "./FriendsList/index.jsx";
-
-const { Title } = Typography;
+import "./index.less";
 
 function Messages() {
-    const [chatFriend, setChatFriend] = useState(null);
-    const onFriendSelected = (friend) => {
-        setChatFriend(friend);
-    };
-    return (
-        <section className="messages">
-            <Title level={2}>Mensagens</Title>
-            <Row gutter={16}>
-                <Col span={8}>
-                    <FriendsList selectedFriend={chatFriend} onFriendSelected={onFriendSelected} />
-                </Col>
-                <Col span={16}>
-                    <Chat friend={chatFriend} />
-                </Col>
-            </Row>
-        </section>
-    );
+  const [chatFriend, setChatFriend] = useState(null);
+
+  const onFriendSelected = (friend) => {
+    setChatFriend(friend);
+  };
+
+  return (
+    <section className={`messages ${chatFriend ? "messages--chat-active" : ""}`}>
+      <div className="messages__body">
+        <Card className="messages__card" variant="borderless">
+          <Row className="messages__row">
+            <Col xs={24} md={8} className="messages__sidebar">
+              <FriendsList selectedFriend={chatFriend} onFriendSelected={onFriendSelected} />
+            </Col>
+            <Col xs={24} md={16} className="messages__chat-area">
+              <Chat friend={chatFriend} onClose={() => setChatFriend(null)} />
+            </Col>
+          </Row>
+        </Card>
+      </div>
+    </section>
+  );
 }
 
 export default Messages;

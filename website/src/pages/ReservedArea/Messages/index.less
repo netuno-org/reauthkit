@@ -1,7 +1,96 @@
 
+@import '../../../styles/variables.less';
+
 .messages {
-  padding: 0 20px;
-  > h1 {
-    margin-top: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+  height: calc(100vh - 175px);
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: @mobile-width) {
+    height: calc(100vh - 140px);
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  &__card {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    background: #ffffff;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: @mobile-width) {
+      min-height: 0;
+      height: calc(100vh - 120px);
+    }
+
+    > .ant-card-body {
+      padding: 0 !important;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+  }
+
+  &__row {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+    min-height: 0;
+  }
+
+  &__sidebar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #f0f0f0;
+    background-color: #fafafa;
+    min-height: 0;
+    overflow-y: auto;
+
+    @media (max-width: @mobile-width) {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+      border-right: none;
+    }
+  }
+
+  &__chat-area {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    @media (max-width: @mobile-width) {
+      display: none;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+  }
+
+  @media (max-width: @mobile-width) {
+    &--chat-active {
+      .messages__sidebar {
+        display: none !important;
+      }
+
+      .messages__chat-area {
+        display: flex !important;
+      }
+    }
   }
 }

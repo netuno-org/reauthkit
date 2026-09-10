@@ -3,11 +3,10 @@
 .messages__chat {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 230px);
+  height: 100%;
+  flex: 1;
   background: #fff;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  overflow: hidden;
+  min-height: 0;
 
   &__header {
     display: flex;
@@ -16,6 +15,13 @@
     padding: 12px 16px;
     border-bottom: 1px solid #f0f0f0;
     background: #fafafa;
+    flex-shrink: 0;
+
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     &__name {
       font-weight: 600;
@@ -40,6 +46,13 @@
     }
   }
 
+  &__back-btn {
+    padding: 0 4px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__reply-bar {
     display: flex;
     align-items: center;
@@ -49,6 +62,7 @@
     border-top: 1px solid #91d5ff;
     border-left: 3px solid @primary-color;
     font-size: 13px;
+    flex-shrink: 0;
 
     &__content {
       overflow: hidden;
@@ -62,6 +76,11 @@
     padding: 12px 16px;
     border-top: 1px solid #f0f0f0;
     background: #fff;
+    flex-shrink: 0;
+
+    @media (max-width: @mobile-width) {
+      padding: 8px 12px;
+    }
   }
 
   &__input-wrapper {
@@ -76,8 +95,8 @@
     align-items: flex-end;
     background: #fff;
     border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    padding: 4px 8px;
+    border-radius: 24px;
+    padding: 4px 12px;
     transition: all 0.2s;
 
     &:hover,
@@ -89,7 +108,8 @@
     &__left {
       display: flex;
       align-items: center;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
+      margin-right: 4px;
     }
 
     &__main {
@@ -105,13 +125,13 @@
       align-items: center;
       margin-bottom: 6px;
       margin-left: 8px;
-      margin-right: 6px;
+      margin-right: 4px;
       user-select: none;
 
       .char-count {
         font-size: 13px;
         font-weight: 600;
-        color: #595959;
+        color: #8c8c8c;
         white-space: nowrap;
       }
     }
@@ -121,13 +141,13 @@
     border: none;
     background: transparent;
     box-shadow: none;
-    padding: 4px 6px;
+    padding: 4px;
     height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 50%;
 
     &:hover,
     &:focus {
@@ -139,7 +159,7 @@
   &__textarea {
     resize: none !important;
     background: transparent !important;
-    padding: 6px 8px !important;
+    padding: 6px 4px !important;
     box-shadow: none !important;
     border: none !important;
     outline: none !important;
@@ -153,8 +173,11 @@
 
   &__send-btn {
     height: 40px;
-    border-radius: 8px;
+    border-radius: 20px;
     padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -162,10 +185,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 230px);
+  height: 100%;
+  flex: 1;
   background: #fafafa;
-  border: 1px dashed #d9d9d9;
-  border-radius: 8px;
   color: #8c8c8c;
   font-size: 14px;
 }

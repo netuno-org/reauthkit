@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Popover } from "antd";
-import { SendOutlined, SmileOutlined, CloseOutlined, RollbackOutlined } from "@ant-design/icons";
+import { SendOutlined, SmileOutlined, CloseOutlined, RollbackOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import _ws from "@netuno/ws-client";
 
 import History from "./History";
@@ -10,7 +10,7 @@ import globalNotification from "../../../../common/globalNotification.js";
 
 const { TextArea } = Input;
 
-function Chat({ friend }) {
+function Chat({ friend, onClose }) {
   const [messageSubmitting, setMessageSubmitting] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
   const [emojiPopoverOpen, setEmojiPopoverOpen] = useState(false);
@@ -102,7 +102,17 @@ function Chat({ friend }) {
   return (
     <div className="messages__chat">
       <div className="messages__chat__header">
-        <span className="messages__chat__header__name">{friend.name}</span>
+        <div className="messages__chat__header__left">
+          {onClose && (
+            <Button
+              type="text"
+              icon={<ArrowLeftOutlined />}
+              onClick={onClose}
+              className="messages__chat__back-btn"
+            />
+          )}
+          <span className="messages__chat__header__name">{friend.name}</span>
+        </div>
         {friend.online && <span className="messages__chat__header__status">Online</span>}
       </div>
 

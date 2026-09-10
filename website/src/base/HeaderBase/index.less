@@ -26,6 +26,11 @@
     transition: all 0.2s;
     display: inline-block !important;
 
+    @media screen and (max-width: @mobile-width) {
+      width: 100vw;
+      padding: 0 16px 0 60px;
+    }
+
     &.collapsed {
       width: 100%;
 
