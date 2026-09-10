@@ -54,6 +54,19 @@ if (dbProfileFrom) {
   );
 }
 
+profile.wsSendAsService(
+  dbProfileLogged,
+  _val.map()
+    .set("method", "PUT")
+    .set("service", "message")
+    .set(
+      "data",
+      _val.map()
+        .set("with", dbProfileFrom ? dbProfileFrom.getString("uid") : "")
+    )
+    .set("content", formattedMessage)
+);
+
 _out.json(
   _val.map().set("result", true).set("content", formattedMessage)
 );

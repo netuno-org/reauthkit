@@ -53,6 +53,16 @@
     display: block;
   }
 
+  &-read-more {
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 4px;
+    display: inline-block;
+    user-select: none;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+  }
+
   &-meta {
     margin-top: 4px;
     display: flex;
@@ -60,11 +70,32 @@
   }
 
   &-bubble-wrapper {
-    margin-bottom: 4px;
+    margin-bottom: 12px;
     display: flex;
     flex-direction: column;
     min-width: 0;
     width: 100%;
+  }
+
+  &-reaction-badge {
+    position: absolute;
+    bottom: -16px;
+    font-size: 15px;
+    background: #ffffff;
+    border: 1px solid #91caff;
+    border-radius: 12px;
+    padding: 1px 5px;
+    box-shadow: 0 2px 6px rgba(24, 144, 255, 0.15);
+    cursor: pointer;
+    user-select: none;
+    z-index: 2;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+    line-height: 1.2;
+
+    &:hover {
+      transform: scale(1.18);
+      border-color: #4096ff;
+    }
   }
 
   &-reply-quote {
@@ -148,6 +179,14 @@
       color: rgba(0, 0, 0, 0.85);
       border-bottom-left-radius: 2px;
 
+      .messages__message-read-more {
+        color: #4096ff;
+
+        &:hover {
+          color: #0958d9;
+        }
+      }
+
       &--deleted {
         background-color: #fafafa !important;
         border: 1px dashed #d9d9d9;
@@ -188,6 +227,14 @@
         color: #ffffff;
       }
 
+      .messages__message-read-more {
+        color: #bae0ff;
+
+        &:hover {
+          color: #ffffff;
+        }
+      }
+
       &--deleted {
         background-color: #fafafa !important;
         border: 1px dashed #d9d9d9;
@@ -221,25 +268,6 @@
     align-items: center;
     justify-content: flex-end;
     gap: 6px;
-  }
-
-  &-reaction-badge {
-    position: absolute;
-    bottom: -10px;
-    font-size: 14px;
-    background: #ffffff;
-    border: 1px solid #e8e8e8;
-    border-radius: 12px;
-    padding: 1px 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    cursor: pointer;
-    user-select: none;
-    z-index: 2;
-    transition: transform 0.15s ease;
-
-    &:hover {
-      transform: scale(1.15);
-    }
   }
 
   &-bubble-meta {

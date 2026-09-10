@@ -18,10 +18,16 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
   const [editText, setEditText] = useState(data.message || "");
   const [menuOpen, setMenuOpen] = useState(false);
   const [reactionPopoverOpen, setReactionPopoverOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const profile = useProfile();
 
   const isIncoming = friend.uid === data.from;
   const isDeleted = Boolean(data.deleted_at);
+  const rawText = data.message || data.text || data.content || "";
+
+  const TRUNCATE_LIMIT = 500;
+  const isLong = rawText.length > TRUNCATE_LIMIT;
+  const displayText = !isExpanded && isLong ? rawText.slice(0, TRUNCATE_LIMIT) + "... " : rawText;
 
   const handleSaveEdit = () => {
     if (editText.trim() && editText !== data.message) {
@@ -166,24 +172,82 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
             </div>
           ) : (
             <div className="messages__message-bubble-wrapper" style={{ position: "relative" }}>
-              <Popover
-                content={emojiPickerContent}
-                trigger={[]}
-                open={reactionPopoverOpen}
-                onOpenChange={setReactionPopoverOpen}
-                placement={isIncoming ? "topRight" : "topLeft"}
-              >
+              {isIncoming && !isDeleted ? (
+                <Popover
+                  content={emojiPickerContent}
+                  trigger="contextMenu"
+                  open={reactionPopoverOpen}
+                  onOpenChange={(visible) => {
+                    setReactionPopoverOpen(visible);
+                  }}
+                  placement="top"
+                  destroyTooltipOnHide
+                >
+                  <Dropdown
+                    menu={{ items: menuItems }}
+                    trigger={["click"]}
+                    placement="bottomRight"
+                    disabled={isDeleted}
+                  >
+                    <div
+                      className={`messages__message-bubble ${
+                        isDeleted ? "messages__message-bubble--deleted" : ""
+                      }`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {!isDeleted && data.parent && (
+                        <div
+                          className="messages__message-reply-quote"
+                          onClick={handleQuoteClick}
+                          title="Ir para a mensagem original"
+                        >
+                          <span className="messages__message-reply-quote-sender">
+                            {data.parent.from || "Utilizador"}
+                          </span>
+                          <span className="messages__message-reply-quote-text">
+                            {data.parent.message}
+                          </span>
+                        </div>
+                      )}
+
+                      {isDeleted ? (
+                        <Text italic className="messages__message-text">
+                          Mensagem apagada
+                        </Text>
+                      ) : (
+                        <Text className="messages__message-text">
+                          {displayText}
+                          {isLong && (
+                            <span
+                              className="messages__message-read-more"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setIsExpanded((prev) => !prev);
+                              }}
+                            >
+                              {isExpanded ? "Ler menos" : "Ler mais"}
+                            </span>
+                          )}
+                        </Text>
+                      )}
+
+                      {!isDeleted && (
+                        <div className="messages__message-bubble-meta">
+                          <span className="messages__message-bubble-meta-text">
+                            {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
+                            {data.edited_at ? " (editada)" : ""}
+                            {!isIncoming && data.read_at ? " (lida)" : ""}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </Dropdown>
+                </Popover>
+              ) : (
                 <Dropdown
                   menu={{ items: menuItems }}
-                  trigger={["click", "contextMenu"]}
-                  open={menuOpen && !reactionPopoverOpen}
-                  onOpenChange={(nextOpen) => {
-                    if (reactionPopoverOpen) {
-                      setMenuOpen(false);
-                      return;
-                    }
-                    setMenuOpen(nextOpen);
-                  }}
+                  trigger={["click"]}
+                  placement="bottomRight"
                   disabled={isDeleted}
                 >
                   <div
@@ -213,7 +277,18 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                       </Text>
                     ) : (
                       <Text className="messages__message-text">
-                        {data.message || data.text || data.content || ""}
+                        {displayText}
+                        {isLong && (
+                          <span
+                            className="messages__message-read-more"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setIsExpanded((prev) => !prev);
+                            }}
+                          >
+                            {isExpanded ? "Ler menos" : "Ler mais"}
+                          </span>
+                        )}
                       </Text>
                     )}
 
@@ -228,13 +303,13 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                     )}
                   </div>
                 </Dropdown>
-              </Popover>
+              )}
 
               {!isDeleted && data.reaction && (
                 <div
                   className="messages__message-reaction-badge"
                   style={{
-                    [isIncoming ? "left" : "right"]: "8px",
+                    [isIncoming ? "left" : "right"]: "-2px",
                   }}
                   title="Reação"
                   onClick={(e) => {

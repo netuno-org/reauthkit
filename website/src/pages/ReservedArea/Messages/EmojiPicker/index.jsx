@@ -1,60 +1,34 @@
-import React, { useEffect, useRef } from "react";
-import data from "@emoji-mart/data";
-import { Picker } from "emoji-mart";
+import React from "react";
+import EmojiPickerReact from "emoji-picker-react";
+import ptEmojis from "emoji-picker-react/dist/data/emojis-pt";
 
-function EmojiPicker({ onEmojiSelect, onClickOutside, theme = "light", locale = "pt", ...props }) {
-  const ref = useRef(null);
-  const onSelectRef = useRef(onEmojiSelect);
-  const onClickOutsideRef = useRef(onClickOutside);
-  onSelectRef.current = onEmojiSelect;
-  onClickOutsideRef.current = onClickOutside;
+function EmojiPicker({ onEmojiSelect, onEmojiClick, width = "310px", height = "360px", ...props }) {
+  const handleEmojiClick = (emojiData, event) => {
+    if (onEmojiClick) {
+      onEmojiClick(emojiData, event);
+    }
+    if (onEmojiSelect) {
+      onEmojiSelect({
+        native: emojiData.emoji,
+        emoji: emojiData.emoji,
+        ...emojiData,
+      });
+    }
+  };
 
-  useEffect(() => {
-    const currentContainer = ref.current;
-    if (!currentContainer) return;
-
-    currentContainer.innerHTML = "";
-
-    const picker = new Picker({
-      data,
-      locale,
-      theme,
-      onEmojiSelect: (emoji) => {
-        if (onSelectRef.current) {
-          onSelectRef.current(emoji);
-        }
-      },
-      previewPosition: "none",
-      skinTonePosition: "search",
-      searchPosition: "top",
-      navPosition: "bottom",
-      perLine: 8,
-      maxFrequentRows: 1,
-      ...props,
-    });
-
-    currentContainer.appendChild(picker);
-
-    const handleDocumentClick = (e) => {
-      if (currentContainer && !currentContainer.contains(e.target)) {
-        if (onClickOutsideRef.current) {
-          onClickOutsideRef.current(e);
-        }
-      }
-    };
-
-    const timer = setTimeout(() => {
-      document.addEventListener("click", handleDocumentClick);
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      document.removeEventListener("click", handleDocumentClick);
-      currentContainer.innerHTML = "";
-    };
-  }, [theme, locale]);
-
-  return <div ref={ref} className="messages__emoji-mart-wrapper" />;
+  return (
+    <div className="messages__emoji-picker-react-wrapper" onClick={(e) => e.stopPropagation()}>
+      <EmojiPickerReact
+        onEmojiClick={handleEmojiClick}
+        emojiData={ptEmojis}
+        searchPlaceholder="Pesquisar..."
+        previewConfig={{ showPreview: false }}
+        width={width}
+        height={height}
+        {...props}
+      />
+    </div>
+  );
 }
 
 export default EmojiPicker;
