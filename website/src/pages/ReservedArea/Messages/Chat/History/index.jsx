@@ -89,6 +89,24 @@ function History({ friend, newSentMessage, onReply }) {
       },
     });
 
+    const listenerMessageReadRef = _ws.addListener({
+      method: "PUT",
+      service: "message/read",
+      success: ({ data, content }) => {
+        if (data.with === friend.uid) {
+          const readTimestamp = content?.read_at || new Date().toISOString();
+          setMessages((prev) =>
+            prev.map((msg) => {
+              if (content?.all || msg.uid === content?.uid) {
+                return { ...msg, read_at: msg.read_at || readTimestamp };
+              }
+              return msg;
+            })
+          );
+        }
+      },
+    });
+
     loadMessages(1, true);
 
     return () => {
@@ -96,6 +114,7 @@ function History({ friend, newSentMessage, onReply }) {
       _ws.removeListener(listenerMessageEditRef);
       _ws.removeListener(listenerMessageReactionRef);
       _ws.removeListener(listenerMessageDeleteRef);
+      _ws.removeListener(listenerMessageReadRef);
     };
   }, [friend]);
 

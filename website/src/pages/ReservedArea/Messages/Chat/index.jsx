@@ -4,12 +4,11 @@ import { SendOutlined, SmileOutlined, CloseOutlined, RollbackOutlined } from "@a
 import _ws from "@netuno/ws-client";
 
 import History from "./History";
+import EmojiPicker from "../EmojiPicker";
 import "./index.less";
 import globalNotification from "../../../../common/globalNotification.js";
 
 const { TextArea } = Input;
-
-const QUICK_EMOJIS = ["😀", "😂", "❤️", "👍", "🔥", "🎉", "😮", "🙏", "💯", "👋", "🥳", "✨"];
 
 function Chat({ friend }) {
   const [messageSubmitting, setMessageSubmitting] = useState(false);
@@ -65,9 +64,10 @@ function Chat({ friend }) {
     }
   };
 
-  const handleEmojiInsert = (emoji) => {
+  const handleEmojiSelect = (emoji) => {
+    const char = emoji.native || emoji.shortcodes || "";
     const currentVal = form.getFieldValue("message") || "";
-    const updatedVal = currentVal + emoji;
+    const updatedVal = currentVal + char;
     form.setFieldsValue({ message: updatedVal });
     setMessageText(updatedVal);
     setEmojiPopoverOpen(false);
@@ -81,18 +81,21 @@ function Chat({ friend }) {
     );
   }
 
+  const getGraphemeCount = (str) => {
+    if (!str) return 0;
+    if (typeof Intl !== "undefined" && Intl.Segmenter) {
+      const segmenter = new Intl.Segmenter("pt", { granularity: "grapheme" });
+      return [...segmenter.segment(str)].length;
+    }
+    return [...str].length;
+  };
+
   const emojiPickerContent = (
-    <div className="messages__input-emoji-grid">
-      {QUICK_EMOJIS.map((emoji) => (
-        <button
-          key={emoji}
-          type="button"
-          className="messages__input-emoji-btn"
-          onClick={() => handleEmojiInsert(emoji)}
-        >
-          {emoji}
-        </button>
-      ))}
+    <div className="messages__emoji-mart-popover">
+      <EmojiPicker
+        onEmojiSelect={handleEmojiSelect}
+        onClickOutside={() => setEmojiPopoverOpen(false)}
+      />
     </div>
   );
 
@@ -159,7 +162,7 @@ function Chat({ friend }) {
             </div>
 
             <div className="messages__chat__input-box__counter">
-              <span className="char-count">{messageText.length}</span>
+              <span className="char-count">{getGraphemeCount(messageText)}</span>
             </div>
           </div>
 

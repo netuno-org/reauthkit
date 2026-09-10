@@ -4,17 +4,19 @@ import { SmileOutlined, EditOutlined, DeleteOutlined, RollbackOutlined, CheckOut
 import dayjs from "dayjs";
 import _service from "@netuno/service-client";
 import useProfile from "../../../../../../common/useProfile.js";
+import EmojiPicker from "../../../EmojiPicker";
 
 import "./index.less";
 
 const { Text } = Typography;
 const { TextArea } = Input;
 
-const EMOJI_LIST = ["👍", "❤️", "😂", "😮", "😢", "🔥", "🎉", "👏", "🙏", "💯"];
+const QUICK_REACTIONS = ["👍", "❤️", "😂", "😮", "😢", "🔥", "🎉", "👏", "🙏", "💯"];
 
 function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClick }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(data.message || "");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [reactionPopoverOpen, setReactionPopoverOpen] = useState(false);
   const profile = useProfile();
 
@@ -35,7 +37,8 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
 
   const handleReactionSelect = (emoji) => {
     setReactionPopoverOpen(false);
-    const updated = data.reaction === emoji ? "" : emoji;
+    const char = typeof emoji === "string" ? emoji : emoji.native || emoji.shortcodes || "";
+    const updated = data.reaction === char ? "" : char;
     onReact && onReact(data.uid, updated);
   };
 
@@ -47,17 +50,11 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
   };
 
   const emojiPickerContent = (
-    <div className="messages__emoji-picker" onClick={(e) => e.stopPropagation()}>
-      {EMOJI_LIST.map((emoji) => (
-        <button
-          key={emoji}
-          type="button"
-          className={`messages__emoji-picker__btn ${data.reaction === emoji ? "messages__emoji-picker__btn--active" : ""}`}
-          onClick={() => handleReactionSelect(emoji)}
-        >
-          {emoji}
-        </button>
-      ))}
+    <div className="messages__emoji-mart-reaction-popover" onClick={(e) => e.stopPropagation()}>
+      <EmojiPicker
+        onEmojiSelect={handleReactionSelect}
+        onClickOutside={() => setReactionPopoverOpen(false)}
+      />
     </div>
   );
 
@@ -71,21 +68,19 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
             key: "react",
             label: "Reagir",
             icon: <SmileOutlined />,
-            children: EMOJI_LIST.map((emoji) => ({
-              key: `emoji_${emoji}`,
-              label: (
-                <span style={{ fontSize: "16px" }}>
-                  {emoji} {data.reaction === emoji ? "(Remover)" : ""}
-                </span>
-              ),
-              onClick: () => handleReactionSelect(emoji),
-            })),
+            onClick: () => {
+              setMenuOpen(false);
+              setReactionPopoverOpen(true);
+            },
           },
           {
             key: "reply",
             label: "Responder",
             icon: <RollbackOutlined />,
-            onClick: () => onReply && onReply(data),
+            onClick: () => {
+              setMenuOpen(false);
+              onReply && onReply(data);
+            },
           },
         ]
       : []),
@@ -98,6 +93,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                   label: "Editar",
                   icon: <EditOutlined />,
                   onClick: () => {
+                    setMenuOpen(false);
                     setEditText(data.message || "");
                     setIsEditing(true);
                   },
@@ -109,7 +105,10 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
             label: "Eliminar",
             icon: <DeleteOutlined />,
             danger: true,
-            onClick: () => onDelete && onDelete(data.uid),
+            onClick: () => {
+              setMenuOpen(false);
+              onDelete && onDelete(data.uid);
+            },
           },
         ]
       : []),
@@ -167,68 +166,85 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
             </div>
           ) : (
             <div className="messages__message-bubble-wrapper" style={{ position: "relative" }}>
-              <Dropdown menu={{ items: menuItems }} trigger={["click", "contextMenu"]} disabled={isDeleted}>
-                <div
-                  className={`messages__message-bubble ${
-                    isDeleted ? "messages__message-bubble--deleted" : ""
-                  }`}
-                  style={{ cursor: isDeleted ? "default" : "pointer" }}
-                >
-                  {!isDeleted && data.parent && (
-                    <div
-                      className="messages__message-reply-quote"
-                      onClick={handleQuoteClick}
-                      title="Ir para a mensagem original"
-                    >
-                      <span className="messages__message-reply-quote-sender">
-                        {data.parent.from || "Utilizador"}
-                      </span>
-                      <span className="messages__message-reply-quote-text">
-                        {data.parent.message}
-                      </span>
-                    </div>
-                  )}
-
-                  {isDeleted ? (
-                    <Text italic className="messages__message-text">
-                      Mensagem apagada
-                    </Text>
-                  ) : (
-                    <Text className="messages__message-text">
-                      {data.message || data.text || data.content || ""}
-                    </Text>
-                  )}
-
-                  {!isDeleted && (
-                    <div className="messages__message-bubble-meta">
-                      <span className="messages__message-bubble-meta-text">
-                        {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
-                        {data.edited_at ? " (editada)" : ""}
-                        {!isIncoming && data.read_at ? " (lida)" : ""}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </Dropdown>
-
-              {!isDeleted && data.reaction && (
-                <Popover
-                  content={emojiPickerContent}
-                  trigger="click"
-                  open={reactionPopoverOpen}
-                  onOpenChange={setReactionPopoverOpen}
-                  placement="top"
+              <Popover
+                content={emojiPickerContent}
+                trigger={[]}
+                open={reactionPopoverOpen}
+                onOpenChange={setReactionPopoverOpen}
+                placement={isIncoming ? "topRight" : "topLeft"}
+              >
+                <Dropdown
+                  menu={{ items: menuItems }}
+                  trigger={["click", "contextMenu"]}
+                  open={menuOpen && !reactionPopoverOpen}
+                  onOpenChange={(nextOpen) => {
+                    if (reactionPopoverOpen) {
+                      setMenuOpen(false);
+                      return;
+                    }
+                    setMenuOpen(nextOpen);
+                  }}
+                  disabled={isDeleted}
                 >
                   <div
-                    className="messages__message-reaction-badge"
-                    style={{
-                      [isIncoming ? "left" : "right"]: "8px",
-                    }}
-                    title="Reação"
+                    className={`messages__message-bubble ${
+                      isDeleted ? "messages__message-bubble--deleted" : ""
+                    }`}
+                    style={{ cursor: isDeleted ? "default" : "pointer" }}
                   >
-                    <span>{data.reaction}</span>
+                    {!isDeleted && data.parent && (
+                      <div
+                        className="messages__message-reply-quote"
+                        onClick={handleQuoteClick}
+                        title="Ir para a mensagem original"
+                      >
+                        <span className="messages__message-reply-quote-sender">
+                          {data.parent.from || "Utilizador"}
+                        </span>
+                        <span className="messages__message-reply-quote-text">
+                          {data.parent.message}
+                        </span>
+                      </div>
+                    )}
+
+                    {isDeleted ? (
+                      <Text italic className="messages__message-text">
+                        Mensagem apagada
+                      </Text>
+                    ) : (
+                      <Text className="messages__message-text">
+                        {data.message || data.text || data.content || ""}
+                      </Text>
+                    )}
+
+                    {!isDeleted && (
+                      <div className="messages__message-bubble-meta">
+                        <span className="messages__message-bubble-meta-text">
+                          {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
+                          {data.edited_at ? " (editada)" : ""}
+                          {!isIncoming && data.read_at ? " (lida)" : ""}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </Popover>
+                </Dropdown>
+              </Popover>
+
+              {!isDeleted && data.reaction && (
+                <div
+                  className="messages__message-reaction-badge"
+                  style={{
+                    [isIncoming ? "left" : "right"]: "8px",
+                  }}
+                  title="Reação"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuOpen(false);
+                    setReactionPopoverOpen((prev) => !prev);
+                  }}
+                >
+                  <span>{data.reaction}</span>
+                </div>
               )}
             </div>
           )}

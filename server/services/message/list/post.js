@@ -25,6 +25,14 @@ if (page === 1) {
       _val.map()
         .set("service", "friend/list")
     );
+    profile.wsSendAsService(
+      dbProfileFriend,
+      _val.map()
+        .set("method", "PUT")
+        .set("service", "message/read")
+        .set("data", _val.map().set("with", dbProfileLogged.getString("uid")))
+        .set("content", _val.map().set("all", true).set("read_at", _db.timestamp()))
+    );
   }
 }
 
