@@ -48,6 +48,13 @@ profile.wsSendAsService(
     )
 );
 
+profile.wsSendService(
+  dbProfileTo,
+  _val.map()
+    .set("service", "message/unread/count")
+    .set("content", _val.map().set("total", message.getUnreadTotal(dbProfileTo)))
+);
+
 _out.json(
   _val.map()
     .set("result", true)

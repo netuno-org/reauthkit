@@ -8,6 +8,7 @@ import React, {useEffect, useState} from "react";
 import useProfile from "../../common/useProfile.js";
 
 import HeaderUserInfo from "../../components/HeaderUserInfo";
+import HeaderMessages from "../../components/HeaderMessages";
 
 import "./index.less";
 
@@ -47,32 +48,35 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                         <Button type="primary">Iniciar sessão</Button>
                     </Link>
                     : _auth.isLogged() &&
-                    <Menu
-                        mode="horizontal"
-                        onClick={onUserMenuClick}
-                        selectedKeys={menuKeysSelected}
-                        items={[
-                            {
-                                key: "profile",
-                                label: <HeaderUserInfo />,
-                                className: "profile-menu",
-                                popupClassName: "profile-menu-popup",
-                                children: [
-                                    {
-                                        key: "profileEdit",
-                                        icon: <EditOutlined />,
-                                        label: 'Editar Perfil'
-                                    },
-                                    {
-                                        key: "logout",
-                                        icon: <LogoutOutlined />,
-                                        danger: true,
-                                        label: 'Terminar Sessão'
-                                    }
-                                ]
-                            }
-                        ]}
-                    />
+                    <div className="header-base__right">
+                        <HeaderMessages />
+                        <Menu
+                            mode="horizontal"
+                            onClick={onUserMenuClick}
+                            selectedKeys={menuKeysSelected}
+                            items={[
+                                {
+                                    key: "profile",
+                                    label: <HeaderUserInfo />,
+                                    className: "profile-menu",
+                                    popupClassName: "profile-menu-popup",
+                                    children: [
+                                        {
+                                            key: "profileEdit",
+                                            icon: <EditOutlined />,
+                                            label: 'Editar Perfil'
+                                        },
+                                        {
+                                            key: "logout",
+                                            icon: <LogoutOutlined />,
+                                            danger: true,
+                                            label: 'Terminar Sessão'
+                                        }
+                                    ]
+                                }
+                            ]}
+                        />
+                    </div>
             }
         </Header>
     );

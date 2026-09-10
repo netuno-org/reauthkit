@@ -19,6 +19,7 @@ if (page === 1) {
       dbProfileLogged,
       _val.map()
         .set("service", "message/unread/count")
+        .set("content", _val.map().set("total", message.getUnreadTotal(dbProfileLogged)))
     );
     profile.wsSendService(
       dbProfileLogged,

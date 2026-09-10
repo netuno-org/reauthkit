@@ -14,6 +14,17 @@ if (dbMessage && dbProfileFrom) {
   `, dbMessage.getInt("id"), dbProfileFrom.getInt("id"));
 
   if (updatedCount > 0) {
+    profile.wsSendService(
+      dbProfileLogged,
+      _val.map()
+        .set("service", "message/unread/count")
+        .set("content", _val.map().set("total", message.getUnreadTotal(dbProfileLogged)))
+    );
+    profile.wsSendService(
+      dbProfileLogged,
+      _val.map()
+        .set("service", "friend/list")
+    );
     profile.wsSendAsService(
       dbProfileFrom,
       _val.map()

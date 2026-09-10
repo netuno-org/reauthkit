@@ -18,7 +18,7 @@ const menuItems = [
   },
   {
     key: "messages",
-    label: <><Tag color="#ff0000">3</Tag> Mensagens</>,
+    label: "Mensagens",
     icon: <MessageOutlined />,
     link: "/messages"
   },
