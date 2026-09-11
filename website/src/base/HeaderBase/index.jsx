@@ -9,6 +9,7 @@ import useProfile from "../../common/useProfile.js";
 
 import HeaderUserInfo from "../../components/HeaderUserInfo";
 import HeaderMessages from "../../components/HeaderMessages";
+import HeaderNotifications from "../../components/HeaderNotifications";
 
 import "./index.less";
 
@@ -53,6 +54,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                     </Link>
                     : _auth.isLogged() &&
                     <div className="header-base__right">
+                        <HeaderNotifications />
                         <HeaderMessages />
                         <Menu
                             mode="horizontal"

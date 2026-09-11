@@ -41,25 +41,34 @@ class Config {
 
   static push() {
     const { config } = window.reauthkit;
-    if ("serviceWorker" in navigator) {
-      send().catch(err => console.error(err));
+    if (!config?.push?.key) {
+      return;
+    }
+    if ("serviceWorker" in navigator && "Notification" in window) {
+      if (Notification.permission === "denied") {
+        return;
+      }
+      send().catch(() => {});
     }
 
     async function send() {
-      navigator.serviceWorker.register("/push-worker.js", {
-        scope: "/"
-      }).then((registration) => {
-        registration.pushManager.subscribe({
+      try {
+        const registration = await navigator.serviceWorker.register("/push-worker.js", {
+          scope: "/"
+        });
+        const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(config.push.key)
-        }).then((subscription) => {
+        });
+        if (subscription) {
           _service({
             method: "POST",
             url: "notification/subscribe",
             data: subscription,
-          })
-        });
-      });
+          });
+        }
+      } catch (e) {
+      }
     }
 
     function urlBase64ToUint8Array(base64String) {

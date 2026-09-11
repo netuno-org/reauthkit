@@ -60,7 +60,7 @@ notification.create(
   dbProfileTo,
   "message",
   dbProfileFrom.getString("name"),
-  inputMessage,
+  "Recebeu uma mensagem.",
   _val.map()
     .set("with", dbProfileFrom.getString("uid"))
     .set("type", "message")

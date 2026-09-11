@@ -14,6 +14,7 @@ import ProfileView from "./profile/View";
 import Preferences from "./profile/Preferences";
 import Dashboard from "./Dashboard";
 import Messages from "./Messages";
+import Notifications from "./Notifications";
 import OtherPage from "./OtherPage";
 
 import "./index.less";
@@ -80,6 +81,9 @@ function ReservedArea() {
     }
     if (location.pathname === "/messages") {
       return <Messages/>;
+    }
+    if (location.pathname === "/notifications") {
+      return <Notifications/>;
     }
     if (location.pathname === "/other-page") {
       return <OtherPage/>;
