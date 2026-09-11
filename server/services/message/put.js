@@ -60,6 +60,19 @@ if (dbProfileTo) {
   );
 }
 
+profile.wsSendAsService(
+  dbProfileLogged,
+  _val.map()
+    .set("method", "PUT")
+    .set("service", "message/edit")
+    .set(
+      "data",
+      _val.map()
+        .set("with", dbProfileTo ? dbProfileTo.getString("uid") : "")
+    )
+    .set("content", formattedMessage)
+);
+
 _out.json(
   _val.map().set("result", true).set("content", formattedMessage)
 );

@@ -67,6 +67,14 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
   const sentMoment = data.sent_at ? dayjs(data.sent_at) : null;
   const canEdit = !isIncoming && !isDeleted && sentMoment && dayjs().diff(sentMoment, "hour") < 1;
 
+  const formatMessageMeta = () => {
+    const timeStr = sentMoment ? sentMoment.format("HH:mm") : "";
+    const isRead = !isIncoming && Boolean(data.read_at);
+    const prefix = isRead ? `Lida às ${timeStr}` : timeStr;
+    const editedSuffix = data.edited_at ? " (editada)" : "";
+    return `${prefix}${editedSuffix}`;
+  };
+
   const menuItems = [
     ...(isIncoming && !isDeleted
       ? [
@@ -234,9 +242,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                       {!isDeleted && (
                         <div className="messages__message-bubble-meta">
                           <span className="messages__message-bubble-meta-text">
-                            {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
-                            {data.edited_at ? " (editada)" : ""}
-                            {!isIncoming && data.read_at ? " (lida)" : ""}
+                            {formatMessageMeta()}
                           </span>
                         </div>
                       )}
@@ -295,9 +301,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                     {!isDeleted && (
                       <div className="messages__message-bubble-meta">
                         <span className="messages__message-bubble-meta-text">
-                          {data.sent_at ? dayjs(data.sent_at).format("HH:mm") : ""}
-                          {data.edited_at ? " (editada)" : ""}
-                          {!isIncoming && data.read_at ? " (lida)" : ""}
+                          {formatMessageMeta()}
                         </span>
                       </div>
                     )}
