@@ -11,6 +11,7 @@ import useWS from "../../common/useWS.js";
 import NotFound from "../NotFound";
 import ProfileEdit from "./profile/Edit";
 import ProfileView from "./profile/View";
+import Preferences from "./profile/Preferences";
 import Dashboard from "./Dashboard";
 import Messages from "./Messages";
 import OtherPage from "./OtherPage";
@@ -67,6 +68,9 @@ function ReservedArea() {
     }
     if (location.pathname === "/profile/edit") {
       return <ProfileEdit/>;
+    }
+    if (location.pathname === "/profile/preferences") {
+      return <Preferences/>;
     }
     if (location.pathname === "/profile/view") {
       return <ProfileView/>;

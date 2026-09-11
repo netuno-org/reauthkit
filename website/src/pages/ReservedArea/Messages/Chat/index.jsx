@@ -22,7 +22,9 @@ function Chat({ friend, onClose }) {
     setReplyingTo(null);
     setMessageText("");
     setNewSentMessage(null);
-    form.resetFields();
+    if (friend) {
+      form.resetFields();
+    }
   }, [friend]);
 
   const onFinish = ({ message }) => {

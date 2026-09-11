@@ -8,6 +8,19 @@ export default {
           .and("code").equal(typeCode)
       ).first();
 
+    if (!dbType) return;
+
+    const dbSetting = _db.form("notification_settings")
+      .where(
+        _db.where("profile_id").equal(dbProfile.getInt("id"))
+          .and("type_id").equal(dbType.getInt("id"))
+      ).first();
+
+    const isExplicitlyDisabled = dbSetting && dbSetting.getBoolean("active", true) === false;
+    if (isExplicitlyDisabled) {
+      return;
+    }
+
     const dbSubscriptions = _db.form("notification_subscription")
       .where(
         _db.where("active").equal(true)
@@ -49,5 +62,26 @@ export default {
           .update();
       }
     }
+  },
+  isEnabled: (dbProfile, typeCode) => {
+    if (!dbProfile) return true;
+    const dbType = _db.form("notification_type")
+      .where(
+        _db.where("active").equal(true)
+          .and("code").equal(typeCode)
+      ).first();
+
+    if (!dbType) return true;
+
+    const dbSetting = _db.form("notification_settings")
+      .where(
+        _db.where("profile_id").equal(dbProfile.getInt("id"))
+          .and("type_id").equal(dbType.getInt("id"))
+      ).first();
+
+    if (dbSetting && dbSetting.getBoolean("active", true) === false) {
+      return false;
+    }
+    return true;
   }
 };

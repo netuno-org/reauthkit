@@ -2,7 +2,7 @@ import classNames from "classnames";
 import _auth from "@netuno/auth-client";
 import {Link, useNavigate, useLocation} from "react-router-dom";
 import {Button, Layout, Menu} from "antd";
-import {EditOutlined, LogoutOutlined} from "@ant-design/icons";
+import {EditOutlined, LogoutOutlined, SettingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 
 import useProfile from "../../common/useProfile.js";
@@ -23,6 +23,8 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     useEffect(() => {
         if (location.pathname === '/profile/edit') {
             setMenuKeysSelected(['profileEdit']);
+        } else if (location.pathname === '/profile/preferences') {
+            setMenuKeysSelected(['profilePreferences']);
         } else {
             setMenuKeysSelected([]);
         }
@@ -30,6 +32,8 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     function onUserMenuClick({key}) {
         if (key === "profileEdit") {
             navigate("/profile/edit");
+        } else if (key === "profilePreferences") {
+            navigate("/profile/preferences");
         } else if (key === "logout") {
             profile.unload();
         }
@@ -65,6 +69,11 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                                             key: "profileEdit",
                                             icon: <EditOutlined />,
                                             label: 'Editar Perfil'
+                                        },
+                                        {
+                                            key: "profilePreferences",
+                                            icon: <SettingOutlined />,
+                                            label: 'Preferências'
                                         },
                                         {
                                             key: "logout",

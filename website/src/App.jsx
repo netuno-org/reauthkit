@@ -132,6 +132,7 @@ export default function App() {
                 {/** // PUBLIC **/}
                 {/** RESERVED AREA **/}
                 <Route path="/profile/edit" element={<ReservedArea />} />
+                <Route path="/profile/preferences" element={<ReservedArea />} />
                 <Route path="/profile/view" element={<ReservedArea />} />
                 <Route path="/dashboard" element={<ReservedArea />} />
                 <Route path="/messages" element={<ReservedArea />} />

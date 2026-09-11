@@ -7,10 +7,19 @@ export default {
       .first();
   },
   getUnreadTotal: (dbProfile) => {
+    if (!dbProfile) return 0;
+    const dbDisabledSetting = _db.queryFirst(`
+      SELECT ns.id FROM notification_settings ns
+      INNER JOIN notification_type nt ON ns.type_id = nt.id
+      WHERE ns.profile_id = ? AND nt.code = 'message' AND ns.active = false
+    `, dbProfile.getInt("id"));
+    if (dbDisabledSetting) {
+      return 0;
+    }
     const dbMessagesUnread = _db.queryFirst(`
       SELECT COUNT(id) AS total FROM message WHERE to_profile_id = ? AND read_at IS NULL
-    `, dbProfile.getInt("id"))
-    return dbMessagesUnread.getInt("total", 0)
+    `, dbProfile.getInt("id"));
+    return dbMessagesUnread ? dbMessagesUnread.getInt("total", 0) : 0;
   },
   toData: (dbProfileFrom, dbProfileTo, dbMessage) => {
     const data = _val.map()
@@ -31,7 +40,10 @@ export default {
         .where(_db.where("id").equal(parentId))
         .first();
       if (dbParentMessage) {
-        const dbParentProfile = _db.get("profile", dbParentMessage.getInt("from_profile_id"));
+        const parentFromId = dbParentMessage.getInt("from_profile_id", 0);
+        const dbParentProfile = parentFromId > 0
+          ? _db.form("profile").where(_db.where("id").equal(parentFromId)).first()
+          : null;
         data.set("parent", _val.map()
           .set("uid", dbParentMessage.getString("uid"))
           .set("message", dbParentMessage.getString("message"))

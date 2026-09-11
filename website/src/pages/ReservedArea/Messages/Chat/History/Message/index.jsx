@@ -181,7 +181,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                     setReactionPopoverOpen(visible);
                   }}
                   placement="top"
-                  destroyTooltipOnHide
+                  destroyOnHidden
                 >
                   <Dropdown
                     menu={{ items: menuItems }}

@@ -1,12 +1,23 @@
-import {_db, _val, _out, _req} from "@netuno/server-types";
+import {_db, _val, _out, _req, _exec} from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
 
 const dbProfileLogged = profile.getLogged();
-const dbProfileFriend = profile.getByUID(_req.getString("with"));
+const withUid = _req.getString("with");
+const dbProfileFriend = withUid ? profile.getByUID(withUid) : null;
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 10);
+
+if (!dbProfileLogged || !dbProfileFriend) {
+  _out.json(
+    _val.map()
+      .set("items", _val.list())
+      .set("page", 1)
+      .set("total", 0)
+  );
+  _exec.stop();
+}
 
 if (page === 1) {
   const totalMessagesMarkedAsRead = _db.execute(`

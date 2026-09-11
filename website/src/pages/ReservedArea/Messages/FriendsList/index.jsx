@@ -21,9 +21,6 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
       },
       success: (data) => {
         setList(data.content || []);
-        if (data.content && data.content.length > 0 && !selectedFriend) {
-          onFriendSelected && onFriendSelected(data.content[0]);
-        }
       },
       fail: (error) => {
         console.error(error);
