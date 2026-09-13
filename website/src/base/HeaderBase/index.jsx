@@ -2,7 +2,7 @@ import classNames from "classnames";
 import _auth from "@netuno/auth-client";
 import {Link, useNavigate, useLocation} from "react-router-dom";
 import {Button, Layout, Dropdown} from "antd";
-import {EditOutlined, LogoutOutlined, SettingOutlined} from "@ant-design/icons";
+import {EditOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 
 import useProfile from "../../common/useProfile.js";
@@ -22,16 +22,22 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     const profile = useProfile();
 
     useEffect(() => {
-        if (location.pathname === '/profile/edit') {
-            setMenuKeysSelected(['profileEdit']);
-        } else if (location.pathname === '/profile/preferences') {
-            setMenuKeysSelected(['profilePreferences']);
+        if (location.pathname === '/profile/view' || location.pathname.startsWith('/profile/')) {
+            if (location.pathname === '/profile/edit') {
+                setMenuKeysSelected(['profileEdit']);
+            } else if (location.pathname === '/profile/preferences') {
+                setMenuKeysSelected(['profilePreferences']);
+            } else {
+                setMenuKeysSelected(['profileView']);
+            }
         } else {
             setMenuKeysSelected([]);
         }
     }, [location]);
     function onUserMenuClick({key}) {
-        if (key === "profileEdit") {
+        if (key === "profileView") {
+            navigate("/profile/view");
+        } else if (key === "profileEdit") {
             navigate("/profile/edit");
         } else if (key === "profilePreferences") {
             navigate("/profile/preferences");

@@ -16,6 +16,7 @@ import Dashboard from "./Dashboard";
 import Messages from "./Messages";
 import Notifications from "./Notifications";
 import OtherPage from "./OtherPage";
+import People from "./People";
 
 import "./index.less";
 
@@ -67,13 +68,13 @@ function ReservedArea() {
     if (profile.data == null) {
       return null; // On logout reaches here.
     }
-    if (location.pathname === "/profile/edit") {
-      return <ProfileEdit/>;
-    }
-    if (location.pathname === "/profile/preferences") {
-      return <Preferences/>;
-    }
-    if (location.pathname === "/profile/view") {
+    if (location.pathname === "/profile/view" || location.pathname.startsWith("/profile/")) {
+      if (location.pathname === "/profile/edit") {
+        return <ProfileEdit/>;
+      }
+      if (location.pathname === "/profile/preferences") {
+        return <Preferences/>;
+      }
       return <ProfileView/>;
     }
     if (location.pathname === "/dashboard") {
@@ -84,6 +85,9 @@ function ReservedArea() {
     }
     if (location.pathname === "/notifications") {
       return <Notifications/>;
+    }
+    if (location.pathname === "/people") {
+      return <People/>;
     }
     if (location.pathname === "/other-page") {
       return <OtherPage/>;

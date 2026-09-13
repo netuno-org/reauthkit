@@ -1,5 +1,5 @@
 import _auth from "@netuno/auth-client";
-import { MenuOutlined, DashboardOutlined, BlockOutlined, MessageOutlined, BellOutlined, CloseOutlined } from "@ant-design/icons";
+import { MenuOutlined, DashboardOutlined, BlockOutlined, MessageOutlined, BellOutlined, CloseOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
 import { Menu, Layout, Drawer, Button, Grid, Tag } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -21,6 +21,22 @@ const menuItems = [
     key: "divider-1"
   },
   {
+    key: "profile-view",
+    label: "Meu Perfil",
+    icon: <UserOutlined />,
+    link: "/profile/view"
+  },
+  {
+    key: "people",
+    label: "Pessoas",
+    icon: <TeamOutlined />,
+    link: "/people"
+  },
+  {
+    type: "divider",
+    key: "divider-2"
+  },
+  {
     key: "messages",
     label: "Mensagens",
     icon: <MessageOutlined />,
@@ -34,7 +50,7 @@ const menuItems = [
   },
   {
     type: "divider",
-    key: "divider-2"
+    key: "divider-3"
   },
   {
     key: "other-page",

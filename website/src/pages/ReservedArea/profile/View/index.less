@@ -1,7 +1,88 @@
+@import '../../../../styles/variables.less';
 
-.other-page {
-  padding: 0 20px;
-  > h1 {
-    margin-top: 0;
+.profile-view-page {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 0 32px 0;
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+  }
+
+  &__back {
+    margin-bottom: 16px;
+  }
+
+  &__card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f0f0f0;
+    padding: 24px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+
+    @media (max-width: @mobile-width) {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  &__avatar-wrapper {
+    flex-shrink: 0;
+  }
+
+  &__avatar {
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    background: #f0f2f5;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  &__name-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    @media (max-width: @mobile-width) {
+      justify-content: center;
+    }
+  }
+
+  &__name {
+    margin: 0 !important;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1f1f1f;
+  }
+
+  &__username {
+    margin: 4px 0 0 0 !important;
+    color: #8c8c8c;
+    font-size: 14px;
+  }
+
+  &__actions {
+    flex-shrink: 0;
+
+    @media (max-width: @mobile-width) {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
   }
 }
