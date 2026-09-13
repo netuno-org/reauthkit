@@ -17,6 +17,7 @@ import Messages from "./Messages";
 import Notifications from "./Notifications";
 import OtherPage from "./OtherPage";
 import People from "./People";
+import Friends from "./Friends";
 
 import "./index.less";
 
@@ -85,6 +86,9 @@ function ReservedArea() {
     }
     if (location.pathname === "/notifications") {
       return <Notifications/>;
+    }
+    if (location.pathname === "/friends") {
+      return <Friends/>;
     }
     if (location.pathname === "/people") {
       return <People/>;

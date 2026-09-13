@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Typography, Card, Avatar, Button, Spin, Empty } from "antd";
-import { UserOutlined, ArrowLeftOutlined, EditOutlined, MessageOutlined } from "@ant-design/icons";
+import { Typography, Card, Avatar, Button, Spin, Empty, Popconfirm } from "antd";
+import {
+  UserOutlined,
+  ArrowLeftOutlined,
+  EditOutlined,
+  MessageOutlined,
+  UserAddOutlined,
+  UserDeleteOutlined,
+  ClockCircleOutlined
+} from "@ant-design/icons";
 import _service from "@netuno/service-client";
 
 import useProfile from "../../../../common/useProfile.js";
@@ -16,11 +24,12 @@ function ProfileView() {
   const myProfile = useProfile();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
 
   const targetUid = uid || myProfile.data?.uid;
   const isMyProfile = !uid || uid === myProfile.data?.uid;
 
-  useEffect(() => {
+  const loadProfile = () => {
     if (!targetUid) return;
 
     setLoading(true);
@@ -44,7 +53,135 @@ function ProfileView() {
         });
       },
     });
+  };
+
+  useEffect(() => {
+    loadProfile();
   }, [targetUid]);
+
+  const handleSendFriendRequest = () => {
+    if (!profileData) return;
+    setActionLoading(true);
+    _service({
+      method: "POST",
+      url: "/friend",
+      data: { uid: profileData.uid },
+      success: (response) => {
+        setActionLoading(false);
+        if (response.json && response.json.result) {
+          setProfileData((prev) => ({
+            ...prev,
+            friendship_status: response.json.status || "pending_sent"
+          }));
+          globalNotification.success({
+            title: "Pedido de Amizade",
+            description: "Pedido de amizade enviado com sucesso.",
+          });
+        }
+      },
+      fail: (e) => {
+        setActionLoading(false);
+        console.error("Erro ao enviar pedido de amizade:", e);
+        globalNotification.serviceFail({
+          title: "Amizade",
+          description: "Não foi possível enviar o pedido de amizade.",
+        });
+      }
+    });
+  };
+
+  const handleAcceptFriendRequest = () => {
+    if (!profileData) return;
+    setActionLoading(true);
+    _service({
+      method: "PUT",
+      url: "/friend",
+      data: { uid: profileData.uid },
+      success: (response) => {
+        setActionLoading(false);
+        if (response.json && response.json.result) {
+          setProfileData((prev) => ({
+            ...prev,
+            friendship_status: "friend"
+          }));
+          globalNotification.success({
+            title: "Amizade",
+            description: "Pedido de amizade aceite com sucesso.",
+          });
+        }
+      },
+      fail: (e) => {
+        setActionLoading(false);
+        console.error("Erro ao aceitar pedido de amizade:", e);
+        globalNotification.serviceFail({
+          title: "Amizade",
+          description: "Não foi possível aceitar o pedido de amizade.",
+        });
+      }
+    });
+  };
+
+  const handleRemoveFriend = () => {
+    if (!profileData) return;
+    setActionLoading(true);
+    _service({
+      method: "DELETE",
+      url: "/friend",
+      data: { uid: profileData.uid },
+      success: (response) => {
+        setActionLoading(false);
+        if (response.json && response.json.result) {
+          setProfileData((prev) => ({
+            ...prev,
+            friendship_status: "none"
+          }));
+          globalNotification.success({
+            title: "Amizade",
+            description: "Amigo removido com sucesso.",
+          });
+        }
+      },
+      fail: (e) => {
+        setActionLoading(false);
+        console.error("Erro ao remover amigo:", e);
+        globalNotification.serviceFail({
+          title: "Amizade",
+          description: "Não foi possível remover o amigo.",
+        });
+      }
+    });
+  };
+
+  const handleCancelFriendRequest = () => {
+    if (!profileData) return;
+    setActionLoading(true);
+    _service({
+      method: "DELETE",
+      url: "/friend",
+      data: { uid: profileData.uid },
+      success: (response) => {
+        setActionLoading(false);
+        if (response.json && response.json.result) {
+          setProfileData((prev) => ({
+            ...prev,
+            friendship_status: "none"
+          }));
+          globalNotification.success({
+            title: "Pedido de Amizade",
+            description: "Pedido de amizade cancelado.",
+          });
+        }
+      },
+      fail: (e) => {
+        setActionLoading(false);
+        console.error("Erro ao cancelar pedido de amizade:", e);
+        globalNotification.serviceFail({
+          title: "Amizade",
+          description: "Não foi possível cancelar o pedido de amizade.",
+        });
+      }
+    });
+  };
 
   if (loading) {
     return (
@@ -72,6 +209,102 @@ function ProfileView() {
   const avatarUrl = profileData.avatar
     ? _service.url(`/profile/avatar?uid=${profileData.uid}&${new Date().getTime()}`)
     : "/images/profile-default.png";
+
+  const renderActions = () => {
+    if (isMyProfile || profileData.friendship_status === "self") {
+      return (
+        <Button
+          type="primary"
+          icon={<EditOutlined />}
+          onClick={() => navigate("/profile/edit")}
+        >
+          Editar Perfil
+        </Button>
+      );
+    }
+
+    if (profileData.friendship_status === "friend") {
+      return (
+        <div className="profile-view-page__action-group">
+          <Button
+            type="primary"
+            icon={<MessageOutlined />}
+            onClick={() => navigate("/messages")}
+          >
+            Mandar Mensagem
+          </Button>
+          <Popconfirm
+            title="Remover Amizade"
+            description="Tem a certeza que deseja remover este amigo?"
+            okText="Remover"
+            cancelText="Cancelar"
+            okButtonProps={{ danger: true }}
+            onConfirm={handleRemoveFriend}
+          >
+            <Button
+              danger
+              icon={<UserDeleteOutlined />}
+              loading={actionLoading}
+            >
+              Remover Amigo
+            </Button>
+          </Popconfirm>
+        </div>
+      );
+    }
+
+    if (profileData.friendship_status === "pending_sent") {
+      return (
+        <div className="profile-view-page__action-group">
+          <Button disabled icon={<ClockCircleOutlined />}>
+            Pedido Enviado
+          </Button>
+          <Button
+            danger
+            type="text"
+            onClick={handleCancelFriendRequest}
+            loading={actionLoading}
+          >
+            Cancelar Pedido
+          </Button>
+        </div>
+      );
+    }
+
+    if (profileData.friendship_status === "pending_received") {
+      return (
+        <div className="profile-view-page__action-group">
+          <Button
+            type="primary"
+            icon={<UserAddOutlined />}
+            onClick={handleAcceptFriendRequest}
+            loading={actionLoading}
+            className="profile-view-page__btn-accept"
+          >
+            Aceitar Pedido
+          </Button>
+          <Button
+            danger
+            onClick={handleCancelFriendRequest}
+            loading={actionLoading}
+          >
+            Recusar
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <Button
+        type="primary"
+        icon={<UserAddOutlined />}
+        onClick={handleSendFriendRequest}
+        loading={actionLoading}
+      >
+        Mandar Pedido de Amizade
+      </Button>
+    );
+  };
 
   return (
     <div className="profile-view-page">
@@ -104,23 +337,7 @@ function ProfileView() {
           </div>
 
           <div className="profile-view-page__actions">
-            {isMyProfile ? (
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={() => navigate("/profile/edit")}
-              >
-                Editar Perfil
-              </Button>
-            ) : (
-              <Button
-                type="primary"
-                icon={<MessageOutlined />}
-                onClick={() => navigate("/messages")}
-              >
-                Enviar Mensagem
-              </Button>
-            )}
+            {renderActions()}
           </div>
         </div>
       </Card>

@@ -85,4 +85,26 @@
       margin-top: 8px;
     }
   }
+
+  &__action-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    @media (max-width: @mobile-width) {
+      justify-content: center;
+    }
+  }
+
+  &__btn-accept {
+    background-color: #52c41a !important;
+    border-color: #52c41a !important;
+    color: #ffffff !important;
+
+    &:hover {
+      background-color: #73d13d !important;
+      border-color: #73d13d !important;
+    }
+  }
 }

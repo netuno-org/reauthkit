@@ -24,6 +24,7 @@ const dbFriends = _db.query(`
             GROUP BY to_profile_id, from_profile_id
         ) AS msg ON msg.from_profile_id = friend.friend_profile_id
     WHERE friend.profile_id = ?
+        AND friend.accepted_on IS NOT NULL
     ORDER BY msg.latest_message DESC NULLS LAST
 `, dbProfile.getInt("id"), dbProfile.getInt("id"));
 

@@ -1,5 +1,5 @@
 import _auth from "@netuno/auth-client";
-import { MenuOutlined, DashboardOutlined, BlockOutlined, MessageOutlined, BellOutlined, CloseOutlined, UserOutlined, TeamOutlined } from "@ant-design/icons";
+import { MenuOutlined, DashboardOutlined, BlockOutlined, MessageOutlined, BellOutlined, CloseOutlined, UserOutlined, TeamOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Menu, Layout, Drawer, Button, Grid, Tag } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -25,6 +25,12 @@ const menuItems = [
     label: "Meu Perfil",
     icon: <UserOutlined />,
     link: "/profile/view"
+  },
+  {
+    key: "friends",
+    label: "Amigos",
+    icon: <UsergroupAddOutlined />,
+    link: "/friends"
   },
   {
     key: "people",
