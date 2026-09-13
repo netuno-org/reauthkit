@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button } from "antd";
+import { Badge } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import _ws from "@netuno/ws-client";
@@ -63,12 +63,7 @@ function HeaderMessages() {
         offset={[-2, 6]}
         color="green"
       >
-        <Button
-          type="text"
-          shape="circle"
-          icon={<MessageOutlined style={{ fontSize: "20px", color: "#1890ff" }} />}
-          className="header-messages__btn"
-        />
+        <MessageOutlined className="header-messages__icon" />
       </Badge>
     </div>
   );

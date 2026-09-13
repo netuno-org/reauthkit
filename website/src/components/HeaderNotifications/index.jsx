@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button } from "antd";
+import { Badge } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import _ws from "@netuno/ws-client";
@@ -70,12 +70,7 @@ function HeaderNotifications() {
         offset={[-2, 6]}
         color="green"
       >
-        <Button
-          type="text"
-          shape="circle"
-          icon={<BellOutlined style={{ fontSize: "20px", color: "#1890ff" }} />}
-          className="header-notifications__btn"
-        />
+        <BellOutlined className="header-notifications__icon" />
       </Badge>
     </div>
   );

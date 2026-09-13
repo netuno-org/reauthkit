@@ -17,6 +17,10 @@ const menuItems = [
     link: "/dashboard"
   },
   {
+    type: "divider",
+    key: "divider-1"
+  },
+  {
     key: "messages",
     label: "Mensagens",
     icon: <MessageOutlined />,
@@ -27,6 +31,10 @@ const menuItems = [
     label: "Notificações",
     icon: <BellOutlined />,
     link: "/notifications"
+  },
+  {
+    type: "divider",
+    key: "divider-2"
   },
   {
     key: "other-page",

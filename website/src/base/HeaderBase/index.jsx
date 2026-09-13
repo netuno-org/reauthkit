@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import _auth from "@netuno/auth-client";
 import {Link, useNavigate, useLocation} from "react-router-dom";
-import {Button, Layout, Menu} from "antd";
+import {Button, Layout, Dropdown} from "antd";
 import {EditOutlined, LogoutOutlined, SettingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 
@@ -54,39 +54,39 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                     </Link>
                     : _auth.isLogged() &&
                     <div className="header-base__right">
-                        <HeaderNotifications />
                         <HeaderMessages />
-                        <Menu
-                            mode="horizontal"
-                            onClick={onUserMenuClick}
-                            selectedKeys={menuKeysSelected}
-                            items={[
-                                {
-                                    key: "profile",
-                                    label: <HeaderUserInfo />,
-                                    className: "profile-menu",
-                                    popupClassName: "profile-menu-popup",
-                                    children: [
-                                        {
-                                            key: "profileEdit",
-                                            icon: <EditOutlined />,
-                                            label: 'Editar Perfil'
-                                        },
-                                        {
-                                            key: "profilePreferences",
-                                            icon: <SettingOutlined />,
-                                            label: 'Preferências'
-                                        },
-                                        {
-                                            key: "logout",
-                                            icon: <LogoutOutlined />,
-                                            danger: true,
-                                            label: 'Terminar Sessão'
-                                        }
-                                    ]
-                                }
-                            ]}
-                        />
+                        <HeaderNotifications />
+                        <Dropdown
+                            menu={{
+                                items: [
+                                    {
+                                        key: "profileEdit",
+                                        icon: <EditOutlined />,
+                                        label: 'Editar Perfil'
+                                    },
+                                    {
+                                        key: "profilePreferences",
+                                        icon: <SettingOutlined />,
+                                        label: 'Preferências'
+                                    },
+                                    {
+                                        key: "logout",
+                                        icon: <LogoutOutlined />,
+                                        danger: true,
+                                        label: 'Terminar Sessão'
+                                    }
+                                ],
+                                onClick: onUserMenuClick,
+                                selectedKeys: menuKeysSelected
+                            }}
+                            placement="bottomRight"
+                            overlayClassName="profile-menu-popup"
+                            trigger={['click']}
+                        >
+                            <div className="header-base__profile-trigger">
+                                <HeaderUserInfo />
+                            </div>
+                        </Dropdown>
                     </div>
             }
         </Header>

@@ -1,24 +1,39 @@
+@import "../../styles/variables.less";
+
 .header-notifications {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 12px;
   height: 100%;
+  padding: 0 16px;
+  position: relative;
+  transition: all 0.25s ease;
 
-  .header-notifications__btn {
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 3px;
+    background: transparent;
+    border-radius: 3px 3px 0 0;
+    transition: background 0.25s ease;
+  }
+
+  &:hover {
+    &::after {
+      background: @primary-color;
+    }
+  }
+
+  .header-notifications__icon {
+    font-size: 20px;
+    color: @primary-color;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: transparent;
-    transition: background 0.3s;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.04);
-    }
   }
 
   .ant-badge-count {
