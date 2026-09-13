@@ -44,7 +44,7 @@ if (avatar) {
 }
 
 _db.update(
-  "people",
+  "profile",
   dbProfile.getInt("id"),
   profileData
 );

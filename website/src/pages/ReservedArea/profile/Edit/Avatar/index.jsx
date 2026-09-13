@@ -50,23 +50,29 @@ function Avatar({currentImage}, ref) {
         </div>
       </Col>
         <Col xs={24} lg={12}>
-          <p><Button onClick={open} type="primary" ghost>Carregar Outra Imagem</Button></p>
+          <div style={{ marginBottom: 16 }}>
+            <Button onClick={open} type="primary" ghost>Carregar Outra Imagem</Button>
+          </div>
           { imageEditing &&
             <>
               <Divider orientation="left" plain>Configurar Imagem</Divider>
-              <p>
-                Dimensionar: <Slider min={0.5} max={1.5} defaultValue={scale} step={0.01} onChange={(value) => setScale(value)}></Slider>
-              </p>
-              <p>
-                Rodar: <Slider min={-180} max={180} defaultValue={rotate} step={1} onChange={(value) => setRotate(value)}></Slider>
-              </p>
-              <p>
-                Color de Fundo: <input type="color" defaultValue={color} onChange={(e) => setColor(e.target.value)}/>
-                <br/><i>Apenas para imagens com transparência.</i>
-              </p>
-              <p>
+              <div style={{ marginBottom: 16 }}>
+                <div>Dimensionar:</div>
+                <Slider min={0.5} max={1.5} defaultValue={scale} step={0.01} onChange={(value) => setScale(value)} />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <div>Rodar:</div>
+                <Slider min={-180} max={180} defaultValue={rotate} step={1} onChange={(value) => setRotate(value)} />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <div>Cor de Fundo:</div>
+                <input type="color" defaultValue={color} onChange={(e) => setColor(e.target.value)} style={{ marginTop: 4 }} />
+                <br />
+                <small style={{ color: "#8c8c8c" }}>Apenas para imagens com transparência.</small>
+              </div>
+              <div style={{ marginBottom: 16 }}>
                 <Button onClick={() => setImage(currentImage)} type="dashed" danger>Desfazer</Button>
-              </p>
+              </div>
             </>
           }
         </Col>
