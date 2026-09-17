@@ -211,10 +211,11 @@ export default function Register(props) {
             {Config.authAltcha() && <Form.Item>
               <altcha-widget
                   ref={altcha}
-                  challengeurl={_service.url('/_altcha')}
+                  challenge={_service.url('/_altcha')}
+                  language="pt"
                   delay={1}
-                  hidelogo={true}
-                  hidefooter={true}
+                  hideLogo={true}
+                  hideFooter={true}
               ></altcha-widget>
             </Form.Item> }
             <Form.Item>

@@ -27,6 +27,7 @@ function Friends() {
   const [received, setReceived] = useState([]);
   const [sent, setSent] = useState([]);
   const [searchFriend, setSearchFriend] = useState("");
+  const [appliedSearchFriend, setAppliedSearchFriend] = useState("");
 
   const loadData = useCallback(() => {
     setLoading(true);
@@ -59,6 +60,10 @@ function Friends() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const handleSearchFriend = (value) => {
+    setAppliedSearchFriend(value || "");
+  };
 
   const handleAcceptRequest = (person) => {
     setActionLoading(true);
@@ -144,8 +149,8 @@ function Friends() {
   };
 
   const filteredFriends = friends.filter((f) => {
-    if (!searchFriend.trim()) return true;
-    const q = searchFriend.toLowerCase();
+    if (!appliedSearchFriend.trim()) return true;
+    const q = appliedSearchFriend.toLowerCase();
     return (f.name && f.name.toLowerCase().includes(q)) || (f.email && f.email.toLowerCase().includes(q));
   });
 
@@ -164,19 +169,30 @@ function Friends() {
       children: (
         <div className="friends-page__tab-content">
           <div className="friends-page__filter-card">
-            <Input
-              placeholder="Buscar amigos por nome ou email..."
-              prefix={<SearchOutlined style={{ color: "#8c8c8c" }} />}
-              allowClear
-              value={searchFriend}
-              onChange={(e) => setSearchFriend(e.target.value)}
-              className="friends-page__search-input"
-            />
+            <Row gutter={[16, 16]} align="middle">
+              <Col xs={24} sm={16} md={12}>
+                <Input.Search
+                  placeholder="Buscar amigos por nome ou email..."
+                  allowClear
+                  enterButton={<SearchOutlined />}
+                  size="large"
+                  value={searchFriend}
+                  onChange={(e) => {
+                    setSearchFriend(e.target.value);
+                    if (e.target.value === "") {
+                      setAppliedSearchFriend("");
+                    }
+                  }}
+                  onSearch={handleSearchFriend}
+                  className="friends-page__search-input"
+                />
+              </Col>
+            </Row>
           </div>
 
           {filteredFriends.length === 0 ? (
             <Card className="friends-page__empty-card">
-              <Empty description={searchFriend ? "Nenhum amigo encontrado na busca." : "Ainda não tem amigos adicionados."} />
+              <Empty description={appliedSearchFriend ? "Nenhum amigo encontrado na busca." : "Ainda não tem amigos adicionados."} />
             </Card>
           ) : (
             <div className="friends-page__list">
