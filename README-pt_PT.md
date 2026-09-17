@@ -1,126 +1,150 @@
+![Logótipo](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/logo.svg)
+
 # ReAuthKit
 
-Uma solução *boilerplate* pronta a usar para registo, autenticação, edição de perfil e área reservada utilizando [Netuno](https://www.netuno.org/), [JWT](https://jwt.io/), [ReactJS](https://reactjs.org/), [Redux](https://redux.js.org/) e [Ant Design](https://ant.design/).
+Uma solução *boilerplate* pronta a usar para registo de utilizadores, autenticação, edição de perfil e área reservada, utilizando [Netuno](https://www.netuno.org/), [JWT](https://jwt.io/), [ReactJS](https://reactjs.org/), [Redux](https://redux.js.org/) e [Ant Design](https://ant.design/).
 
-![Outdoor](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/billboard.png)
+![Apresentação](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/billboard.png)
 
 ## Instalação
 
 #### Netuno
 
-[Siga os passos aqui](https://doc.netuno.org/docs/pt-PT/installation/)
+[Siga estes passos](https://doc.netuno.org/pt/docs/get-started/installation).
 
-#### ReAuthKit App
+#### Aplicação ReAuthKit
 
-Clone este projeto para `(Netuno Root directory)/apps/reauthkit/`.
+Clone este projeto para `(diretório raiz do Netuno)/apps/reauthkit/`.
 
 ## Configuração
 
-> Todo o processo a seguir descrito é destinado a ambientes de desenvolvimento Linux e MacOS com algumas notas também destinadas a ambientes Microsoft Windows.
+Para a descrição de todas as chaves da configuração de exemplo, consulte a [referência de configuração completa](docs/configuration-pt_PT.md). Para todas as rotas HTTP/WebSocket locais, estado da implementação, exports de server-core e hooks do ciclo de vida, consulte a [referência da API e extensões](docs/api-pt_PT.md).
 
-1. Copie a configuração de amostra da aplicação executando (no diretório da raiz da aplicação):
+> O processo seguinte destina-se a ambientes de desenvolvimento Linux e macOS, com indicações para Microsoft Windows quando necessário.
 
-    * `cp config/sample.json config/_development.json` (para um ambiente de desenvolvimento local/teste)
+1. Na raiz da aplicação, copie o ficheiro de configuração de exemplo:
+
+    * `cp config/sample.json config/_development.json` (para um ambiente de desenvolvimento)
 
     * `cp config/sample.json config/_production.json` (para um ambiente de produção)
 
-    e ajuste o ficheiro `_development.json` e/ou o `_production_.json` de acordo com o seu ambiente de desenvolvimento.
-    
-> Pode alterar o nome da aplicação, alterando o nome da pasta e o parâmetro de configuração `name`.
+    Em seguida, ajuste o ficheiro `_development.json` e/ou `_production.json` ao seu ambiente.
 
-2. De acordo com o seu ambiente de desenvolvimento, altere o arquivo `.json` na chave `settings.api.endpoint` para o endereço correto dos serviços Netuno, exemplo:
+> Pode alterar o nome da aplicação modificando o nome da pasta e o parâmetro de configuração `name`.
 
+2. No ficheiro de configuração selecionado, defina `settings.website.services.prefix` e `settings.website.websocket` com os endpoints corretos do Netuno. Por exemplo:
+
+```json
+  "settings": {
+    "website": {
+      "services": {
+        "prefix": "http://localhost:9000/services"
+      },
+      "websocket": {
+        "url": "ws://localhost:9000/ws/private/",
+        "servicesPrefix": "/services"
+      }
+    }
+  }
 ```
-  ...
-    "api": {
-      "endpoint": "http://localhost:9000/services/"
-    },
-  ...
-```
 
-> Atenção: A configuração do Endpoint da API é exportada para o website poder conseguir acessar aos endereços de serviços, através da definição do prefixo de URLs no cliente de serviços ([service-client](https://www.npmjs.com/package/@netuno/service-client)).
+> Atenção: a configuração dos endpoints de WebSocket e dos serviços é exportada automaticamente para o website, que pode utilizar estes endereços diretamente.
 
-3. Vai ter de configurar obrigatoriamente uma ligação SMTP para a funcionalidade de recuperação de palavra-passe funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/sending-emails/)
+3. É necessário configurar uma ligação SMTP para que a recuperação da palavra-passe funcione corretamente. [Saiba como fazê-lo](https://doc.netuno.org/pt/docs/academy/server/services/sending-emails/).
 
-4. Vai ter de configurar, também, obrigatoriamente uma ligação de base de dados do tipo PostgreSQL para esta aplicação funcionar corretamente, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/database/psql/)
+4. É também necessário configurar uma ligação a uma base de dados PostgreSQL para que a aplicação funcione corretamente. [Saiba como fazê-lo](https://doc.netuno.org/pt/docs/academy/server/database/psql).
 
-5. Onde se encontra `auth` > `jwt` > `secret`, coloque um código secreto com 32 caracteres, e o mais aleatório, visto ser isto que assegura a segurança das credenciais dos utiilzadores. [Geração de códigos seguros recomendado.](https://passwordsgenerator.net/)
+5. Substitua o valor de exemplo em `auth` > `jwt` > `secret` por um segredo aleatório com, pelo menos, 16 caracteres; recomenda-se que tenha 32 ou mais. [Gerador de palavras-passe seguras](https://www.lastpass.com/features/password-generator).
 
-6. Para configurar a definição do OpenAPI, procure para parametrização do `openapi`, [saiba como fazê-lo aqui.](https://doc.netuno.org/docs/pt-PT/academy/server/services/openapi/)
+6. Para configurar a definição OpenAPI, consulte os parâmetros de `openapi`. [Saiba como fazê-lo](https://doc.netuno.org/pt/docs/academy/server/services/openapi).
+
+7. Instale os módulos de front-end com o [Bun](https://bun.sh/):
+
+    - Website:
+
+    ```bash
+    cd website
+    bun install
+    bun pm trust --all
+    ```
+
+    - Interface de backoffice:
+
+    ```bash
+    cd ui
+    bun install
+    bun pm trust --all
+    ```
 
 ## Execução
 
-No diretório da raiz do Netuno execute
+No diretório raiz do Netuno, execute:
 
 `./netuno server app=reauthkit`
 
-que fará com que o servidor de back-end e front-end iniciem.
+Este comando inicia o servidor de back-end e o servidor de front-end.
 
-> A primeira execução pode demorar um pouco devido a instalação das dependências de front-end.
+> A primeira execução pode demorar algum tempo devido à instalação das dependências de front-end.
 
-Por padrão o backoffice do Netuno estará disponível em:
+Por predefinição, o backoffice do Netuno fica disponível em:
 
 - http://localhost:9000/
 
-A OpenAPI estará em:
+A OpenAPI fica disponível em:
 
 - http://localhost:9000/services/_openapi
 
-E o front-end (site restrito) começará em:
+O front-end (website reservado) inicia em:
 
 - http://localhost:3000/
 
 ## Produção
 
-Em produção altere o ambiente do Netuno para `production`, isto é feito no arquivo de configuração principal do Netuno, o `config.js` que encontra-se na raíz, desta forma:
+Em produção, altere o ambiente do Netuno para `production` no ficheiro de configuração principal `config.js`, localizado na raiz:
 
-```
+```javascript
 config.env = 'production'
 ```
 
-Na configuração da aplicação, no arquivo `config/_production.json`, desabilite os `commands`, defina o valor de todos os comandos `enabled` com o valor `false`, por que em produção não queremos comandos do NPM sendo executados juntos com o Netuno.
+Em `config/_production.json`, defina `enabled` como `false` em todas as entradas de `commands`, porque os processos de observação utilizados em desenvolvimento não devem ser executados com o Netuno em produção.
 
-Dentro da pasta do website execute:
-
-`npm install`
-
-Para criar a versão de produção do website otimizada, basta executar `bash build.sh` no diretório `(diretório raíz da aplicação)/website/`. Também se encontra o ficheiro `build.bat` presente em `(diretório raíz da aplicação)/website/` destinado a ambientes de desenvolvimento em Microsoft Windows.
+Para instalar as dependências do website e criar a versão otimizada em `website/dist`, execute `bash build.sh` no diretório `(diretório raiz da aplicação)/website/`. Em Microsoft Windows, execute `build.bat` no mesmo diretório. Estes scripts de produção utilizam npm.
 
 ## Estilo
 
-Para customizar o website no geral altere as configurações de tema do Ant.Design.
+Para personalizar o website, altere as configurações do tema do Ant Design.
 
-No arquivo `website/src/App.jsx`, procure pelo componente `ConfigProvider` e adapte os valores do atributo do `theme`.
+No ficheiro `website/src/App.jsx`, procure o componente `ConfigProvider` e adapte os valores do atributo `theme`.
 
-> Veja a [documentação oficial do Ant.Design sobre customização do tema](https://ant.design/docs/react/customize-theme).
+> Consulte a [documentação oficial do Ant Design sobre personalização do tema](https://ant.design/docs/react/customize-theme).
 
-As configurações das variávies do LESS encontra-se aqui: `website/src/styles/variables.less`
+As variáveis LESS encontram-se em `website/src/styles/variables.less`.
 
-## Capturas de Ecrã
+## Capturas de ecrã
 
-Abaixo encontram-se algumas capturas de ecrã da aplicação.
+Seguem-se algumas capturas de ecrã da aplicação.
 
 ### Desktop
 
-##### Iniciar Sessão
-![Login](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/login.png)
-##### Criar Conta
-![Register](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/registration.png)
-##### Área Reservada
-![Reserved Area](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/reserved-area.png)
-##### Editar Perfil
-![Edit Profile](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/edit-profile.png)
+##### Iniciar sessão
+![Iniciar sessão](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/login.png)
+##### Criar conta
+![Criar conta](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/registration.png)
+##### Área reservada
+![Área reservada](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/reserved-area.png)
+##### Editar perfil
+![Editar perfil](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/desktop/edit-profile.png)
 
 ### Mobile
 
-Iniciar Sessão  |  Criar Conta
+Iniciar sessão | Criar conta
 :-------------------------:|:-------------------------:
-![Login](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/login.png)  |  ![Register](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/registration.png)
+![Iniciar sessão](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/login.png) | ![Criar conta](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/registration.png)
 
-Área Reservada |  Perfil + Avatar 1
+Área reservada | Perfil e avatar 1
 :-------------------------:|:-------------------------:
-![Reserved Area](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/reserved-area.png)  |  ![Perfil + Avatar 1](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile-1.png)
+![Área reservada](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/reserved-area.png) | ![Perfil e avatar 1](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile-1.png)
 
-Perfil + Avatar 2 |  Perfil + Avatar 3
+Perfil e avatar 2 | Editar perfil
 :-------------------------:|:-------------------------:
-![Perfil + Avatar 2](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile-2.png)  |  ![Perfil + Avatar 3](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile-3.png)
+![Perfil e avatar 2](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile-2.png) | ![Editar perfil](https://raw.githubusercontent.com/netuno-org/reauthkit/main/docs/prinstscreens/mobile/edit-profile-3.png)

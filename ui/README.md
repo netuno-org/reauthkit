@@ -1,24 +1,15 @@
 
-### Install Packages
+### Install packages
 
-`npm install`
-
-### Watch changes and auto recompile
-
-`npm run watch`
-
-### Installation requirements
-
-On Windows with an Administrator terminal, run:
-
-```
-npm install --global --production windows-build-tools
-npm install --global node-gyp
+```bash
+bun install
+bun pm trust --all
 ```
 
-With others Python version, then configure the Python 2.7 path:
+### Watch changes and rebuild automatically
 
+```bash
+bun run watch
 ```
-node-gyp --python /path/to/python2.7
-npm config set python /path/to/executable/python2.7
-```
+
+The watch script is defined in `package.json` and writes the back-office UI bundle to the application's `public` folder.
