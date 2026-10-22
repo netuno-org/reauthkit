@@ -1,9 +1,11 @@
-import {_req, _db, _header, _exec, _storage, _out} from "@netuno/server-types";
+import { _req, _db, _header, _exec, _storage, _out } from "@netuno/server-types";
 
 let dbProfile = null;
 
-if (_req.getString('uid')) {
-  dbProfile = _db.get('profile', _req.getString('uid'));
+const uid = _req.getString("uid");
+
+if (uid) {
+  dbProfile = _db.get("profile", uid);
 }
 
 if (!dbProfile) {
@@ -11,11 +13,16 @@ if (!dbProfile) {
   _exec.stop();
 }
 
-const dbAvatarName = dbProfile?.getString('avatar');
+const dbAvatarName = dbProfile.getString("avatar");
+
+if (!dbAvatarName) {
+  _header.status(404);
+  _exec.stop();
+}
 
 const storageAvatarFile = _storage.database(
-  'profile',
-  'avatar',
+  "profile",
+  "avatar",
   dbAvatarName
 );
 
