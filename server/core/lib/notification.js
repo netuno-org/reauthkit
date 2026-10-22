@@ -4,25 +4,17 @@ import profile from "#core/lib/profile.js";
 const notification = {
   create: (dbProfile, typeCode, title, content, extra) => {
     try {
-      let dbType = _db.queryFirst("SELECT id, code, name FROM notification_type WHERE code = ? AND active = true", typeCode);
+      const dbType = _db.queryFirst("SELECT id, code, name FROM notification_type WHERE code = ? AND active = true", typeCode);
       if (!dbType) {
-        _db.insertIfNotExists(
-          "notification_type",
-          _val.map()
-            .set("code", typeCode)
-            .set("name", typeCode === "message" ? "Mensagens" : typeCode).set("code", typeCode).set("active", true)
-        );
-        dbType = _db.queryFirst("SELECT id, code, name FROM notification_type WHERE code = ?", typeCode);
+        return;
       }
 
-      if (dbType) {
-        const dbSetting = _db.queryFirst(
-          "SELECT id, active FROM notification_settings WHERE profile_id = ? AND type_id = ?",
-          dbProfile.getInt("id"), dbType.getInt("id")
-        );
-        if (dbSetting && dbSetting.getBoolean("active", true) === false) {
-          return;
-        }
+      const dbSetting = _db.queryFirst(
+        "SELECT id, active FROM notification_settings WHERE profile_id = ? AND type_id = ?",
+        dbProfile.getInt("id"), dbType.getInt("id")
+      );
+      if (dbSetting && dbSetting.getBoolean("active", true) === false) {
+        return;
       }
 
       const typeId = dbType ? dbType.getInt("id") : 0;

@@ -1,4 +1,4 @@
-import {_db, _req, _val, _header, _exec, _out} from "@netuno/server-types";
+import { _db, _req, _val, _header, _exec, _out } from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 

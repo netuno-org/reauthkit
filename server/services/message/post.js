@@ -1,4 +1,4 @@
-import {_db, _val, _out, _req} from "@netuno/server-types";
+import { _db, _val, _out, _req } from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
@@ -54,17 +54,6 @@ profile.wsSendService(
   _val.map()
     .set("service", "message/unread/count")
     .set("content", _val.map().set("total", message.getUnreadTotal(dbProfileTo)))
-);
-
-notification.create(
-  dbProfileTo,
-  "message",
-  dbProfileFrom.getString("name"),
-  "Recebeu uma mensagem.",
-  _val.map()
-    .set("with", dbProfileFrom.getString("uid"))
-    .set("type", "message")
-    .toJSON()
 );
 
 _out.json(
