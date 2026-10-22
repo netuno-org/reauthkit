@@ -1,4 +1,4 @@
-import {_db, _push, _val} from "@netuno/server-types";
+import { _db, _push, _val } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 
 const notification = {
@@ -8,8 +8,9 @@ const notification = {
       if (!dbType) {
         _db.insertIfNotExists(
           "notification_type",
-          _val.map().set("code", typeCode),
-          _val.map().set("name", typeCode === "message" ? "Mensagens" : typeCode).set("code", typeCode).set("active", true)
+          _val.map()
+            .set("code", typeCode)
+            .set("name", typeCode === "message" ? "Mensagens" : typeCode).set("code", typeCode).set("active", true)
         );
         dbType = _db.queryFirst("SELECT id, code, name FROM notification_type WHERE code = ?", typeCode);
       }
