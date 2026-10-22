@@ -73,7 +73,7 @@ const notification = {
       );
 
       if (dbNotification) {
-        profile.wsSendService(
+        profile.wsSendAsService(
           dbProfile,
           _val.map()
             .set("service", "notification/new")
