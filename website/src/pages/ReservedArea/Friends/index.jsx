@@ -149,7 +149,7 @@ function Friends() {
   };
 
   const filteredFriends = friends.filter((f) => {
-    if (!appliedSearchFriend.trim()) {return true;}
+    if (!appliedSearchFriend.trim()) { return true; }
     const q = appliedSearchFriend.toLowerCase();
     return (f.name && f.name.toLowerCase().includes(q)) || (f.email && f.email.toLowerCase().includes(q));
   });

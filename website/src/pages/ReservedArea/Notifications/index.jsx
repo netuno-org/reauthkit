@@ -13,14 +13,14 @@ import "./index.less";
 const { Text, Paragraph } = Typography;
 
 function formatTimeAgo(sentAt) {
-  if (!sentAt) {return "";}
+  if (!sentAt) { return ""; }
   const moment = dayjs(sentAt);
   const diffSec = dayjs().diff(moment, "second");
-  if (diffSec < 60) {return "Há Alguns Segundos";}
+  if (diffSec < 60) { return "Há Alguns Segundos"; }
   const diffMin = dayjs().diff(moment, "minute");
-  if (diffMin < 60) {return `Há ${diffMin} ${diffMin === 1 ? "Minuto" : "Minutos"}`;}
+  if (diffMin < 60) { return `Há ${diffMin} ${diffMin === 1 ? "Minuto" : "Minutos"}`; }
   const diffHour = dayjs().diff(moment, "hour");
-  if (diffHour < 24) {return `Há ${diffHour} ${diffHour === 1 ? "Hora" : "Horas"}`;}
+  if (diffHour < 24) { return `Há ${diffHour} ${diffHour === 1 ? "Hora" : "Horas"}`; }
   return moment.format("DD/MM/YYYY HH:mm");
 }
 
@@ -134,7 +134,7 @@ function Notifications() {
         if (extraObj.type === "message") {
           navigate("/messages");
         }
-      } catch (e) {}
+      } catch (e) { }
     }
   };
 
@@ -250,71 +250,71 @@ function Notifications() {
           <div className="notifications-page__list-wrapper">
             {notifications.map((item) => {
               const isUnread = !item.read_at;
-                let avatarUrl = "/images/profile-default.png";
-                let senderUid = null;
-                if (item.extra) {
-                  try {
-                    const extraObj = typeof item.extra === "string" ? JSON.parse(item.extra) : item.extra;
-                    if (extraObj.with) {
-                      senderUid = extraObj.with;
-                      avatarUrl = _service.url(`/profile/avatar?uid=${senderUid}&${new Date().getTime()}`);
-                    }
-                  } catch (e) {}
-                }
+              let avatarUrl = "/images/profile-default.png";
+              let senderUid = null;
+              if (item.extra) {
+                try {
+                  const extraObj = typeof item.extra === "string" ? JSON.parse(item.extra) : item.extra;
+                  if (extraObj.with) {
+                    senderUid = extraObj.with;
+                    avatarUrl = _service.url(`/profile/avatar?uid=${senderUid}&${new Date().getTime()}`);
+                  }
+                } catch (e) { }
+              }
 
-                return (
-                  <div
-                    key={item.uid}
-                    className={`notifications-item ${isUnread ? "notifications-item--unread" : ""}`}
-                    onClick={() => handleItemClick(item)}
-                  >
-                    <div className="notifications-item__left">
-                      <div className="notifications-item__avatar-wrapper">
-                        <Avatar
-                          size={44}
-                          src={avatarUrl}
-                          icon={<UserOutlined />}
-                          className="notifications-item__avatar"
-                        />
-                        <div className="notifications-item__avatar-badge">
-                          <MessageOutlined />
-                        </div>
-                      </div>
-
-                      <div className="notifications-item__text">
-                        <div className="notifications-item__title">{item.title}</div>
-                        <div className="notifications-item__content">{item.content}</div>
+              return (
+                <div
+                  key={item.uid}
+                  className={`notifications-item ${isUnread ? "notifications-item--unread" : ""}`}
+                  onClick={() => handleItemClick(item)}
+                >
+                  <div className="notifications-item__left">
+                    <div className="notifications-item__avatar-wrapper">
+                      <Avatar
+                        size={44}
+                        src={avatarUrl}
+                        icon={<UserOutlined />}
+                        className="notifications-item__avatar"
+                      />
+                      <div className="notifications-item__avatar-badge">
+                        <MessageOutlined />
                       </div>
                     </div>
 
-                    <div className="notifications-item__right">
-                      <span className="notifications-item__time">
-                        {formatTimeAgo(item.sent_at)}
-                      </span>
-                      <div className="notifications-item__indicators">
-                        {isUnread && <span className="notifications-item__green-dot" />}
-                        <Popconfirm
-                          title="Eliminar notificação"
-                          description="Tens a certeza que pretendes eliminar?"
-                          okText="Sim"
-                          cancelText="Não"
-                          onConfirm={(e) => handleDelete(e, item.uid)}
-                          onPopupClick={(e) => e.stopPropagation()}
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            danger
-                            icon={<DeleteOutlined />}
-                            className="notifications-item__delete-btn"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </Popconfirm>
-                      </div>
+                    <div className="notifications-item__text">
+                      <div className="notifications-item__title">{item.title}</div>
+                      <div className="notifications-item__content">{item.content}</div>
                     </div>
                   </div>
-                );
-              })}
+
+                  <div className="notifications-item__right">
+                    <span className="notifications-item__time">
+                      {formatTimeAgo(item.sent_at)}
+                    </span>
+                    <div className="notifications-item__indicators">
+                      {isUnread && <span className="notifications-item__green-dot" />}
+                      <Popconfirm
+                        title="Eliminar notificação"
+                        description="Tens a certeza que pretendes eliminar?"
+                        okText="Sim"
+                        cancelText="Não"
+                        onConfirm={(e) => handleDelete(e, item.uid)}
+                        onPopupClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          type="text"
+                          size="small"
+                          danger
+                          icon={<DeleteOutlined />}
+                          className="notifications-item__delete-btn"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </Popconfirm>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
 
             {total > 0 && (
               <div className="notifications-page__pagination">

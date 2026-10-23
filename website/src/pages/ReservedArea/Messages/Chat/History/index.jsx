@@ -121,7 +121,7 @@ function History({ friend, newSentMessage, onReply }) {
   useEffect(() => {
     if (newSentMessage) {
       setMessages((prev) => {
-        if (prev.some((m) => m.uid === newSentMessage.uid)) {return prev;}
+        if (prev.some((m) => m.uid === newSentMessage.uid)) { return prev; }
         return [...prev, newSentMessage];
       });
     }
@@ -191,13 +191,13 @@ function History({ friend, newSentMessage, onReply }) {
   };
 
   const handleScroll = () => {
-    if (!refList.current) {return;}
+    if (!refList.current) { return; }
 
     const { scrollTop, scrollHeight, clientHeight } = refList.current;
     const isFarFromBottom = scrollHeight - scrollTop - clientHeight > 150;
     setShowScrollBottom(isFarFromBottom);
 
-    if (loading || loadingMore || !hasMore) {return;}
+    if (loading || loadingMore || !hasMore) { return; }
 
     if (scrollTop <= 20) {
       loadMessages(page + 1, false);
@@ -292,7 +292,7 @@ function History({ friend, newSentMessage, onReply }) {
   };
 
   const scrollToMessage = (targetUid) => {
-    if (!targetUid) {return;}
+    if (!targetUid) { return; }
     const targetElement = document.getElementById(`msg-${targetUid}`);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -303,7 +303,7 @@ function History({ friend, newSentMessage, onReply }) {
       return;
     }
 
-    if (!hasMore || loadingMore) {return;}
+    if (!hasMore || loadingMore) { return; }
 
     fetchAndFindMessage(targetUid, page + 1);
   };

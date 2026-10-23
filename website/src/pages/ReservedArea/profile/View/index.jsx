@@ -30,7 +30,7 @@ function ProfileView() {
   const isMyProfile = !uid || uid === myProfile.data?.uid;
 
   const loadProfile = () => {
-    if (!targetUid) {return;}
+    if (!targetUid) { return; }
 
     setLoading(true);
     _service({
@@ -60,7 +60,7 @@ function ProfileView() {
   }, [targetUid]);
 
   const handleSendFriendRequest = () => {
-    if (!profileData) {return;}
+    if (!profileData) { return; }
     setActionLoading(true);
     _service({
       method: "POST",
@@ -91,7 +91,7 @@ function ProfileView() {
   };
 
   const handleAcceptFriendRequest = () => {
-    if (!profileData) {return;}
+    if (!profileData) { return; }
     setActionLoading(true);
     _service({
       method: "PUT",
@@ -122,7 +122,7 @@ function ProfileView() {
   };
 
   const handleRemoveFriend = () => {
-    if (!profileData) {return;}
+    if (!profileData) { return; }
     setActionLoading(true);
     _service({
       method: "DELETE",
@@ -153,7 +153,7 @@ function ProfileView() {
   };
 
   const handleCancelFriendRequest = () => {
-    if (!profileData) {return;}
+    if (!profileData) { return; }
     setActionLoading(true);
     _service({
       method: "DELETE",
