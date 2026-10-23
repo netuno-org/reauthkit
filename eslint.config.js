@@ -17,7 +17,8 @@ export default [
       "logs/**",
       "storage/**",
       "public/**",
-      "docs/**"
+      "docs/**",
+      "server/setup/_schema-form*.js",
     ]
   },
   {
