@@ -8,15 +8,7 @@ if (!dbProfile) {
   _exec.stop();
 }
 
-let dbTypes = _db.query("SELECT id, code, name FROM notification_type ORDER BY id ASC");
-if (!dbTypes || dbTypes.size() === 0) {
-  _db.form("notification_type")
-    .set("code", "message")
-    .set("name", "Mensagens")
-    .set("active", true)
-    .insert();
-  dbTypes = _db.query("SELECT id, code, name FROM notification_type ORDER BY id ASC");
-}
+const dbTypes = _db.query("SELECT id, code, name FROM notification_type ORDER BY id ASC");
 
 const dbSettings = _db.query(`
     SELECT type_id, active FROM notification_settings WHERE profile_id = ?

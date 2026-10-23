@@ -12,7 +12,7 @@ if (!dbProfile) {
 const typeCode = _req.getString("code");
 const enabled = _req.getBoolean("enabled", true);
 
-let dbType = _db.form("notification_type")
+const dbType = _db.form("notification_type")
   .where(_db.where("code").equal(typeCode))
   .first();
 
