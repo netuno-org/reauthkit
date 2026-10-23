@@ -15,30 +15,30 @@ function useWS() {
   }, [baseData]);
   const load = (onFinish) => {
     _ws.config({
-      url: Config.websocketURL() + '?auth='+ _auth.accessToken(),
+      url: Config.websocketURL() + "?auth="+ _auth.accessToken(),
       servicesPrefix: Config.websocketServicesPrefix(),
-      method: 'GET',
+      method: "GET",
       autoReconnect: true,
       connect: (event) => {
-        console.log('ws connect', event);
+        console.log("ws connect", event);
         setConnecting(false);
         dispatch(wsLoadAction({connected: true}));
         onFinish && onFinish(true);
       },
       close: (event) => {
-        console.log('ws close', event);
+        console.log("ws close", event);
         setConnecting(false);
         dispatch(wsLoadAction({connected: false}));
         onFinish && onFinish(false);
       },
       error: (error) => {
-        console.log('ws error', error);
+        console.log("ws error", error);
         setConnecting(false);
         dispatch(wsLoadAction({connected: false}));
         onFinish && onFinish(false);
       },
       message: (data, event) => {
-        console.log('ws message', {data, event});
+        console.log("ws message", {data, event});
       }
     });
     _ws.connect();

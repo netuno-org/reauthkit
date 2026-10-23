@@ -17,15 +17,15 @@ function useProfile() {
   const load = (onFinish) => {
     unloaded = false;
     _service({
-      method: 'GET',
-      url: 'profile',
+      method: "GET",
+      url: "profile",
       success: (response) => {
         if (response.json.result) {
           dispatch(profileLoadAction(response.json.data));
           onFinish && onFinish(true);
         } else {
           globalNotification.warning({
-            title: 'Dados do Utilizador',
+            title: "Dados do Utilizador",
             description: response.json.error,
           });
           onFinish && onFinish(false);
@@ -33,10 +33,10 @@ function useProfile() {
         }
       },
       fail: (e) => {
-        console.error('Dados do Utilizador', e);
+        console.error("Dados do Utilizador", e);
         globalNotification.serviceFail({
-          title: 'Dados do Utilizador',
-          description: 'Ocorreu um erro a carregar os dados, por favor tente novamente mais tarde.',
+          title: "Dados do Utilizador",
+          description: "Ocorreu um erro a carregar os dados, por favor tente novamente mais tarde.",
         });
         _auth.logout();
         onFinish && onFinish(false);

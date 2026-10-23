@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { Spin } from 'antd';
-import _auth from '@netuno/auth-client';
-import _service from '@netuno/service-client';
+import { Spin } from "antd";
+import _auth from "@netuno/auth-client";
+import _service from "@netuno/service-client";
 
 import globalNotification from "../../common/globalNotification.js";
 
 import useProfile from "../../common/useProfile.js";
 
-import './index.less';
+import "./index.less";
 
 export default function LoginCallback(props) {
   const [logged, setLogged] = useState(false);
@@ -18,18 +18,18 @@ export default function LoginCallback(props) {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('error')) {
-      console.error(provider +': '+ urlParams.get('error'), urlParams.get('error_description'));
+    if (urlParams.get("error")) {
+      console.error(provider +": "+ urlParams.get("error"), urlParams.get("error_description"));
       console.error(window.location.search);
       globalNotification.serviceFail({
-        title: urlParams.get('error'),
-        description: urlParams.get('error_description'),
+        title: urlParams.get("error"),
+        description: urlParams.get("error_description"),
       });
       return;
     }
-    const code = urlParams.get('code');
+    const code = urlParams.get("code");
     _service({
-      method: 'POST',
+      method: "POST",
       url: `_auth_provider/login/${provider}`,
       data: {
         code
@@ -43,8 +43,8 @@ export default function LoginCallback(props) {
             setLogged(true);
           } else if (json.provider && json.provider.new) {
             globalNotification.warning({
-              title: 'Criar Nova Conta',
-              description: 'Não tem a sua conta criada ainda, avance com a criação da conta.',
+              title: "Criar Nova Conta",
+              description: "Não tem a sua conta criada ainda, avance com a criação da conta.",
             });
             setRegister(true);
           }
@@ -53,14 +53,14 @@ export default function LoginCallback(props) {
       fail: (error) => {
         console.error(error);
         globalNotification.serviceFail({
-          title: 'Erro no Callback da Autenticação',
-          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
+          title: "Erro no Callback da Autenticação",
+          description: "Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.",
         });
       }
     });
   }, []);
   if (register) {
-    return <Navigate to={`/register`} />;
+    return <Navigate to={"/register"} />;
   }
   if (logged && _auth.isLogged()) {
     return <Navigate to="/dashboard" />;

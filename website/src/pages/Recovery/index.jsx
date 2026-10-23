@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button } from 'antd';
+import { Layout, Typography, Form, Input, Button } from "antd";
 import { PasswordInput } from "antd-password-input-strength";
-import _service from '@netuno/service-client';
+import _service from "@netuno/service-client";
 
 import globalNotification from "../../common/globalNotification.js";
 
-import './index.less';
+import "./index.less";
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
@@ -27,8 +27,8 @@ export default function Recovery(props) {
         setSubmitting(true);
         const { password } = values;
         _service({
-            method: 'PUT',
-            url: 'recovery',
+            method: "PUT",
+            url: "recovery",
             data: {
                 password,
                 key: hash
@@ -36,8 +36,8 @@ export default function Recovery(props) {
             success: (response) => {
                 if (response.json.result) {
                     globalNotification.success({
-                        title: 'Alteração de Palavra-Passe',
-                        description: 'A sua palavra-passe foi alterada com sucesso.',
+                        title: "Alteração de Palavra-Passe",
+                        description: "A sua palavra-passe foi alterada com sucesso.",
                     });
                     setSubmitting(false);
                     setReady(true);
@@ -46,15 +46,15 @@ export default function Recovery(props) {
             fail: () => {
                 setSubmitting(false);
                 globalNotification.error({
-                    title: 'Erro na alteração de Palavra-Passe',
-                    description: 'Não foi possível alterar a sua palavra-passe, o link é inválido ou por favor contacte o suporte.',
+                    title: "Erro na alteração de Palavra-Passe",
+                    description: "Não foi possível alterar a sua palavra-passe, o link é inválido ou por favor contacte o suporte.",
                 });
             }
         });
     }
 
     function onFinishFailed(errorInfo) {
-        console.log('Failed:', errorInfo);
+        console.log("Failed:", errorInfo);
     }
 
     if (ready) {
@@ -80,8 +80,8 @@ export default function Recovery(props) {
                                 label="Palavra-passe"
                                 name="password"
                                 rules={[
-                                    { required: true, message: 'Insira a palavra-passe.' },
-                                    { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+                                    { required: true, message: "Insira a palavra-passe." },
+                                    { type: "string", message: "Palavra-Passe deverá ter entre 8 a 25 caracteres.", min: 8, max: 25 },
                                 ]}
                             >
                                 <PasswordInput disabled={submitting} maxLength={25} />
@@ -90,14 +90,14 @@ export default function Recovery(props) {
                                 label="Confirmar a Palavra-passe"
                                 name="password_confirm"
                                 rules={[
-                                    { required: true, message: 'Insira a confirmação da palavra-passe.' },
-                                    { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+                                    { required: true, message: "Insira a confirmação da palavra-passe." },
+                                    { type: "string", message: "Palavra-Passe deverá ter entre 8 a 25 caracteres.", min: 8, max: 25 },
                                     ({ getFieldValue }) => ({
                                         validator(_, value) {
-                                            if (!value || getFieldValue('password') === value) {
+                                            if (!value || getFieldValue("password") === value) {
                                                 return Promise.resolve();
                                             }
-                                            return Promise.reject('As palavras-passes não são iguais.');
+                                            return Promise.reject("As palavras-passes não são iguais.");
                                         },
                                     })
                                 ]}
@@ -112,7 +112,7 @@ export default function Recovery(props) {
                         </Form>
                     </div>
                 </Content>
-                <Sider width={'50%'}>
+                <Sider width={"50%"}>
                     <span className="helper" /><img alt="sider-recovery" src={"/images/sider-recovery.png"} />
                 </Sider>
             </Layout>

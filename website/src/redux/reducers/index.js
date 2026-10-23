@@ -1,4 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit';
+import { combineReducers } from "@reduxjs/toolkit";
 
 import {profileReducer} from "./profile.js";
 import {wsReducer} from "./ws.js";

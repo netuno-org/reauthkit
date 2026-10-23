@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import { Typography } from 'antd';
+import { Typography } from "antd";
 
 import useProfile from "../../../common/useProfile.js";
 
-import './index.less';
+import "./index.less";
 
 const { Title } = Typography;
 

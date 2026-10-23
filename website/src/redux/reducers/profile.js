@@ -1,4 +1,4 @@
-import {PROFILE_LOAD} from '../actions/actionTypes';
+import {PROFILE_LOAD} from "../actions/actionTypes";
 
 const initialState = {
   data: null,

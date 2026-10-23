@@ -1,14 +1,14 @@
 
-self.addEventListener('push', (e) => {
+self.addEventListener("push", (e) => {
   const data = e.data.json();
   const options = {
-    icon: '/images/favicon.svg',
+    icon: "/images/favicon.svg",
     ...data,
   };
   self.registration.showNotification(data.title, options);
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener("notificationclick", function(event) {
   event.notification.close();
   if (event.notification.data) {
     const type = event.notification.data.type;
@@ -35,11 +35,11 @@ self.addEventListener('notificationclick', function(event) {
       return;
     }
   }
-  if (event.action === 'messages') {
-    event.waitUntil(clients.openWindow('/messages'));
-  } else if (event.action === 'dismiss') {
-    console.log('Notification dismissed.');
+  if (event.action === "messages") {
+    event.waitUntil(clients.openWindow("/messages"));
+  } else if (event.action === "dismiss") {
+    console.log("Notification dismissed.");
   } else {
-    event.waitUntil(clients.openWindow('/'));
+    event.waitUntil(clients.openWindow("/"));
   }
 });

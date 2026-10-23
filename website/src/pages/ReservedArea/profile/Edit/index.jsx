@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Typography, Form, Input, Button, Divider, Spin } from 'antd';
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Typography, Form, Input, Button, Divider, Spin } from "antd";
 import { PasswordInput } from "antd-password-input-strength";
 
-import _service from '@netuno/service-client';
+import _service from "@netuno/service-client";
 
 import globalNotification from "../../../../common/globalNotification.js";
 
 import useProfile from "../../../../common/useProfile.js";
 
-import Avatar from './Avatar';
+import Avatar from "./Avatar";
 
 const { Title } = Typography;
 
 function ProfileEdit() {
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
-  const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
+  const [avatarImageURL, setAvatarImageURL] = useState("/images/profile-default.png");
   const profileAvatar = useRef(null);
   const profileForm = useRef(null);
   const navigate = useNavigate();
@@ -38,8 +38,8 @@ function ProfileEdit() {
     setSubmitting(true);
     const { name, username, password, email } = values;
     _service({
-      method: 'PUT',
-      url: 'profile',
+      method: "PUT",
+      url: "profile",
       data: {
         name,
         username,
@@ -50,8 +50,8 @@ function ProfileEdit() {
       success: (response) => {
         if (response.json.result) {
           globalNotification.success({
-            title: 'Edição do Perfil',
-            description: 'Os dados do seu perfil foram alterados com sucesso.',
+            title: "Edição do Perfil",
+            description: "Os dados do seu perfil foram alterados com sucesso.",
           });
           setSubmitting(false);
           profileForm.current.setFieldsValue({
@@ -61,7 +61,7 @@ function ProfileEdit() {
           profile.reload();
         } else {
           globalNotification.warning({
-            title: 'Utilizador existente',
+            title: "Utilizador existente",
             description: response.json.error,
           });
           setSubmitting(false);
@@ -74,8 +74,8 @@ function ProfileEdit() {
       fail: () => {
         setSubmitting(false);
         globalNotification.serviceFail({
-          title: 'Erro na Edição do Perfil',
-          description: 'Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
+          title: "Erro na Edição do Perfil",
+          description: "Ocorreu um erro na edição do seu perfil, por favor contacte-nos através do suporte ou tente novamente mais tarde.",
         });
       }
     });
@@ -90,7 +90,7 @@ function ProfileEdit() {
   }
 
   function onFinishFailed(errorInfo) {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   }
 
   if (profile.data == null) {
@@ -130,8 +130,8 @@ function ProfileEdit() {
             label="Nome"
             name="name"
             rules={[
-              { required: true, message: 'Insira o seu nome.' },
-              { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+              { required: true, message: "Insira o seu nome." },
+              { type: "string", message: "Nome inválido, apenas letras minúsculas e maiúsculas.", pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
             ]}
           >
             <Input disabled={submitting} maxLength={25} />
@@ -140,8 +140,8 @@ function ProfileEdit() {
             label="Nome de utilizador"
             name="username"
             rules={[
-              { required: true, message: 'Insira o seu nome.' },
-              { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+              { required: true, message: "Insira o seu nome." },
+              { type: "string", message: "Nome inválido, apenas letras minúsculas e maiúsculas.", pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
             ]}
           >
             <Input disabled={submitting} maxLength={25} />
@@ -150,8 +150,8 @@ function ProfileEdit() {
             label="E-mail"
             name="email"
             rules={[
-              { type: 'email', message: 'O e-mail inserido não é válido.' },
-              { required: true, message: 'Insira o e-mail.' }
+              { type: "email", message: "O e-mail inserido não é válido." },
+              { required: true, message: "Insira o e-mail." }
             ]}
           >
             <Input disabled={submitting} maxLength={250} />
@@ -160,7 +160,7 @@ function ProfileEdit() {
             label="Nova Palavra-passe"
             name="password"
             rules={[
-              { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+              { type: "string", message: "Palavra-Passe deverá ter entre 8 a 25 caracteres.", min: 8, max: 25 },
             ]}
           >
             <PasswordInput />
@@ -169,14 +169,14 @@ function ProfileEdit() {
             label="Confirmar nova Palavra-passe"
             name="password_confirm"
             rules={[
-              { required: passwordRequired, message: 'Insira a confirmação da nova palavra-passe.' },
-              { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+              { required: passwordRequired, message: "Insira a confirmação da nova palavra-passe." },
+              { type: "string", message: "Palavra-Passe deverá ter entre 8 a 25 caracteres.", min: 8, max: 25 },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject('As palavras-passes não são iguais.');
+                  return Promise.reject("As palavras-passes não são iguais.");
                 },
               })
             ]}

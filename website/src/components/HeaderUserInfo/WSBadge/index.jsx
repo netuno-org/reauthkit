@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import _ws from '@netuno/ws-client';
+import _ws from "@netuno/ws-client";
 import useWS from "../../../common/useWS.js";
 
 import "./index.less";

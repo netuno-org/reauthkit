@@ -35,7 +35,7 @@ for (const dbFriend of dbFriends) {
     _val.map()
       .set("uid", dbFriend.getString("uid"))
       .set("name", dbFriend.getString("name"))
-      .set("avatar", dbFriend.getString("avatar") !== '')
+      .set("avatar", dbFriend.getString("avatar") !== "")
       .set("online", dbFriend.getInt("sessions") > 0)
       .set("latest_message", dbFriend.getSQLTimestamp("latest_message"))
       .set("unread_messages", dbFriend.getInt("unread_messages", 0))

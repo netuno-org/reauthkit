@@ -33,11 +33,11 @@ let countSql = `
 `;
 
 if (onlyUnread) {
-  querySql += ` AND read_at IS NULL `;
-  countSql += ` AND read_at IS NULL `;
+  querySql += " AND read_at IS NULL ";
+  countSql += " AND read_at IS NULL ";
 }
 
-querySql += ` ORDER BY sent_at DESC LIMIT ? OFFSET ? `;
+querySql += " ORDER BY sent_at DESC LIMIT ? OFFSET ? ";
 
 const dbTotal = _db.queryFirst(countSql, profileId);
 const total = dbTotal ? dbTotal.getInt("total", 0) : 0;

@@ -21,7 +21,7 @@ if (dbProfile != null && dbProfile.getBoolean("active")) {
 
   const smtp = _smtp.init();
   smtp.to = dbProfile.getString("email");
-  smtp.subject = `ReAuthKit - Recuperação de password`;
+  smtp.subject = "ReAuthKit - Recuperação de password";
   smtp.text = `
     Caro ${dbProfile.getString("name")},
 

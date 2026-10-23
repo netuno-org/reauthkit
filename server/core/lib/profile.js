@@ -20,7 +20,7 @@ export default {
         .set("name", dbProfile.getString("name"))
         .set("username", dbProfile.getString("user"))
         .set("email", dbProfile.getString("email"))
-        .set("avatar", dbProfile.getString("avatar") !== '')
+        .set("avatar", dbProfile.getString("avatar") !== "")
         .set("group", dbProfile.getString("group"));
     }
     return null;

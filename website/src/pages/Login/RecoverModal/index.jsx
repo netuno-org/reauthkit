@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Button, Form, Input } from 'antd';
+import React, { useState, useEffect, useRef } from "react";
+import { Modal, Button, Form, Input } from "antd";
 
-import _service from '@netuno/service-client';
+import _service from "@netuno/service-client";
 
 import globalNotification from "../../../common/globalNotification.js";
 
@@ -19,16 +19,16 @@ export default function RecoverModal(props) {
     setSubmitting(true);
     const { email } = values;
     _service({
-      method: 'POST',
-      url: 'recovery',
+      method: "POST",
+      url: "recovery",
       data: {
         email,
       },
       success: (response) => {
         if (response.json.result) {
           globalNotification.success({
-            title: 'Alteração da Palavra-Passe ',
-            description: 'Foi enviado um e-mail para a alteração da Palavra-Passe.',
+            title: "Alteração da Palavra-Passe ",
+            description: "Foi enviado um e-mail para a alteração da Palavra-Passe.",
           });
           setSubmitting(false);
           setOpen(false);
@@ -37,15 +37,15 @@ export default function RecoverModal(props) {
       fail: () => {
         setSubmitting(false);
         globalNotification.serviceFail({
-          title: 'Erro na Alteração da Palavra-Passe',
-          description: 'Não foi possível alterar a palavra-passe, contacte-nos através do suporte ou tente novamente mais tarde.',
+          title: "Erro na Alteração da Palavra-Passe",
+          description: "Não foi possível alterar a palavra-passe, contacte-nos através do suporte ou tente novamente mais tarde.",
         });
       }
     });
   }
 
   function onFinishFailed(errorInfo) {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   }
 
   function onSubmit() {
@@ -55,7 +55,7 @@ export default function RecoverModal(props) {
         onFinish(values);
       })
       .catch(info => {
-        console.log('Validate Failed:', info);
+        console.log("Validate Failed:", info);
       });
   }
 
@@ -68,7 +68,7 @@ export default function RecoverModal(props) {
 
   return (
     <Modal
-      className={'modal-recover'}
+      className={"modal-recover"}
       title="Recuperar o Acesso"
       open={open}
       onCancel={onCancel}
@@ -90,8 +90,8 @@ export default function RecoverModal(props) {
           label="Endereço de Mail"
           name="email"
           rules={[
-            { type: 'email', message: 'O e-mail inserido não é válido.' },
-            { required: true, message: 'Insira o e-mail.' }
+            { type: "email", message: "O e-mail inserido não é válido." },
+            { required: true, message: "Insira o e-mail." }
           ]}
         >
           <Input disabled={submitting} maxLength={250} />

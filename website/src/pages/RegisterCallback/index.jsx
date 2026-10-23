@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { Layout, Spin, Typography, Form, Input, Button } from 'antd';
-import _auth from '@netuno/auth-client';
-import _service from '@netuno/service-client';
+import { Layout, Spin, Typography, Form, Input, Button } from "antd";
+import _auth from "@netuno/auth-client";
+import _service from "@netuno/service-client";
 
 import globalNotification from "../../common/globalNotification.js";
 
-import './index.less';
+import "./index.less";
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
@@ -21,21 +21,21 @@ export default function Register(props) {
   const { provider } = useParams(null);
 
   const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get('code');
+  const code = urlParams.get("code");
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (urlParams.get('error')) {
-      console.error(provider +': '+ urlParams.get('error'), urlParams.get('error_description'));
+    if (urlParams.get("error")) {
+      console.error(provider +": "+ urlParams.get("error"), urlParams.get("error_description"));
       console.error(window.location.search);
       globalNotification.serviceFail({
-        title: urlParams.get('error'),
-        description: urlParams.get('error_description'),
+        title: urlParams.get("error"),
+        description: urlParams.get("error_description"),
       });
       return;
     }
     _service({
-      method: 'POST',
+      method: "POST",
       url: `_auth_provider/register/${provider}`,
       data: {
         code
@@ -44,8 +44,8 @@ export default function Register(props) {
         if (json) {
           if (json.exists) {
             globalNotification.warning({
-              title: 'Conta Já Existe',
-              description: 'Já foi criada uma conta com este e-mail, efetue o login ou a recuperação do acesso.',
+              title: "Conta Já Existe",
+              description: "Já foi criada uma conta com este e-mail, efetue o login ou a recuperação do acesso.",
             });
             setToLogin(true);
           } else {
@@ -57,8 +57,8 @@ export default function Register(props) {
       fail: (error) => {
         console.error(error);
         globalNotification.error({
-          title: 'Erro na Criação da Conta',
-          description: 'Ocorreu um erro na criação da conta, por favor contacte-nos através do suporte.',
+          title: "Erro na Criação da Conta",
+          description: "Ocorreu um erro na criação da conta, por favor contacte-nos através do suporte.",
         });
         setLoadingProviderData(false);
       }
@@ -69,8 +69,8 @@ export default function Register(props) {
     setSubmitting(true);
     const { username, email, name } = values;
     _service({
-      method: 'POST',
-      url: 'profile',
+      method: "POST",
+      url: "profile",
       data: {
         name,
         username,
@@ -80,13 +80,13 @@ export default function Register(props) {
       success: (response) => {
         if (response.json.result) {
           globalNotification.success({
-            title: 'Conta Criada',
-            description: 'A conta foi criada com sucesso.',
+            title: "Conta Criada",
+            description: "A conta foi criada com sucesso.",
           });
           setSubmitting(false);
 
           _service({
-            method: 'POST',
+            method: "POST",
             url: `_auth_provider/login/${provider}`,
             data: {
               uid: providerData.uid
@@ -99,8 +99,8 @@ export default function Register(props) {
                   setLogged(true);
                 } else {
                   globalNotification.error({
-                    title: 'Falha no Login',
-                    description: 'Não foi possível logar automaticamente.',
+                    title: "Falha no Login",
+                    description: "Não foi possível logar automaticamente.",
                   });
                   setToLogin(true);
                 }
@@ -109,8 +109,8 @@ export default function Register(props) {
             fail: (error) => {
               console.error(error);
               globalNotification.serviceFail({
-                title: 'Erro na Autenticação',
-                description: 'Ocorreu um erro grave de autenticação, por favor contacte-nos através do suporte ou tente novamente mais tarde.',
+                title: "Erro na Autenticação",
+                description: "Ocorreu um erro grave de autenticação, por favor contacte-nos através do suporte ou tente novamente mais tarde.",
               });
             }
           });
@@ -119,29 +119,29 @@ export default function Register(props) {
       fail: (e) => {
         setSubmitting(false);
         if (e && e.status === 409 && e.json && e.json.error) {
-          if (e.json.error === 'email-already-exists') {
+          if (e.json.error === "email-already-exists") {
             return globalNotification.warning({
-              title: 'E-mail Existente',
-              description: 'Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
+              title: "E-mail Existente",
+              description: "Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.",
             });
           }
-          if (e.json.error === 'user-already-exists') {
+          if (e.json.error === "user-already-exists") {
             return globalNotification.warning({
-              title: 'Utilizador Existente',
-              description: 'Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
+              title: "Utilizador Existente",
+              description: "Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.",
             });
           }
         }
         return globalNotification.error({
-          title: 'Erro na Criação de Conta',
-          description: 'Não foi possível criar a conta, contacte-nos através do chat de suporte.',
+          title: "Erro na Criação de Conta",
+          description: "Não foi possível criar a conta, contacte-nos através do chat de suporte.",
         });
       }
     });
   }
 
   function onFinishFailed(errorInfo) {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   }
 
   if (loadingProviderData) {
@@ -177,8 +177,8 @@ export default function Register(props) {
               label="Nome"
               name="name"
               rules={[
-                { required: true, message: 'Insira o seu nome.' },
-                { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+                { required: true, message: "Insira o seu nome." },
+                { type: "string", message: "Nome inválido, apenas letras minúsculas e maiúsculas.", pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
               ]}
             >
               <Input disabled={submitting} maxLength={250} />
@@ -187,8 +187,8 @@ export default function Register(props) {
               label="Utilizador"
               name="username"
               rules={[
-                { required: true, message: 'Insira o seu usuário.' },
-                { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-z]+[a-z0-9]{1,24}$" }
+                { required: true, message: "Insira o seu usuário." },
+                { type: "string", message: "Usuário inválido, apenas letras minúsculas e maiúsculas.", pattern: "^[a-z]+[a-z0-9]{1,24}$" }
               ]}
             >
               <Input disabled={submitting} maxLength={25} />
@@ -207,7 +207,7 @@ export default function Register(props) {
           </Form>
         </div>
       </Content>
-      <Sider width={'50%'}>
+      <Sider width={"50%"}>
         <span className="helper" /><img alt="sider-register" src={"/images/sider-register.png"} />
       </Sider>
     </Layout>

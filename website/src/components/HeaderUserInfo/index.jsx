@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 
-import {Spin, Avatar} from 'antd';
+import {Spin, Avatar} from "antd";
 
-import _service from '@netuno/service-client';
+import _service from "@netuno/service-client";
 
 import useProfile from "../../common/useProfile.js";
 
 import WSBadge from "./WSBadge";
 
-import './index.less';
+import "./index.less";
 
 function HeaderUserInfo() {
   const [loading, setLoading] = useState(false);
-  const [avatarImageURL, setAvatarImageURL] = useState('/images/profile-default.png');
+  const [avatarImageURL, setAvatarImageURL] = useState("/images/profile-default.png");
   const profile = useProfile();
   useEffect(() => {
     if (profile.data == null) {
@@ -33,7 +33,7 @@ function HeaderUserInfo() {
     );
   }
   if (profile.data) {
-    const src = avatarImageURL || '/images/profile-default.png';
+    const src = avatarImageURL || "/images/profile-default.png";
     return (
       <div className="header__user-info">
         <div className="header__user-info__avatar">

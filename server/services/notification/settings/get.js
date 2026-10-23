@@ -6,14 +6,14 @@ const dbProfile = profile.getLogged();
 if (!dbProfile) {
   _out.json(_val.map().set("result", false).set("error", "not-logged"));
 } else {
-  let dbTypes = _db.query(`SELECT id, code, name FROM notification_type ORDER BY id ASC`);
+  let dbTypes = _db.query("SELECT id, code, name FROM notification_type ORDER BY id ASC");
   if (!dbTypes || dbTypes.size() === 0) {
     _db.form("notification_type")
       .set("code", "message")
       .set("name", "Mensagens")
       .set("active", true)
       .insert();
-    dbTypes = _db.query(`SELECT id, code, name FROM notification_type ORDER BY id ASC`);
+    dbTypes = _db.query("SELECT id, code, name FROM notification_type ORDER BY id ASC");
   }
   
   const dbSettings = _db.query(`

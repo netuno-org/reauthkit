@@ -1,5 +1,5 @@
-import _service from '@netuno/service-client';
-import {notification} from 'antd';
+import _service from "@netuno/service-client";
+import {notification} from "antd";
 import _auth from "@netuno/auth-client";
 
 class Config {
@@ -9,10 +9,10 @@ class Config {
       prefix: config.services.prefix
     });
     _auth.config({
-      storage: 'local'
+      storage: "local"
     });
     notification.config({
-      placement: 'topRight',
+      placement: "topRight",
       top: 100,
       duration: 3,
       rtl: false,

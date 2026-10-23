@@ -5,8 +5,8 @@ import profile from "#core/lib/profile.js";
 const onAbort = () => {
   _auth.signInAbortWithData(
       _val.map()
-          .set('result', false)
-          .set('error', 'invalid-user')
+          .set("result", false)
+          .set("error", "invalid-user")
   );
   _exec.stop();
 };

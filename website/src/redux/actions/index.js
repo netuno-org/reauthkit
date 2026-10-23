@@ -1,7 +1,7 @@
 import {
   PROFILE_LOAD,
   WS_LOAD
-} from './actionTypes';
+} from "./actionTypes";
 
 export const profileLoadAction = (data) => ({
   type: PROFILE_LOAD,

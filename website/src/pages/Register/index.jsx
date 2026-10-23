@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { Layout, Typography, Form, Input, Button } from 'antd';
+import { Layout, Typography, Form, Input, Button } from "antd";
 import { PasswordInput } from "antd-password-input-strength";
-import _auth from '@netuno/auth-client';
-import _service from '@netuno/service-client';
+import _auth from "@netuno/auth-client";
+import _service from "@netuno/service-client";
 
 import {
   FaGoogle, FaWindows, FaFacebook, FaDiscord, FaGithub
 } from "react-icons/fa";
 
-import Config from '../../common/Config';
+import Config from "../../common/Config";
 
 import isNetworkError from "is-network-error";
 
@@ -20,7 +20,7 @@ import "altcha/i18n";
 
 import globalNotification from "../../common/globalNotification.js";
 
-import './index.less';
+import "./index.less";
 
 export default function Register(props) {
   const servicePrefix = _service.config().prefix;
@@ -55,8 +55,8 @@ export default function Register(props) {
     setSubmitting(true);
     const { username, password, email, name } = values;
     _service({
-      method: 'POST',
-      url: 'profile',
+      method: "POST",
+      url: "profile",
       data: {
         name,
         username,
@@ -67,8 +67,8 @@ export default function Register(props) {
       success: (response) => {
         if (response.json.result) {
           globalNotification.success({
-            title: 'Conta Criada',
-            description: 'A conta foi criada com sucesso, pode iniciar sessão.',
+            title: "Conta Criada",
+            description: "A conta foi criada com sucesso, pode iniciar sessão.",
           });
           setSubmitting(false);
           setReady(true);
@@ -78,34 +78,34 @@ export default function Register(props) {
         setSubmitting(false);
         if (e.error && isNetworkError(e.error)) {
           return globalNotification.error({
-            title: 'Conexão',
-            description: 'Há problemas de conexão com o servidor, tente novamente mais tarde.',
+            title: "Conexão",
+            description: "Há problemas de conexão com o servidor, tente novamente mais tarde.",
           });
         }
         if (e && e.status === 409 && e.json && e.json.error) {
-          if (e.json.error === 'email-already-exists') {
+          if (e.json.error === "email-already-exists") {
             return globalNotification.warning({
-              title: 'E-mail Existente',
-              description: 'Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
+              title: "E-mail Existente",
+              description: "Este e-mail já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.",
             });
           }
-          if (e.json.error === 'user-already-exists') {
+          if (e.json.error === "user-already-exists") {
             return globalNotification.warning({
-              title: 'Utilizador Existente',
-              description: 'Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.',
+              title: "Utilizador Existente",
+              description: "Este utilizador já existe, faça a recuperação do acesso no ecrã de login ou escolha outro.",
             });
           }
         }
         return globalNotification.serviceFail({
-          title: 'Erro na Criação de Conta',
-          description: 'Não foi possível criar a conta, contacte-nos através do suporte ou tente novamente mias tarde.',
+          title: "Erro na Criação de Conta",
+          description: "Não foi possível criar a conta, contacte-nos através do suporte ou tente novamente mias tarde.",
         });
       }
     });
   }
 
   function onFinishFailed(errorInfo) {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   }
 
   if (_auth.isLogged()) {
@@ -154,8 +154,8 @@ export default function Register(props) {
               label="Nome"
               name="name"
               rules={[
-                { required: true, message: 'Insira o seu nome.' },
-                { type: 'string', message: 'Nome inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
+                { required: true, message: "Insira o seu nome." },
+                { type: "string", message: "Nome inválido, apenas letras minúsculas e maiúsculas.", pattern: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" }
               ]}
             >
               <Input disabled={submitting} maxLength={250} />
@@ -164,8 +164,8 @@ export default function Register(props) {
               label="Utilizador"
               name="username"
               rules={[
-                { required: true, message: 'Insira o seu usuário.' },
-                { type: 'string', message: 'Usuário inválido, apenas letras minúsculas e maiúsculas.', pattern: "^[a-z]+[a-z0-9]{1,24}$" }
+                { required: true, message: "Insira o seu usuário." },
+                { type: "string", message: "Usuário inválido, apenas letras minúsculas e maiúsculas.", pattern: "^[a-z]+[a-z0-9]{1,24}$" }
               ]}
             >
               <Input disabled={submitting} maxLength={25} />
@@ -174,8 +174,8 @@ export default function Register(props) {
               label="E-mail"
               name="email"
               rules={[
-                { type: 'email', message: 'O e-mail inserido não é válido.' },
-                { required: true, message: 'Insira o e-mail.' }
+                { type: "email", message: "O e-mail inserido não é válido." },
+                { required: true, message: "Insira o e-mail." }
               ]}
             >
               <Input disabled={submitting} maxLength={250} />
@@ -184,8 +184,8 @@ export default function Register(props) {
               label="Palavra-passe"
               name="password"
               rules={[
-                { required: true, message: 'Insira a palavra-passe.' },
-                { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+                { required: true, message: "Insira a palavra-passe." },
+                { type: "string", message: "Palavra-Passe deverá ter entre 8 a 25 caracteres.", min: 8, max: 25 },
               ]}
             >
               <PasswordInput disabled={submitting} maxLength={25} />
@@ -194,14 +194,14 @@ export default function Register(props) {
               label="Confirmar a Palavra-passe"
               name="password_confirm"
               rules={[
-                { required: true, message: 'Insira a confirmação da palavra-passe.' },
-                { type: 'string', message: 'Palavra-Passe deverá ter entre 8 a 25 caracteres.', min: 8, max: 25 },
+                { required: true, message: "Insira a confirmação da palavra-passe." },
+                { type: "string", message: "Palavra-Passe deverá ter entre 8 a 25 caracteres.", min: 8, max: 25 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
+                    if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject('As palavras-passes não são iguais.');
+                    return Promise.reject("As palavras-passes não são iguais.");
                   },
                 })
               ]}
@@ -211,7 +211,7 @@ export default function Register(props) {
             {Config.authAltcha() && <Form.Item>
               <altcha-widget
                   ref={altcha}
-                  challenge={_service.url('/_altcha')}
+                  challenge={_service.url("/_altcha")}
                   language="pt"
                   delay={1}
                   hideLogo={true}
@@ -226,7 +226,7 @@ export default function Register(props) {
           </Form>
         </div>
       </Content>
-      <Sider width={'50%'}>
+      <Sider width={"50%"}>
         <span className="helper" /><img alt="sider-register" src={"/images/sider-register.png"} />
       </Sider>
     </Layout>

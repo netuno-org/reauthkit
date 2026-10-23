@@ -18,7 +18,7 @@ import globalNotification from "../../common/globalNotification.js";
 
 import useProfile from "../../common/useProfile.js";
 
-import './index.less';
+import "./index.less";
 
 const { Title } = Typography;
 const { Content, Sider } = Layout;
@@ -78,40 +78,40 @@ function Login() {
         setSubmitting(false);
         if (data.error && isNetworkError(data.error)) {
           globalNotification.error({
-            title: 'Conexão',
-            description: 'Há problemas de conexão com o servidor, tente novamente mais tarde.',
+            title: "Conexão",
+            description: "Há problemas de conexão com o servidor, tente novamente mais tarde.",
           });
           return;
         }
         if (data.isJSON) {
-          if (data.json['locked']) {
+          if (data.json["locked"]) {
             globalNotification.error({
-              title: 'Acesso Bloqueado',
+              title: "Acesso Bloqueado",
               description:
-                  'O seu login foi bloqueado devido as muitas tentativas, volte a tentar mais tarde ou contate o suporte.',
+                  "O seu login foi bloqueado devido as muitas tentativas, volte a tentar mais tarde ou contate o suporte.",
             });
             return;
           }
-          if (data.json['custom-blocked']) {
+          if (data.json["custom-blocked"]) {
             globalNotification.error({
-              title: 'Login Bloqueado',
+              title: "Login Bloqueado",
               description:
-              'O login foi bloqueado, realize o processo de desbloqueamento ou contate o suporte.',
+              "O login foi bloqueado, realize o processo de desbloqueamento ou contate o suporte.",
             });
             return;
           }
         }
         globalNotification.error({
-          title: 'Login Inválido',
+          title: "Login Inválido",
           description:
-          'Por favor verifique as credenciais inseridas.',
+          "Por favor verifique as credenciais inseridas.",
         });
       }
     });
   }
 
   function onFinishFailed(errorInfo) {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   }
 
   let initialValues = { remember: true };
@@ -161,7 +161,7 @@ function Login() {
                 label="Utilizador"
                 name="username"
                 rules={[
-                  { required: true, message: 'Insira o seu usuário.' }
+                  { required: true, message: "Insira o seu usuário." }
               ]}
               >
                 <Input />
@@ -170,7 +170,7 @@ function Login() {
               <Form.Item
                 label="Palavra-passe"
                 name="password"
-                rules={[{ required: true, message: 'Insira a palavra-passe.' }]}
+                rules={[{ required: true, message: "Insira a palavra-passe." }]}
               >
                 <Input.Password />
               </Form.Item>
@@ -182,7 +182,7 @@ function Login() {
               { Config.authAltcha() && <Form.Item>
                 <altcha-widget
                     ref={altcha}
-                    challenge={_service.url('/_altcha')}
+                    challenge={_service.url("/_altcha")}
                     language="pt"
                     delay={1}
                     hideLogo={true}
@@ -196,7 +196,7 @@ function Login() {
                 </Button>
               </Form.Item>
 
-              <Form.Item style={{ textAlign: 'center' }}>
+              <Form.Item style={{ textAlign: "center" }}>
                 <Button type="link" onClick={() => setVisible(!visible)} >Esqueceu-se da palavra passe?</Button>
                 {visible && <RecoverModal onClose={() => { setVisible(false) }} />}
               </Form.Item>
@@ -212,7 +212,7 @@ function Login() {
           </div>
 
         </Content>
-        <Sider width={'50%'}>
+        <Sider width={"50%"}>
           <span className="helper" /><img alt="sider-login" src={"/images/sider-login.png"} />
         </Sider>
       </Layout>

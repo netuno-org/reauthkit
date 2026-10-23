@@ -22,13 +22,13 @@ function HeaderBase({ collapsed, headerButtonMode }) {
     const profile = useProfile();
 
     useEffect(() => {
-        if (location.pathname === '/profile/view' || location.pathname.startsWith('/profile/')) {
-            if (location.pathname === '/profile/edit') {
-                setMenuKeysSelected(['profileEdit']);
-            } else if (location.pathname === '/profile/preferences') {
-                setMenuKeysSelected(['profilePreferences']);
+        if (location.pathname === "/profile/view" || location.pathname.startsWith("/profile/")) {
+            if (location.pathname === "/profile/edit") {
+                setMenuKeysSelected(["profileEdit"]);
+            } else if (location.pathname === "/profile/preferences") {
+                setMenuKeysSelected(["profilePreferences"]);
             } else {
-                setMenuKeysSelected(['profileView']);
+                setMenuKeysSelected(["profileView"]);
             }
         } else {
             setMenuKeysSelected([]);
@@ -46,15 +46,15 @@ function HeaderBase({ collapsed, headerButtonMode }) {
         }
     }
     return (
-        <Header className={'header-base ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
+        <Header className={"header-base " + classNames({ "auth ": _auth.isLogged() }) + classNames({ "collapsed ": collapsed })}>
             {!_auth.isLogged() &&
                 <Link to="/" className="logo-container"><img alt="logo" src="/images/logo.svg" /></Link>
             }
-            {headerButtonMode === '/login' ?
+            {headerButtonMode === "/login" ?
                 <Link to="/register">
                     <Button type="primary">Criar conta</Button>
                 </Link>
-                : headerButtonMode === '/register' ?
+                : headerButtonMode === "/register" ?
                     <Link to="/login">
                         <Button type="primary">Iniciar sessão</Button>
                     </Link>
@@ -68,18 +68,18 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                                     {
                                         key: "profileEdit",
                                         icon: <EditOutlined />,
-                                        label: 'Editar Perfil'
+                                        label: "Editar Perfil"
                                     },
                                     {
                                         key: "profilePreferences",
                                         icon: <SettingOutlined />,
-                                        label: 'Preferências'
+                                        label: "Preferências"
                                     },
                                     {
                                         key: "logout",
                                         icon: <LogoutOutlined />,
                                         danger: true,
-                                        label: 'Terminar Sessão'
+                                        label: "Terminar Sessão"
                                     }
                                 ],
                                 onClick: onUserMenuClick,
@@ -87,7 +87,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
                             }}
                             placement="bottomRight"
                             overlayClassName="profile-menu-popup"
-                            trigger={['click']}
+                            trigger={["click"]}
                         >
                             <div className="header-base__profile-trigger">
                                 <HeaderUserInfo />

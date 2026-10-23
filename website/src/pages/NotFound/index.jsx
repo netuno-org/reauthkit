@@ -1,9 +1,9 @@
-import React from 'react';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import React from "react";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { Typography } from 'antd';
+import { Typography } from "antd";
 
-import './index.less';
+import "./index.less";
 
 const { Title } = Typography;
 

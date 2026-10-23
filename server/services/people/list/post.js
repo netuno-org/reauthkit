@@ -41,13 +41,13 @@ let countParams = [loggedProfileId];
 
 if (search !== "") {
   const searchPattern = `%${search.toLowerCase()}%`;
-  querySql += ` AND (LOWER(profile.name) LIKE ? OR LOWER(netuno_user.user) LIKE ? OR LOWER(profile.email) LIKE ?) `;
-  countSql += ` AND (LOWER(profile.name) LIKE ? OR LOWER(netuno_user.user) LIKE ? OR LOWER(profile.email) LIKE ?) `;
+  querySql += " AND (LOWER(profile.name) LIKE ? OR LOWER(netuno_user.user) LIKE ? OR LOWER(profile.email) LIKE ?) ";
+  countSql += " AND (LOWER(profile.name) LIKE ? OR LOWER(netuno_user.user) LIKE ? OR LOWER(profile.email) LIKE ?) ";
   params.push(searchPattern, searchPattern, searchPattern);
   countParams.push(searchPattern, searchPattern, searchPattern);
 }
 
-querySql += ` ORDER BY profile.name ASC LIMIT ? OFFSET ? `;
+querySql += " ORDER BY profile.name ASC LIMIT ? OFFSET ? ";
 const offset = (page - 1) * pageSize;
 params.push(pageSize, offset);
 

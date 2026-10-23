@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Routes as Switch, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
-import {ConfigProvider, Layout, notification} from 'antd';
-import antLocale_ptPT from 'antd/lib/locale/pt_PT';
-import dayjs from 'dayjs';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import RelativeTime from 'dayjs/plugin/relativeTime';
+import {ConfigProvider, Layout, notification} from "antd";
+import antLocale_ptPT from "antd/lib/locale/pt_PT";
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import RelativeTime from "dayjs/plugin/relativeTime";
 
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
-import classNames from 'classnames';
+import classNames from "classnames";
 
-import _auth from '@netuno/auth-client';
-import './common/Config';
+import _auth from "@netuno/auth-client";
+import "./common/Config";
 
-import HeaderBase from './base/HeaderBase';
+import HeaderBase from "./base/HeaderBase";
 import SiderMenu from "./base/SiderMenu";
 import FooterBase from "./base/FooterBase";
 
 import globalNotification from "./common/globalNotification.js";
 
-import LoginPage from './pages/Login';
-import Register from './pages/Register';
-import LoginCallback from './pages/LoginCallback';
-import RegisterCallback from './pages/RegisterCallback';
-import Recovery from './pages/Recovery';
-import NotFound from './pages/NotFound';
+import LoginPage from "./pages/Login";
+import Register from "./pages/Register";
+import LoginCallback from "./pages/LoginCallback";
+import RegisterCallback from "./pages/RegisterCallback";
+import Recovery from "./pages/Recovery";
+import NotFound from "./pages/NotFound";
 import ReservedArea from "./pages/ReservedArea";
 
-import 'dayjs/locale/pt';
+import "dayjs/locale/pt";
 
-import './styles/App.less';
+import "./styles/App.less";
 
-dayjs.locale('pt');
+dayjs.locale("pt");
 dayjs.extend(LocalizedFormat);
 dayjs.extend(RelativeTime);
 
@@ -51,7 +51,7 @@ const NavWithAuthCheck = () => {
 };
 
 export default function App() {
-  const [headerButtonMode, setHeaderButtonMode] = useState('login');
+  const [headerButtonMode, setHeaderButtonMode] = useState("login");
   const [collapsed, setCollapsed] = useState(false);
 
   const location = useLocation();
@@ -62,7 +62,7 @@ export default function App() {
   useEffect(() => {
     _auth.config({
       onLogout: () => {
-        navigate('/login');
+        navigate("/login");
       }
     });
   }, []);
@@ -84,29 +84,29 @@ export default function App() {
       locale={antLocale_ptPT}
       theme={{
         token: {
-          colorPrimary: '#1890ff',
+          colorPrimary: "#1890ff",
           fontSize: 16,
           borderRadius: 20,
-          primaryColor: '#1890ff',
-          colorBgBase: '#eff8ff',
-          colorBgLayout: '#ffffff',
-          colorBgMask: 'rgba(0, 33, 64, 0.75)'
+          primaryColor: "#1890ff",
+          colorBgBase: "#eff8ff",
+          colorBgLayout: "#ffffff",
+          colorBgMask: "rgba(0, 33, 64, 0.75)"
         },
         components: {
           Layout: {
-            headerBg: '#f0f2f5',
-            triggerBg: '#f0f2f5',
+            headerBg: "#f0f2f5",
+            triggerBg: "#f0f2f5",
             triggerColor: null,
-            siderBg: '#f0f2f5',
+            siderBg: "#f0f2f5",
           },
           Menu: {
-            colorBgElevated: '#f0f2f5',
-            itemBg: '#f0f2f5',
-            itemColor: '#1890ff',
-            itemSelectedColor: '#caf7fc',
-            itemSelectedBg: '#1890ff',
-            itemHoverColor: '#1890ff',
-            itemHoverBg: '#caf7fc',
+            colorBgElevated: "#f0f2f5",
+            itemBg: "#f0f2f5",
+            itemColor: "#1890ff",
+            itemSelectedColor: "#caf7fc",
+            itemSelectedBg: "#1890ff",
+            itemHoverColor: "#1890ff",
+            itemHoverBg: "#caf7fc",
             subMenuItemBorderRadius: 0,
             borderRadius: 0,
             borderRadiusLG: 0,
@@ -115,11 +115,11 @@ export default function App() {
       }}
     >
       <Provider store={store}>
-        <Layout className={'page ' + classNames({ 'auth ': _auth.isLogged() }) + classNames({ 'collapsed ': collapsed })}>
+        <Layout className={"page " + classNames({ "auth ": _auth.isLogged() }) + classNames({ "collapsed ": collapsed })}>
           <SiderMenu collapsed={collapsed} onCollapse={onCollapse} />
           <Layout>
             <HeaderBase collapsed={collapsed} headerButtonMode={headerButtonMode} />
-            <Content className={classNames({ 'auth ': _auth.isLogged() })}>
+            <Content className={classNames({ "auth ": _auth.isLogged() })}>
               {contextHolder}
               <Switch>
                 {/** PUBLIC **/}
