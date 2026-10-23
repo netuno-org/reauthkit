@@ -131,7 +131,7 @@ function Notifications() {
     if (item.extra) {
       try {
         const extraObj = typeof item.extra === "string" ? JSON.parse(item.extra) : item.extra;
-        if (item.type.code === "friend" && extraObj.type === "friend_request") {
+        if (item.type.code === "friend") {
           navigate(`/profile/${extraObj.with}`);
         }
       } catch (e) { }
