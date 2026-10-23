@@ -27,7 +27,8 @@ export default [
     rules: {
       "no-undef": "error",
       quotes: ["error", "double"],
-      "@stylistic/block-spacing": ["error", "always"]
+      "@stylistic/block-spacing": ["error", "always"],
+      "object-curly-spacing": ["error", "always"]
     }
   },
   {
