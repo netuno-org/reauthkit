@@ -20,6 +20,12 @@ export default [
     ]
   },
   {
+    rules: {
+      "no-undef": "error",
+      quotes: ["error", "double"]
+    }
+  },
+  {
     files: ["**/*.{js,jsx,mjs}"],
     languageOptions: {
       ecmaVersion: "latest",
@@ -39,9 +45,6 @@ export default [
         ...globals.commonjs
       }
     },
-    rules: {
-      "no-undef": "error"
-    }
   },
   {
     files: ["server/**/*.js"],
@@ -50,10 +53,6 @@ export default [
         ...globals.nodeBuiltin
       }
     },
-    rules: {
-      "no-undef": "error",
-      quotes: ["error", "double"]
-    }
   },
   {
     files: ["server/__tests__/**/*.js"],
@@ -71,10 +70,6 @@ export default [
         ...globals.nodeBuiltin
       }
     },
-    rules: {
-      "no-undef": "error",
-      quotes: ["error", "double"]
-    }
   },
   {
     files: ["ui/**/*.{js,jsx}"],
@@ -105,7 +100,6 @@ export default [
         "warn",
         { allowConstantExport: true }
       ],
-      "no-undef": "error"
     }
   }
 ];
