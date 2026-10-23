@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { promises as fs } from 'fs'
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
+import { promises as fs } from "fs"
 
-const outputBasePath = './../public'
-const outputFilePath = 'scripts/ui.js'
+const outputBasePath = "./../public"
+const outputFilePath = "scripts/ui.js"
 
 export default defineConfig({
   plugins: [
@@ -13,9 +13,9 @@ export default defineConfig({
         // Hack Ant.Design v5 Performance Issues
         // Using Tables causes very slow interactions on the entire page because an infinite loop executes the scrollTo function.
         const bundlePath = `${outputBasePath}/${outputFilePath}`
-        let data = await fs.readFile(bundlePath, 'utf-8')
-        data = data.replace('function scrollTo(', 'function $_scrollTo_antd_bug_$(')
-        await fs.writeFile(bundlePath, data, 'utf-8')
+        let data = await fs.readFile(bundlePath, "utf-8")
+        data = data.replace("function scrollTo(", "function $_scrollTo_antd_bug_$(")
+        await fs.writeFile(bundlePath, data, "utf-8")
       }
     }
   ],
@@ -23,7 +23,7 @@ export default defineConfig({
     sourcemap: true,
     chunkSizeWarningLimit: 2048,
     rollupOptions: {
-      input: 'src/index.jsx',
+      input: "src/index.jsx",
       output: {
         dir: outputBasePath,
         entryFileNames: outputFilePath,
@@ -31,18 +31,18 @@ export default defineConfig({
           const info = assetInfo.name.split(".");
           let extType = info[info.length - 1];
           if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-            return `images/[name][extname]`;
+            return "images/[name][extname]";
           } else if (/css/i.test(extType)) {
-            return `styles/ui[extname]`;
+            return "styles/ui[extname]";
           } else {
-            return `[name][extname]`;
+            return "[name][extname]";
           }
         },
         chunkFileNames: "ui-chunk.js",
         manualChunks: undefined,
       },
       onwarn: (warning, warn) => {
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || warning.code == 'EVAL') {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE" || warning.code == "EVAL") {
           return;
         }
         warn(warning);
