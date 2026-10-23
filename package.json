@@ -10,6 +10,7 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.13.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
