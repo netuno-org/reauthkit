@@ -1,4 +1,4 @@
-import {_req, _val, _db, _crypto, _time, _uid, _smtp, _template, _header, _out, _storage} from "@netuno/server-types";
+import { _req, _val, _db, _crypto, _time, _uid, _smtp, _template, _header, _out, _storage, _exec } from "@netuno/server-types";
 
 const email = _req.getString("email");
 
@@ -6,7 +6,16 @@ const dbProfile = _db.form("profile")
   .where(_db.where("email").equal(email))
   .first();
 
-if (dbProfile != null && dbProfile.getBoolean("active")) {
+if (!dbProfile) {
+  _header.status(404);
+  _out.json(
+    _val.map()
+      .set("error", "not-exists")
+  );
+  _exec.stop();
+}
+
+if (dbProfile.getBoolean("active")) {
   const recoveryKey = _crypto.sha512(_uid.generate());
   const recoveryLimit = _time.localDateTime().plusDays(1);
   _db.update(
@@ -39,19 +48,15 @@ if (dbProfile != null && dbProfile.getBoolean("active")) {
     "logo"
   );
   smtp.send();
+
   _out.json(
     _val.map().set("result", true)
   );
-} else if (dbProfile != null && !dbProfile.getBoolean("active")) {
-  _header.status(409);
-  _out.json(
-    _val.map()
-      .set("error", "user-not-active")
-  );
-} else {
-  _header.status(404);
-  _out.json(
-    _val.map()
-      .set("error", "not-exists")
-  );
+  _exec.stop();
 }
+
+_header.status(409);
+_out.json(
+  _val.map()
+    .set("error", "user-not-active")
+);

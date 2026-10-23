@@ -1,4 +1,4 @@
-import {_req, _db, _out, _val} from "@netuno/server-types";
+import { _req, _db, _out, _val } from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
@@ -41,5 +41,3 @@ _out.json(
     .set("result", true)
     .set("from", dbProfileFrom ? dbProfileFrom.getString("uid") : "")
 );
-
-
