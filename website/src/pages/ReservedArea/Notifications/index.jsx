@@ -13,14 +13,14 @@ import "./index.less";
 const { Text, Paragraph } = Typography;
 
 function formatTimeAgo(sentAt) {
-  if (!sentAt) return "";
+  if (!sentAt) {return "";}
   const moment = dayjs(sentAt);
   const diffSec = dayjs().diff(moment, "second");
-  if (diffSec < 60) return "Há Alguns Segundos";
+  if (diffSec < 60) {return "Há Alguns Segundos";}
   const diffMin = dayjs().diff(moment, "minute");
-  if (diffMin < 60) return `Há ${diffMin} ${diffMin === 1 ? "Minuto" : "Minutos"}`;
+  if (diffMin < 60) {return `Há ${diffMin} ${diffMin === 1 ? "Minuto" : "Minutos"}`;}
   const diffHour = dayjs().diff(moment, "hour");
-  if (diffHour < 24) return `Há ${diffHour} ${diffHour === 1 ? "Hora" : "Horas"}`;
+  if (diffHour < 24) {return `Há ${diffHour} ${diffHour === 1 ? "Hora" : "Horas"}`;}
   return moment.format("DD/MM/YYYY HH:mm");
 }
 

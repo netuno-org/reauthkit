@@ -7,7 +7,7 @@ export default {
       .first();
   },
   getUnreadTotal: (dbProfile) => {
-    if (!dbProfile) return 0;
+    if (!dbProfile) {return 0;}
     const dbDisabledSetting = _db.queryFirst(`
       SELECT ns.id FROM notification_settings ns
       INNER JOIN notification_type nt ON ns.type_id = nt.id

@@ -28,7 +28,7 @@ function Chat({ friend, onClose }) {
   }, [friend]);
 
   const onFinish = ({ message }) => {
-    if (!message || message.trim() === "") return;
+    if (!message || message.trim() === "") {return;}
 
     _ws.sendService({
       method: "POST",
@@ -84,7 +84,7 @@ function Chat({ friend, onClose }) {
   }
 
   const getGraphemeCount = (str) => {
-    if (!str) return 0;
+    if (!str) {return 0;}
     if (typeof Intl !== "undefined" && Intl.Segmenter) {
       const segmenter = new Intl.Segmenter("pt", { granularity: "grapheme" });
       return [...segmenter.segment(str)].length;

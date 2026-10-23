@@ -85,9 +85,9 @@ const notification = {
     }
   },
   isEnabled: (dbProfile, typeCode) => {
-    if (!dbProfile) return true;
+    if (!dbProfile) {return true;}
     const dbType = _db.queryFirst("SELECT id FROM notification_type WHERE code = ? AND active = true", typeCode);
-    if (!dbType) return true;
+    if (!dbType) {return true;}
 
     const dbSetting = _db.queryFirst(
       "SELECT id, active FROM notification_settings WHERE profile_id = ? AND type_id = ?",
@@ -100,7 +100,7 @@ const notification = {
     return true;
   },
   getUnreadTotal: (dbProfile) => {
-    if (!dbProfile) return 0;
+    if (!dbProfile) {return 0;}
     const dbUnread = _db.queryFirst(`
       SELECT COUNT(n.id) AS total
       FROM notification n
@@ -114,7 +114,7 @@ const notification = {
     return dbUnread ? dbUnread.getInt("total", 0) : 0;
   },
   toData: (dbNotification) => {
-    if (!dbNotification) return null;
+    if (!dbNotification) {return null;}
     const data = _val.map()
       .set("uid", dbNotification.getString("uid", ""))
       .set("title", dbNotification.getString("title", ""))
