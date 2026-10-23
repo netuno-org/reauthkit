@@ -1,4 +1,4 @@
-import {_env, _service, _auth} from "@netuno/server-types";
+import { _env, _service, _auth } from "@netuno/server-types";
 
 /**
  *  When service need public access...

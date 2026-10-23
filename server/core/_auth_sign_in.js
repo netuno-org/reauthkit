@@ -1,4 +1,4 @@
-import {_val, _auth, _exec} from "@netuno/server-types";
+import { _val, _auth, _exec } from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 

@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
-import {Spin, Avatar} from "antd";
+import { Spin, Avatar } from "antd";
 
 import _service from "@netuno/service-client";
 

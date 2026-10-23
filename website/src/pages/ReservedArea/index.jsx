@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import _auth from "@netuno/auth-client";
-import {Button, Spin, Typography} from "antd";
-import {useNavigate, useLocation, Link} from "react-router-dom";
+import { Button, Spin, Typography } from "antd";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Config from "../../common/Config.js";
 
@@ -21,7 +21,7 @@ import Friends from "./Friends";
 
 import "./index.less";
 
-const {Title} = Typography;
+const { Title } = Typography;
 
 function ReservedArea() {
   const navigate = useNavigate();

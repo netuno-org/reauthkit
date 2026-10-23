@@ -1,4 +1,4 @@
-import {_db, _val} from "@netuno/server-types";
+import { _db, _val } from "@netuno/server-types";
 
 export default {
   getByUID: (uid) => {

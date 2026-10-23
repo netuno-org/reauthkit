@@ -8,19 +8,19 @@ export default {
         }
         return _api;
     },
-    serviceFail({title, description}) {
-        _api.error({title, description});
+    serviceFail({ title, description }) {
+        _api.error({ title, description });
     },
-    success({title, description}) {
-        _api.success({title, description});
+    success({ title, description }) {
+        _api.success({ title, description });
     },
-    info({title, description}) {
-        _api.info({title, description});
+    info({ title, description }) {
+        _api.info({ title, description });
     },
-    warning({title, description}) {
-        _api.warning({title, description});
+    warning({ title, description }) {
+        _api.warning({ title, description });
     },
-    error({title, description}) {
-        _api.error({title, description});
+    error({ title, description }) {
+        _api.error({ title, description });
     }
 };

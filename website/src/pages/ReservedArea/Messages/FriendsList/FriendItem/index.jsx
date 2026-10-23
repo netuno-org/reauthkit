@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar, Badge, Col, Row} from "antd";
+import { Avatar, Badge, Col, Row } from "antd";
 import dayjs from "dayjs";
 import _service from "@netuno/service-client";
 

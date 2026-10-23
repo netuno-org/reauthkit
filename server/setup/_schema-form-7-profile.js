@@ -6,7 +6,7 @@
   *
   */
 
-import {_val, _form} from "@netuno/server-types";
+import { _val, _form } from "@netuno/server-types";
 
 _form.sync(
 	_val.map()

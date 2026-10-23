@@ -1,4 +1,4 @@
-import {WS_LOAD} from "../actions/actionTypes";
+import { WS_LOAD } from "../actions/actionTypes";
 
 const initialState = {
   data: null,

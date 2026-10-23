@@ -1,5 +1,5 @@
 import _service from "@netuno/service-client";
-import {notification} from "antd";
+import { notification } from "antd";
 import _auth from "@netuno/auth-client";
 
 class Config {

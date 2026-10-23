@@ -1,4 +1,4 @@
-import {_db, _val, _ws} from "@netuno/server-types";
+import { _db, _val, _ws } from "@netuno/server-types";
 
 export default {
   notifyAllWithStatusChanged: (dbProfile, online)=> {

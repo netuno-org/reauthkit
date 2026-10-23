@@ -70,7 +70,7 @@ function Login() {
         }
         return data;
       },
-      success: ({json}) => {
+      success: ({ json }) => {
         profile.set(json.extra);
         setSubmitting(false);
       },

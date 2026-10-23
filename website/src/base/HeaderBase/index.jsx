@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import _auth from "@netuno/auth-client";
-import {Link, useNavigate, useLocation} from "react-router-dom";
-import {Button, Layout, Dropdown} from "antd";
-import {EditOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
-import React, {useEffect, useState} from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Button, Layout, Dropdown } from "antd";
+import { EditOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 
 import useProfile from "../../common/useProfile.js";
 
@@ -34,7 +34,7 @@ function HeaderBase({ collapsed, headerButtonMode }) {
             setMenuKeysSelected([]);
         }
     }, [location]);
-    function onUserMenuClick({key}) {
+    function onUserMenuClick({ key }) {
         if (key === "profileView") {
             navigate("/profile/view");
         } else if (key === "profileEdit") {

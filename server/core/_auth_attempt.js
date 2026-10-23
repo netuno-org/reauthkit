@@ -1,4 +1,4 @@
-import {_auth, _user, _val, _req} from "@netuno/server-types"
+import { _auth, _user, _val, _req } from "@netuno/server-types"
 
 const username = _req.getString("username")
 

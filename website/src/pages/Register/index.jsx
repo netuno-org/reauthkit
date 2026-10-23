@@ -62,7 +62,7 @@ export default function Register(props) {
         username,
         password,
         email,
-        ...(Config.authAltcha() && {altcha: altchaPayload})
+        ...(Config.authAltcha() && { altcha: altchaPayload })
       },
       success: (response) => {
         if (response.json.result) {

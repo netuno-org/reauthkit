@@ -1,9 +1,9 @@
-import {profileLoadAction} from "../redux/actions/index.js";
-import {useDispatch, useSelector} from "react-redux";
+import { profileLoadAction } from "../redux/actions/index.js";
+import { useDispatch, useSelector } from "react-redux";
 import _service from "@netuno/service-client";
 import globalNotification from "./globalNotification.js";
 import _auth from "@netuno/auth-client";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 let unloaded = false;
 

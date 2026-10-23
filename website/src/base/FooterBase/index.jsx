@@ -1,7 +1,7 @@
 import _auth from "@netuno/auth-client";
-import {Layout} from "antd";
+import { Layout } from "antd";
 
-const {Footer} = Layout;
+const { Footer } = Layout;
 
 function FooterBase() {
     return (

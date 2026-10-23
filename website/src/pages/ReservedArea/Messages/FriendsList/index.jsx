@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {Spin} from "antd";
+import { useEffect, useState } from "react";
+import { Spin } from "antd";
 import _ws from "@netuno/ws-client";
 
 import FriendItem from "./FriendItem";

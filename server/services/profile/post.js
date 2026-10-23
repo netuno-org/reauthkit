@@ -1,4 +1,4 @@
-import {_req, _db, _val, _auth, _user, _group, _header, _exec, _altcha, _remote, _out} from "@netuno/server-types";
+import { _req, _db, _val, _auth, _user, _group, _header, _exec, _altcha, _remote, _out } from "@netuno/server-types";
 
 const name = _req.getString("name");
 const username = _req.getString("username");

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes as Switch, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
-import {ConfigProvider, Layout, notification} from "antd";
+import { ConfigProvider, Layout, notification } from "antd";
 import antLocale_ptPT from "antd/lib/locale/pt_PT";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
