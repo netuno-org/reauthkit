@@ -25,7 +25,7 @@ function formatTimeAgo(sentAt) {
 }
 
 function Notifications() {
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("unread");
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [total, setTotal] = useState(0);
@@ -195,10 +195,6 @@ function Notifications() {
 
   const tabItems = [
     {
-      key: "all",
-      label: "Todas",
-    },
-    {
       key: "unread",
       label: (
         <span className="notifications-tab-unread">
@@ -211,6 +207,10 @@ function Notifications() {
           />
         </span>
       ),
+    },
+    {
+      key: "all",
+      label: "Todas",
     },
   ];
 
