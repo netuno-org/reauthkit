@@ -30,21 +30,30 @@ const fromId = dbProfileFrom.getInt("id");
 const toUID = dbProfileTo.getString("uid"); // não usar targetUID na query para evitar SQL injection
 const fromUID = dbProfileFrom.getString("uid");
 
-const dbNotification = _db.queryFirst(`
+const dbToNotification = _db.queryFirst(`
+    SELECT id
+    FROM notification
+    WHERE 
+        profile_id = ${fromId}
+        AND
+        extra like '{"type":"friend_%","with":"${toUID}"}'
+  `);
+
+if (dbToNotification) {
+  _db.delete("notification", dbToNotification.getInt("id"));
+}
+
+const dbFromNotification = _db.queryFirst(`
     SELECT id
     FROM notification
     WHERE 
         profile_id = ${toId}
         AND
         extra like '{"type":"friend_%","with":"${fromUID}"}'
-    OR
-        profile_id = ${fromId}
-        AND
-        extra like '{"type":"friend_%","with":"${toUID}"}'
   `);
 
-if (dbNotification) {
-  _db.delete("notification", dbNotification.getInt("id"));
+if (dbFromNotification) {
+  _db.delete("notification", dbFromNotification.getInt("id"));
 }
 
 _db.execute(
