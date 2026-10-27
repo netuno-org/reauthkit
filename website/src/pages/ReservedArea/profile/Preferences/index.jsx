@@ -11,8 +11,10 @@ const { Title } = Typography;
 function Preferences() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  const [messageNotifications, setMessageNotifications] = useState(true);
-  const [friendNotifications, setFriendNotifications] = useState(true);
+  const [notifications, setNotifications] = useState({
+    friend: true,
+    message: true,
+  });
 
   useEffect(() => {
     loadSettings();
@@ -26,15 +28,9 @@ function Preferences() {
       success: (response) => {
         setLoading(false);
         if (response.json && response.json.result && response.json.data) {
-          const messageSetting = response.json.data.find((item) => item.code === "message");
-          if (messageSetting) {
-            setMessageNotifications(messageSetting.enabled);
-          }
-
-          const friendSetting = response.json.data.find((item) => item.code === "friend");
-          if (friendSetting) {
-            setFriendNotifications(friendSetting.enabled);
-          }
+          const newSettings = {};
+          response.json.data.forEach((item) => { newSettings[item.code] = item.enabled });
+          setNotifications({ ...notifications, ...newSettings });
         }
       },
       fail: () => {
@@ -44,13 +40,10 @@ function Preferences() {
   };
 
   const handleToggle = (checked, type) => {
-    if (type === "message") {
-      setMessageNotifications(checked);
-    }
-
-    if (type === "friend") {
-      setFriendNotifications(checked);
-    }
+    setNotifications({
+      ...notifications,
+      [type]: checked
+    });
 
     setUpdating(true);
     _service({
@@ -71,12 +64,11 @@ function Preferences() {
       },
       fail: () => {
         setUpdating(false);
-        if (type === "message") {
-          setMessageNotifications(!checked);
-        }
-        if (type === "friend") {
-          setFriendNotifications(!checked);
-        }
+        setNotifications({
+          ...notifications,
+          [type]: !checked
+        });
+
         globalNotification.serviceFail({
           title: "Preferências",
           description: "Ocorreu um erro ao atualizar as preferências.",
@@ -118,7 +110,7 @@ function Preferences() {
             </Col>
             <Col xs={6} sm={4} style={{ textAlign: "right" }}>
               <Switch
-                checked={friendNotifications}
+                checked={notifications.friend}
                 onChange={(checked) => handleToggle(checked, "friend")}
                 loading={updating}
               />
@@ -143,7 +135,7 @@ function Preferences() {
             </Col>
             <Col xs={6} sm={4} style={{ textAlign: "right" }}>
               <Switch
-                checked={messageNotifications}
+                checked={notifications.message}
                 onChange={(checked) => handleToggle(checked, "message")}
                 loading={updating}
               />
