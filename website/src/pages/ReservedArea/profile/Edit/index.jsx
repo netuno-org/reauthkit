@@ -17,7 +17,7 @@ const { Title } = Typography;
 function ProfileEdit() {
   const [submitting, setSubmitting] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
-  const [avatarImageURL, setAvatarImageURL] = useState("/images/profile-default.png");
+  const [avatarImageUrl, setAvatarImageUrl] = useState("/images/profile-default.png");
   const profileAvatar = useRef(null);
   const profileForm = useRef(null);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ function ProfileEdit() {
 
   useEffect(() => {
     if (profile.data.avatar) {
-      setAvatarImageURL(_service.url(`/profile/avatar?uid=${profile.data.uid}`));
+      setAvatarImageUrl(_service.url(`/profile/avatar?uid=${profile.data.uid}`));
     }
   }, []);
 
@@ -110,7 +110,7 @@ function ProfileEdit() {
         <Title level={2}>Editar Perfil</Title>
       </div>
       <div className="content-body">
-        <Avatar ref={profileAvatar} currentImage={avatarImageURL}/>
+        <Avatar ref={profileAvatar} currentImage={avatarImageUrl}/>
         <Divider orientation="left" plain>Informações Gerais</Divider>
         <Form
           {...layout}

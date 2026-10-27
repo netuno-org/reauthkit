@@ -5,7 +5,7 @@ import message from "#core/lib/message.js";
 
 const dbProfileLogged = profile.getLogged();
 const withUid = _req.getString("with");
-const dbProfileFriend = withUid ? profile.getByUID(withUid) : null;
+const dbProfileFriend = withUid ? profile.getByUid(withUid) : null;
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 10);
 

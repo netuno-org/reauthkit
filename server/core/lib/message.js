@@ -1,7 +1,7 @@
 import { _db, _val } from "@netuno/server-types";
 
 export default {
-  getByUID: (uid) => {
+  getByUid: (uid) => {
     return _db.form("message")
       .where(_db.where("uid").equal(uid))
       .first();

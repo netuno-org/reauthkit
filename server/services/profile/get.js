@@ -2,14 +2,14 @@ import { _db, _req, _val, _header, _exec, _out } from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 
-let profileUID = _req.getUID("uid");
+let profileUid = _req.getUID("uid");
 
-if (!profileUID) {
+if (!profileUid) {
   const dbProfile = profile.getLogged();
-  profileUID = dbProfile.getUID("uid");
+  profileUid = dbProfile.getUID("uid");
 }
 
-const fullData = profile.getFullDataByUID(profileUID);
+const fullData = profile.getFullDataByUid(profileUid);
 
 if (!fullData) {
   _header.status(404);
@@ -24,7 +24,7 @@ if (!fullData) {
 const dbProfileLogged = profile.getLogged();
 if (dbProfileLogged) {
   const loggedId = dbProfileLogged.getInt("id");
-  const targetProfile = profile.getByUID(profileUID);
+  const targetProfile = profile.getByUid(profileUid);
   if (targetProfile) {
     const targetId = targetProfile.getInt("id");
     if (loggedId === targetId) {

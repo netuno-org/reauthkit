@@ -4,8 +4,8 @@ import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
 
 const dbProfileLogged = profile.getLogged();
-const dbProfileFrom = profile.getByUID(_req.getString("from"));
-const dbMessage = message.getByUID(_req.getString("uid"));
+const dbProfileFrom = profile.getByUid(_req.getString("from"));
+const dbMessage = message.getByUid(_req.getString("uid"));
 
 if (dbMessage && dbProfileFrom) {
   const updatedCount = _db.execute(`

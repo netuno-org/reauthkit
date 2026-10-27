@@ -1,7 +1,7 @@
 import { _db, _user, _val, _ws } from "@netuno/server-types";
 
 export default {
-  getFullDataByUID: (uid) => {
+  getFullDataByUid: (uid) => {
     const dbProfile = _db.queryFirst(`
       SELECT profile.uid,
          profile.name,
@@ -30,7 +30,7 @@ export default {
       .where(_db.where("profile_user_id").equal(_user.id))
       .first();
   },
-  getByUID: (uid) => {
+  getByUid: (uid) => {
     return _db.form("profile")
       .where(_db.where("uid").equal(uid))
       .first();

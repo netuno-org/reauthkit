@@ -12,16 +12,16 @@ import "./index.less";
 
 function HeaderUserInfo() {
   const [loading, setLoading] = useState(false);
-  const [avatarImageURL, setAvatarImageURL] = useState("/images/profile-default.png");
+  const [avatarImageUrl, setAvatarImageUrl] = useState("/images/profile-default.png");
   const profile = useProfile();
   useEffect(() => {
     if (profile.data == null) {
       setLoading(true);
     } else {
       setLoading(false);
-      setAvatarImageURL(null);
+      setAvatarImageUrl(null);
       if (profile.data.avatar) {
-        setTimeout(() => setAvatarImageURL(_service.url(`/profile/avatar?uid=${profile.data.uid}&${new Date().getTime()}`)), 250);
+        setTimeout(() => setAvatarImageUrl(_service.url(`/profile/avatar?uid=${profile.data.uid}&${new Date().getTime()}`)), 250);
       }
     }
   }, [profile.data]);
@@ -33,7 +33,7 @@ function HeaderUserInfo() {
     );
   }
   if (profile.data) {
-    const src = avatarImageURL || "/images/profile-default.png";
+    const src = avatarImageUrl || "/images/profile-default.png";
     return (
       <div className="header__user-info">
         <div className="header__user-info__avatar">

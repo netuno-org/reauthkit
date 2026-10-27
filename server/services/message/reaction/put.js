@@ -12,7 +12,7 @@ if (!messageUid) {
   _exec.stop();
 }
 
-const dbMessage = message.getByUID(messageUid);
+const dbMessage = message.getByUid(messageUid);
 
 if (!dbMessage) {
   _out.json(_val.map().set("result", false).set("error", "message_not_found"));

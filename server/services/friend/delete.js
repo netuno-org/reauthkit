@@ -1,7 +1,7 @@
 import { _db, _val, _out, _req, _header, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 
-const targetUID = _req.getString("uid", _req.getString("to", "")).trim();
+const targetUid = _req.getString("uid", _req.getString("to", "")).trim();
 
 const dbProfileFrom = profile.getLogged();
 
@@ -11,13 +11,13 @@ if (!dbProfileFrom) {
   _exec.stop();
 }
 
-if (!targetUID) {
+if (!targetUid) {
   _header.status(400);
   _out.json(_val.map().set("result", false).set("error", "missing-uid"));
   _exec.stop();
 }
 
-const dbProfileTo = profile.getByUID(targetUID);
+const dbProfileTo = profile.getByUid(targetUid);
 
 if (!dbProfileTo) {
   _header.status(404);
@@ -27,8 +27,8 @@ if (!dbProfileTo) {
 
 const toId = dbProfileTo.getInt("id");
 const fromId = dbProfileFrom.getInt("id");
-const toUID = dbProfileTo.getString("uid"); // não usar targetUID na query para evitar SQL injection
-const fromUID = dbProfileFrom.getString("uid");
+const toUid = dbProfileTo.getString("uid"); // não usar targetUid na query para evitar SQL injection
+const fromUid = dbProfileFrom.getString("uid");
 
 const dbToNotification = _db.queryFirst(`
     SELECT id
@@ -36,7 +36,7 @@ const dbToNotification = _db.queryFirst(`
     WHERE 
         profile_id = ${fromId}
         AND
-        extra like '{"type":"friend_%","with":"${toUID}"}'
+        extra like '{"type":"friend_%","with":"${toUid}"}'
   `);
 
 if (dbToNotification) {
@@ -49,7 +49,7 @@ const dbFromNotification = _db.queryFirst(`
     WHERE 
         profile_id = ${toId}
         AND
-        extra like '{"type":"friend_%","with":"${fromUID}"}'
+        extra like '{"type":"friend_%","with":"${fromUid}"}'
   `);
 
 if (dbFromNotification) {

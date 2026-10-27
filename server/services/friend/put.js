@@ -10,15 +10,15 @@ if (!dbProfileFrom) {
   _exec.stop();
 }
 
-const targetUID = _req.getString("uid", _req.getString("to", "")).trim();
+const targetUid = _req.getString("uid", _req.getString("to", "")).trim();
 
-if (!targetUID) {
+if (!targetUid) {
   _header.status(400);
   _out.json(_val.map().set("result", false).set("error", "missing-uid"));
   _exec.stop();
 }
 
-const dbProfileTo = profile.getByUID(targetUID);
+const dbProfileTo = profile.getByUid(targetUid);
 
 if (!dbProfileTo) {
   _header.status(404);

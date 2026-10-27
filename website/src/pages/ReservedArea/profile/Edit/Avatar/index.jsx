@@ -21,9 +21,9 @@ function Avatar({ currentImage }, ref) {
   }, [currentImage]);
   const refAvatarEditor = useRef(null);
   useImperativeHandle(ref, () => ({
-    getImage: ()=> imageEditing ? refAvatarEditor?.current?.getImage().toDataURL() : null
+    getImage: () => imageEditing ? refAvatarEditor?.current?.getImage().toDataURL() : null
   }));
-  const imageEditing = image && typeof(image) !== "string";
+  const imageEditing = image && typeof (image) !== "string";
   return (
     <Row gutter={16}>
       <Col>
@@ -39,7 +39,7 @@ function Avatar({ currentImage }, ref) {
             scale={scale}
             rotate={rotate}
             position={position}
-            onPositionChange={(position)=> setPosition(position)}
+            onPositionChange={(position) => setPosition(position)}
           />
           <input
             name="newImage"
@@ -49,33 +49,33 @@ function Avatar({ currentImage }, ref) {
           />
         </div>
       </Col>
-        <Col xs={24} lg={12}>
-          <div style={{ marginBottom: 16 }}>
-            <Button onClick={open} type="primary" ghost>Carregar Outra Imagem</Button>
-          </div>
-          { imageEditing &&
-            <>
-              <Divider orientation="left" plain>Configurar Imagem</Divider>
-              <div style={{ marginBottom: 16 }}>
-                <div>Dimensionar:</div>
-                <Slider min={0.5} max={1.5} defaultValue={scale} step={0.01} onChange={(value) => setScale(value)} />
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <div>Rodar:</div>
-                <Slider min={-180} max={180} defaultValue={rotate} step={1} onChange={(value) => setRotate(value)} />
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <div>Cor de Fundo:</div>
-                <input type="color" defaultValue={color} onChange={(e) => setColor(e.target.value)} style={{ marginTop: 4 }} />
-                <br />
-                <small style={{ color: "#8c8c8c" }}>Apenas para imagens com transparência.</small>
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <Button onClick={() => setImage(currentImage)} type="dashed" danger>Desfazer</Button>
-              </div>
-            </>
-          }
-        </Col>
+      <Col xs={24} lg={12}>
+        <div style={{ marginBottom: 16 }}>
+          <Button onClick={open} type="primary" ghost>Carregar Outra Imagem</Button>
+        </div>
+        {imageEditing &&
+          <>
+            <Divider orientation="left" plain>Configurar Imagem</Divider>
+            <div style={{ marginBottom: 16 }}>
+              <div>Dimensionar:</div>
+              <Slider min={0.5} max={1.5} defaultValue={scale} step={0.01} onChange={(value) => setScale(value)} />
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <div>Rodar:</div>
+              <Slider min={-180} max={180} defaultValue={rotate} step={1} onChange={(value) => setRotate(value)} />
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <div>Cor de Fundo:</div>
+              <input type="color" defaultValue={color} onChange={(e) => setColor(e.target.value)} style={{ marginTop: 4 }} />
+              <br />
+              <small style={{ color: "#8c8c8c" }}>Apenas para imagens com transparência.</small>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Button onClick={() => setImage(currentImage)} type="dashed" danger>Desfazer</Button>
+            </div>
+          </>
+        }
+      </Col>
     </Row>
   );
 }

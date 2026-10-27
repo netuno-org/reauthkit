@@ -17,7 +17,7 @@ if (!dbProfile) {
   onAbort();
 }
 
-const fullData = profile.getFullDataByUID(dbProfile.getUID("uid"));
+const fullData = profile.getFullDataByUid(dbProfile.getUID("uid"));
 
 if (!fullData) {
   onAbort();

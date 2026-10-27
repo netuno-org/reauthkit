@@ -15,7 +15,7 @@ function useWS() {
   }, [baseData]);
   const load = (onFinish) => {
     _ws.config({
-      url: Config.websocketURL() + "?auth="+ _auth.accessToken(),
+      url: Config.websocketUrl() + "?auth="+ _auth.accessToken(),
       servicesPrefix: Config.websocketServicesPrefix(),
       method: "GET",
       autoReconnect: true,

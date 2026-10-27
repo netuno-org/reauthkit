@@ -24,7 +24,7 @@ class Config {
     return config.auth.providers;
   }
 
-  static websocketURL() {
+  static websocketUrl() {
     const { config } = window.reauthkit;
     return config.websocket.url;
   }

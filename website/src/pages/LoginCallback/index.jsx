@@ -19,7 +19,7 @@ export default function LoginCallback(props) {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get("error")) {
-      console.error(provider +": "+ urlParams.get("error"), urlParams.get("error_description"));
+      console.error(provider + ": " + urlParams.get("error"), urlParams.get("error_description"));
       console.error(window.location.search);
       globalNotification.serviceFail({
         title: urlParams.get("error"),

@@ -128,11 +128,11 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
       : []),
   ];
 
-  const userAvatarURL = profile.data?.avatar
+  const userAvatarUrl = profile.data?.avatar
     ? _service.url(`/profile/avatar?uid=${profile.data.uid}&${new Date().getTime()}`)
     : "/images/profile-default.png";
 
-  const friendAvatarURL = friend.avatar
+  const friendAvatarUrl = friend.avatar
     ? _service.url(`/profile/avatar?uid=${friend.uid}&${new Date().getTime()}`)
     : "/images/profile-default.png";
 
@@ -146,7 +146,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
           <Avatar
             size={36}
             className="messages__message-avatar"
-            icon={<img src={friendAvatarURL} alt={friend.name} />}
+            icon={<img src={friendAvatarUrl} alt={friend.name} />}
           />
         )}
 
@@ -334,7 +334,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
             size={36}
             className="messages__message-avatar"
             style={{ marginLeft: 8, marginRight: 0 }}
-            icon={<img src={userAvatarURL} alt="Você" />}
+            icon={<img src={userAvatarUrl} alt="Você" />}
           />
         )}
       </div>
