@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Switch, Card, Spin, Row, Col } from "antd";
-import { MessageOutlined } from "@ant-design/icons";
+import { MessageOutlined, UserOutlined } from "@ant-design/icons";
 import _service from "@netuno/service-client";
 
 import globalNotification from "../../../../common/globalNotification.js";
@@ -12,6 +12,7 @@ function Preferences() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [messageNotifications, setMessageNotifications] = useState(true);
+  const [friendNotifications, setFriendNotifications] = useState(true);
 
   useEffect(() => {
     loadSettings();
@@ -29,6 +30,11 @@ function Preferences() {
           if (messageSetting) {
             setMessageNotifications(messageSetting.enabled);
           }
+
+          const friendSetting = response.json.data.find((item) => item.code === "friend");
+          if (friendSetting) {
+            setFriendNotifications(friendSetting.enabled);
+          }
         }
       },
       fail: () => {
@@ -37,14 +43,21 @@ function Preferences() {
     });
   };
 
-  const handleToggle = (checked) => {
-    setMessageNotifications(checked);
+  const handleToggle = (checked, type) => {
+    if (type === "message") {
+      setMessageNotifications(checked);
+    }
+
+    if (type === "friend") {
+      setFriendNotifications(checked);
+    }
+
     setUpdating(true);
     _service({
       method: "POST",
       url: "notification/settings",
       data: {
-        code: "message",
+        code: type,
         enabled: checked,
       },
       success: (response) => {
@@ -58,7 +71,12 @@ function Preferences() {
       },
       fail: () => {
         setUpdating(false);
-        setMessageNotifications(!checked);
+        if (type === "message") {
+          setMessageNotifications(!checked);
+        }
+        if (type === "friend") {
+          setFriendNotifications(!checked);
+        }
         globalNotification.serviceFail({
           title: "Preferências",
           description: "Ocorreu um erro ao atualizar as preferências.",
@@ -82,6 +100,32 @@ function Preferences() {
       </div>
 
       <div className="preferences-page__body">
+
+        <Card className="preferences-page__card" variant="borderless">
+          <div className="preferences-page__section-header">
+            <UserOutlined className="preferences-page__icon" />
+            <span className="preferences-page__section-title">Amigos</span>
+          </div>
+
+          <div className="preferences-page__divider" />
+
+          <Row align="middle" justify="space-between" className="preferences-page__row">
+            <Col xs={18} sm={20}>
+              <div className="preferences-page__item-title">Amigo</div>
+              <div className="preferences-page__item-desc">
+                Recebe quando alguém te envia ou aceita um pedido de amizade.
+              </div>
+            </Col>
+            <Col xs={6} sm={4} style={{ textAlign: "right" }}>
+              <Switch
+                checked={friendNotifications}
+                onChange={(checked) => handleToggle(checked, "friend")}
+                loading={updating}
+              />
+            </Col>
+          </Row>
+        </Card>
+
         <Card className="preferences-page__card" variant="borderless">
           <div className="preferences-page__section-header">
             <MessageOutlined className="preferences-page__icon" />
@@ -100,14 +144,16 @@ function Preferences() {
             <Col xs={6} sm={4} style={{ textAlign: "right" }}>
               <Switch
                 checked={messageNotifications}
-                onChange={handleToggle}
+                onChange={(checked) => handleToggle(checked, "message")}
                 loading={updating}
               />
             </Col>
           </Row>
         </Card>
+
       </div>
-    </div>
+
+    </div >
   );
 }
 
