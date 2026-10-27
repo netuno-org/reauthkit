@@ -3,17 +3,6 @@ import profile from "#core/lib/profile.js";
 
 const dbLoggedInProfile = profile.getLoggedIn();
 
-if (!dbLoggedInProfile) {
-  _out.json(
-    _val.map()
-      .set("items", _val.list())
-      .set("page", 1)
-      .set("pageSize", 12)
-      .set("total", 0)
-  );
-  _exec.stop();
-}
-
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 12);
 const search = _req.getString("search", "").trim();

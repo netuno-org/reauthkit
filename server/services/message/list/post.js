@@ -10,16 +10,6 @@ const pageSize = _req.getInt("pageSize", 10);
 const dbLoggedInProfile = profile.getLoggedIn();
 const dbFriendProfile = withUid ? profile.getByUid(withUid) : null;
 
-if (!dbLoggedInProfile || !dbFriendProfile) {
-  _out.json(
-    _val.map()
-      .set("items", _val.list())
-      .set("page", 1)
-      .set("total", 0)
-  );
-  _exec.stop();
-}
-
 if (page === 1) {
   const totalMessagesMarkedAsRead = _db.execute(`
     UPDATE message SET read_at = CURRENT_TIMESTAMP

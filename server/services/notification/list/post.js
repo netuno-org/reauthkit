@@ -4,17 +4,6 @@ import notification from "#core/lib/notification.js";
 
 const dbLoggedInProfile = profile.getLoggedIn();
 
-if (!dbLoggedInProfile) {
-  _out.json(
-    _val.map()
-      .set("items", _val.list())
-      .set("page", 1)
-      .set("pageSize", 10)
-      .set("total", 0)
-  );
-  _exec.stop();
-}
-
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 10);
 const onlyUnread = _req.getBoolean("unread", false);
