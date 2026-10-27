@@ -4,7 +4,7 @@ import notification from "#core/lib/notification.js";
 
 const targetUid = _req.getString("uid");
 
-const dbProfileFrom = profile.getLogged();
+const dbProfileFrom = profile.getLoggedIn();
 const dbProfileTo = profile.getByUid(targetUid);
 
 if (!dbProfileTo) {

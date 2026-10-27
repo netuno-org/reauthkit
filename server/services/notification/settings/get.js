@@ -1,7 +1,7 @@
 import { _val, _out, _db, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 
-const dbProfile = profile.getLogged();
+const dbProfile = profile.getLoggedIn();
 
 if (!dbProfile) {
   _out.json(_val.map().set("result", false).set("error", "not-logged"));

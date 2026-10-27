@@ -3,7 +3,7 @@ import { _db, _val, _out, _req, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
 
-const dbProfileLogged = profile.getLogged();
+const dbLoggedInProfile = profile.getLoggedIn();
 const messageUid = _req.getString("uid");
 const updatedContent = _req.getString("message");
 
@@ -14,7 +14,7 @@ if (!dbMessage) {
   _exec.stop();
 }
 
-if (dbMessage.getInt("from_profile_id") !== dbProfileLogged.getInt("id")) {
+if (dbMessage.getInt("from_profile_id") !== dbLoggedInProfile.getInt("id")) {
   _out.json(_val.map().set("result", false).set("error", "unauthorized"));
   _exec.stop();
 }
@@ -38,7 +38,7 @@ const dbMessageUpdated = _db.form("message")
   .where(_db.where("id").equal(dbMessage.getInt("id")))
   .first();
 
-const formattedMessage = message.toData(dbProfileLogged, dbProfileTo, dbMessageUpdated);
+const formattedMessage = message.toData(dbLoggedInProfile, dbProfileTo, dbMessageUpdated);
 
 if (dbProfileTo) {
   profile.wsSendAsService(
@@ -49,14 +49,14 @@ if (dbProfileTo) {
       .set(
         "data",
         _val.map()
-          .set("with", dbProfileLogged.getString("uid"))
+          .set("with", dbLoggedInProfile.getString("uid"))
       )
       .set("content", formattedMessage)
   );
 }
 
 profile.wsSendAsService(
-  dbProfileLogged,
+  dbLoggedInProfile,
   _val.map()
     .set("method", "PUT")
     .set("service", "message/edit")

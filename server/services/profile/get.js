@@ -5,7 +5,7 @@ import profile from "#core/lib/profile.js";
 let profileUid = _req.getUID("uid");
 
 if (!profileUid) {
-  const dbProfile = profile.getLogged();
+  const dbProfile = profile.getLoggedIn();
   profileUid = dbProfile.getUID("uid");
 }
 
@@ -21,9 +21,9 @@ if (!fullData) {
   _exec.stop();
 }
 
-const dbProfileLogged = profile.getLogged();
-if (dbProfileLogged) {
-  const loggedId = dbProfileLogged.getInt("id");
+const dbLoggedInProfile = profile.getLoggedIn();
+if (dbLoggedInProfile) {
+  const loggedId = dbLoggedInProfile.getInt("id");
   const targetProfile = profile.getByUid(profileUid);
   if (targetProfile) {
     const targetId = targetProfile.getInt("id");

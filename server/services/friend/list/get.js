@@ -2,7 +2,7 @@ import { _db, _user, _val, _out } from "@netuno/server-types";
 
 import profile from "#core/lib/profile.js";
 
-const dbProfile = profile.getLogged();
+const dbProfile = profile.getLoggedIn();
 
 const dbFriends = _db.query(`
     SELECT profile.uid, profile.name, profile.avatar, msg.latest_message, msg.unread_messages,

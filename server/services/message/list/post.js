@@ -7,10 +7,10 @@ const withUid = _req.getString("with");
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 10);
 
-const dbProfileLogged = profile.getLogged();
-const dbProfileFriend = withUid ? profile.getByUid(withUid) : null;
+const dbLoggedInProfile = profile.getLoggedIn();
+const dbFriendProfile = withUid ? profile.getByUid(withUid) : null;
 
-if (!dbProfileLogged || !dbProfileFriend) {
+if (!dbLoggedInProfile || !dbFriendProfile) {
   _out.json(
     _val.map()
       .set("items", _val.list())
@@ -24,26 +24,29 @@ if (page === 1) {
   const totalMessagesMarkedAsRead = _db.execute(`
     UPDATE message SET read_at = CURRENT_TIMESTAMP
     WHERE read_at IS NULL AND from_profile_id = ?::int AND to_profile_id = ?::int
-  `, dbProfileFriend.getInt("id"), dbProfileLogged.getInt("id"));
+  `,
+    dbFriendProfile.getInt("id"),
+    dbLoggedInProfile.getInt("id")
+  );
 
   if (totalMessagesMarkedAsRead > 0) {
     profile.wsSendService(
-      dbProfileLogged,
+      dbLoggedInProfile,
       _val.map()
         .set("service", "message/unread/count")
-        .set("content", _val.map().set("total", message.getUnreadTotal(dbProfileLogged)))
+        .set("content", _val.map().set("total", message.getUnreadTotal(dbLoggedInProfile)))
     );
     profile.wsSendService(
-      dbProfileLogged,
+      dbLoggedInProfile,
       _val.map()
         .set("service", "friend/list")
     );
     profile.wsSendAsService(
-      dbProfileFriend,
+      dbFriendProfile,
       _val.map()
         .set("method", "PUT")
         .set("service", "message/read")
-        .set("data", _val.map().set("with", dbProfileLogged.getString("uid")))
+        .set("data", _val.map().set("with", dbLoggedInProfile.getString("uid")))
         .set("content", _val.map().set("all", true).set("read_at", _db.timestamp()))
     );
   }
@@ -53,12 +56,12 @@ const dbMessagesPage = _db.form("message")
   .where(
     _db.where()
       .and(
-        _db.where("from_profile_id").equal(dbProfileLogged.getInt("id"))
-          .or("from_profile_id").equal(dbProfileFriend.getInt("id"))
+        _db.where("from_profile_id").equal(dbLoggedInProfile.getInt("id"))
+          .or("from_profile_id").equal(dbFriendProfile.getInt("id"))
       )
       .and(
-        _db.where("to_profile_id").equal(dbProfileLogged.getInt("id"))
-          .or("to_profile_id").equal(dbProfileFriend.getInt("id"))
+        _db.where("to_profile_id").equal(dbLoggedInProfile.getInt("id"))
+          .or("to_profile_id").equal(dbFriendProfile.getInt("id"))
       )
   ).order("sent_at", "desc")
   .page(page, pageSize);
@@ -66,11 +69,11 @@ const dbMessagesPage = _db.form("message")
 const messages = _val.list();
 
 for (const dbMessage of dbMessagesPage.getList("items")) {
-  let dbProfileFrom = dbProfileLogged;
-  let dbProfileTo = dbProfileFriend;
-  if (dbMessage.getInt("from_profile_id") === dbProfileFriend.getInt("id")) {
-    dbProfileFrom = dbProfileFriend;
-    dbProfileTo = dbProfileLogged;
+  let dbProfileFrom = dbLoggedInProfile;
+  let dbProfileTo = dbFriendProfile;
+  if (dbMessage.getInt("from_profile_id") === dbFriendProfile.getInt("id")) {
+    dbProfileFrom = dbFriendProfile;
+    dbProfileTo = dbLoggedInProfile;
   }
   messages.add(
     message.toData(dbProfileFrom, dbProfileTo, dbMessage)

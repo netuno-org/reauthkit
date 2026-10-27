@@ -2,9 +2,9 @@ import { _db, _val, _out, _req, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 import notification from "#core/lib/notification.js";
 
-const dbProfileLogged = profile.getLogged();
+const dbLoggedInProfile = profile.getLoggedIn();
 
-if (!dbProfileLogged) {
+if (!dbLoggedInProfile) {
   _out.json(
     _val.map()
       .set("items", _val.list())
@@ -18,7 +18,7 @@ if (!dbProfileLogged) {
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 10);
 const onlyUnread = _req.getBoolean("unread", false);
-const profileId = dbProfileLogged.getInt("id");
+const profileId = dbLoggedInProfile.getInt("id");
 
 let querySql = `
   SELECT id, uid, title, content, sent_at, read_at, extra, type_id

@@ -4,17 +4,12 @@ import notification from "#core/lib/notification.js";
 
 const uid = _req.getString("uid");
 
-const dbProfileLogged = profile.getLogged();
-
-if (!dbProfileLogged) {
-  _out.json(_val.map().set("result", false).set("error", "not-logged"));
-  _exec.stop();
-}
+const dbLoggedInProfile = profile.getLoggedIn();
 
 const dbNotification = _db.form("notification")
   .where(
     _db.where("uid").equal(uid)
-      .and("profile_id").equal(dbProfileLogged.getInt("id"))
+      .and("profile_id").equal(dbLoggedInProfile.getInt("id"))
   )
   .first();
 
@@ -28,10 +23,10 @@ _db.form("notification")
   .set("active", false)
   .update();
 
-const totalUnread = notification.getUnreadTotal(dbProfileLogged);
+const totalUnread = notification.getUnreadTotal(dbLoggedInProfile);
 
 profile.wsSendService(
-  dbProfileLogged,
+  dbLoggedInProfile,
   _val.map()
     .set("service", "notification/unread/count")
     .set("content", _val.map().set("total", totalUnread))

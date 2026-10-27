@@ -1,9 +1,9 @@
 import { _db, _val, _out, _req, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 
-const dbProfileLogged = profile.getLogged();
+const dbLoggedInProfile = profile.getLoggedIn();
 
-if (!dbProfileLogged) {
+if (!dbLoggedInProfile) {
   _out.json(
     _val.map()
       .set("items", _val.list())
@@ -17,7 +17,7 @@ if (!dbProfileLogged) {
 const page = _req.getInt("page", 1);
 const pageSize = _req.getInt("pageSize", 12);
 const search = _req.getString("search", "").trim();
-const loggedProfileId = dbProfileLogged.getInt("id");
+const loggedProfileId = dbLoggedInProfile.getInt("id");
 
 let querySql = `
   SELECT profile.id, profile.uid, profile.name, profile.avatar, profile.email,

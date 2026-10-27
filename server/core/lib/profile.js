@@ -25,7 +25,7 @@ export default {
     }
     return null;
   },
-  getLogged: () => {
+  getLoggedIn: () => {
     return _db.form("profile")
       .where(_db.where("profile_user_id").equal(_user.id))
       .first();

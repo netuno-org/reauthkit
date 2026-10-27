@@ -4,7 +4,7 @@ import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
 import notification from "#core/lib/notification.js";
 
-const dbProfileFrom = profile.getLogged();
+const dbProfileFrom = profile.getLoggedIn();
 const dbProfileTo = profile.getByUid(_req.getString("to"));
 const inputMessage = _req.getString("message");
 const parentUid = _req.getString("parent_uid", "");

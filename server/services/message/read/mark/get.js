@@ -3,7 +3,7 @@ import { _req, _db, _out, _val } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
 
-const dbProfileLogged = profile.getLogged();
+const dbLoggedInProfile = profile.getLoggedIn();
 const dbProfileFrom = profile.getByUid(_req.getString("from"));
 const dbMessage = message.getByUid(_req.getString("uid"));
 
@@ -15,13 +15,13 @@ if (dbMessage && dbProfileFrom) {
 
   if (updatedCount > 0) {
     profile.wsSendService(
-      dbProfileLogged,
+      dbLoggedInProfile,
       _val.map()
         .set("service", "message/unread/count")
-        .set("content", _val.map().set("total", message.getUnreadTotal(dbProfileLogged)))
+        .set("content", _val.map().set("total", message.getUnreadTotal(dbLoggedInProfile)))
     );
     profile.wsSendService(
-      dbProfileLogged,
+      dbLoggedInProfile,
       _val.map()
         .set("service", "friend/list")
     );
@@ -30,7 +30,7 @@ if (dbMessage && dbProfileFrom) {
       _val.map()
         .set("method", "PUT")
         .set("service", "message/read")
-        .set("data", _val.map().set("with", dbProfileLogged.getString("uid")))
+        .set("data", _val.map().set("with", dbLoggedInProfile.getString("uid")))
         .set("content", _val.map().set("uid", dbMessage.getString("uid")).set("read_at", _db.timestamp()))
     );
   }
