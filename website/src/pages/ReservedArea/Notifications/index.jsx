@@ -80,7 +80,7 @@ function Notifications() {
 
   useEffect(() => {
     fetchUnreadCount();
-    loadNotifications("all", 1, pageSize);
+    loadNotifications("unread", 1, pageSize);
 
     const unreadCountListener = _ws.addListener({
       service: "notification/unread/count",
