@@ -43,11 +43,11 @@ params.push(pageSize, offset);
 const dbTotal = _db.queryFirst(countSql, ...countParams);
 const total = dbTotal ? dbTotal.getInt("total", 0) : 0;
 
-const dbPeople = _db.query(querySql, ...params);
+const dbProfile = _db.query(querySql, ...params);
 const items = _val.list();
 
-if (dbPeople) {
-  for (const person of dbPeople) {
+if (dbProfile) {
+  for (const person of dbProfile) {
     items.add(
       _val.map()
         .set("uid", person.getString("uid"))

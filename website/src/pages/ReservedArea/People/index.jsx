@@ -24,7 +24,7 @@ function People() {
     setLoading(true);
     _service({
       method: "POST",
-      url: "/people/list",
+      url: "/profile/list",
       data: {
         page: currentPage,
         pageSize: pageSize,
