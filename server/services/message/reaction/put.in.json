@@ -1,0 +1,16 @@
+{
+  "summary": "React to message",
+  "description": "React to a message that was sent by another user.",
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "reaction": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "uid"
+  ]
+}

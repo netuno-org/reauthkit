@@ -7,15 +7,10 @@ const dbProfileLogged = profile.getLogged();
 const messageUid = _req.getString("uid");
 const updatedContent = _req.getString("message");
 
-if (!messageUid || !updatedContent || updatedContent.trim() === "") {
-  _out.json(_val.map().set("result", false).set("error", "invalid_input"));
-  _exec.stop();
-}
-
 const dbMessage = message.getByUid(messageUid);
 
 if (!dbMessage) {
-  _out.json(_val.map().set("result", false).set("error", "message_not_found"));
+  _out.json(_val.map().set("result", false).set("error", "message-not-found"));
   _exec.stop();
 }
 
@@ -27,7 +22,7 @@ if (dbMessage.getInt("from_profile_id") !== dbProfileLogged.getInt("id")) {
 const sentTime = dbMessage.getSQLTimestamp("sent_at").getTime();
 const currentTime = new Date().getTime();
 if (currentTime - sentTime > 3600000) {
-  _out.json(_val.map().set("result", false).set("error", "edit_time_expired"));
+  _out.json(_val.map().set("result", false).set("error", "edit-time-expired"));
   _exec.stop();
 }
 

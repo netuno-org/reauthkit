@@ -1,0 +1,13 @@
+{
+  "summary": "Request friendship",
+  "description": "Send a friendship request to some user.",
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    }
+  },
+  "required": [
+    "uid"
+  ]
+}

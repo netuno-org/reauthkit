@@ -7,15 +7,10 @@ const dbProfileLogged = profile.getLogged();
 const messageUid = _req.getString("uid");
 const reaction = _req.getString("reaction", "");
 
-if (!messageUid) {
-  _out.json(_val.map().set("result", false).set("error", "missing_uid"));
-  _exec.stop();
-}
-
 const dbMessage = message.getByUid(messageUid);
 
 if (!dbMessage) {
-  _out.json(_val.map().set("result", false).set("error", "message_not_found"));
+  _out.json(_val.map().set("result", false).set("error", "message-not-found"));
   _exec.stop();
 }
 

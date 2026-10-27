@@ -1,22 +1,9 @@
 import { _db, _val, _out, _req, _header, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 
-const targetUid = _req.getString("uid", _req.getString("to", "")).trim();
+const targetUid = _req.getString("uid");
 
 const dbProfileFrom = profile.getLogged();
-
-if (!dbProfileFrom) {
-  _header.status(401);
-  _out.json(_val.map().set("result", false).set("error", "unauthorized"));
-  _exec.stop();
-}
-
-if (!targetUid) {
-  _header.status(400);
-  _out.json(_val.map().set("result", false).set("error", "missing-uid"));
-  _exec.stop();
-}
-
 const dbProfileTo = profile.getByUid(targetUid);
 
 if (!dbProfileTo) {

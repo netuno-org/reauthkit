@@ -2,17 +2,12 @@ import { _db, _val, _out, _req, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 import notification from "#core/lib/notification.js";
 
+const uid = _req.getString("uid");
+
 const dbProfileLogged = profile.getLogged();
 
 if (!dbProfileLogged) {
   _out.json(_val.map().set("result", false).set("error", "not-logged"));
-  _exec.stop();
-}
-
-const uid = _req.getString("uid");
-
-if (!uid) {
-  _out.json(_val.map().set("result", false).set("error", "missing-uid"));
   _exec.stop();
 }
 

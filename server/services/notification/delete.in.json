@@ -1,0 +1,13 @@
+{
+  "summary": "Remove notification",
+  "description": "Delete a notification.",
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    }
+  },
+  "required": [
+    "uid"
+  ]
+}

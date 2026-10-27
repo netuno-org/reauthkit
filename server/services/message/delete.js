@@ -3,18 +3,14 @@ import { _db, _val, _out, _req, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
 import message from "#core/lib/message.js";
 
-const dbProfileLogged = profile.getLogged();
 const messageUid = _req.getString("uid");
 
-if (!messageUid) {
-  _out.json(_val.map().set("result", false).set("error", "missing_uid"));
-  _exec.stop();
-}
+const dbProfileLogged = profile.getLogged();
 
 const dbMessage = message.getByUID(messageUid);
 
 if (!dbMessage) {
-  _out.json(_val.map().set("result", false).set("error", "message_not_found"));
+  _out.json(_val.map().set("result", false).set("error", "message-not-found"));
   _exec.stop();
 }
 
