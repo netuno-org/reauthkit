@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Switch, Card, Spin, Row, Col } from "antd";
-import { MessageOutlined, UserOutlined } from "@ant-design/icons";
+import { MessageOutlined, TeamOutlined, } from "@ant-design/icons";
 import _service from "@netuno/service-client";
 
 import globalNotification from "../../../../common/globalNotification.js";
@@ -95,7 +95,7 @@ function Preferences() {
 
         <Card className="preferences-page__card" variant="borderless">
           <div className="preferences-page__section-header">
-            <UserOutlined className="preferences-page__icon" />
+            <TeamOutlined className="preferences-page__icon" />
             <span className="preferences-page__section-title">Amigos</span>
           </div>
 
