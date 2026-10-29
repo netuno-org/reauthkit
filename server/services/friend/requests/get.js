@@ -3,12 +3,6 @@ import profile from "#core/lib/profile.js";
 
 const dbProfile = profile.getLoggedIn();
 
-if (!dbProfile) {
-  _header.status(401);
-  _out.json(_val.map().set("result", false).set("error", "unauthorized"));
-  _exec.stop();
-}
-
 const loggedId = dbProfile.getInt("id");
 
 const dbFriends = _db.query(`
