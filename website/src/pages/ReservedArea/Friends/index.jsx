@@ -33,7 +33,7 @@ function Friends() {
     setLoading(true);
     _service({
       method: "GET",
-      url: "/friend/requests",
+      url: "/friend/list",
       success: (response) => {
         setLoading(false);
         if (response.json && response.json.result) {
