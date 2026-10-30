@@ -29,7 +29,7 @@ if (page === 1) {
     profile.wsSendService(
       dbLoggedInProfile,
       _val.map()
-        .set("service", "friend/list")
+        .set("service", "message/participant/list")
     );
     profile.wsSendAsService(
       dbFriendProfile,

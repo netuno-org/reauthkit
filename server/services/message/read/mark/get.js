@@ -23,7 +23,7 @@ if (dbMessage && dbProfileFrom) {
     profile.wsSendService(
       dbLoggedInProfile,
       _val.map()
-        .set("service", "friend/list")
+        .set("service", "message/participant/list")
     );
     profile.wsSendAsService(
       dbProfileFrom,

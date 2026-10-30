@@ -15,7 +15,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
 
   useEffect(() => {
     const listenerList = _ws.addListener({
-      service: "friend/list",
+      service: "message/participant/list",
       start: () => {
         setLoading(true);
       },
@@ -35,7 +35,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
     });
 
     _ws.sendService({
-      service: "friend/list",
+      service: "message/participant/list",
     });
 
     const listenerStatusChanged = _ws.addListener({
