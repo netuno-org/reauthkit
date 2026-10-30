@@ -1,5 +1,6 @@
 import { _db, _val, _out, _req, _header, _exec } from "@netuno/server-types";
 import profile from "#core/lib/profile.js";
+import notification from "#core/lib/notification.js";
 
 const targetUid = _req.getString("uid");
 
@@ -46,6 +47,36 @@ if (dbFromNotification) {
 _db.execute(
   "DELETE FROM friend WHERE (profile_id = ? AND friend_profile_id = ?) OR (profile_id = ? AND friend_profile_id = ?)",
   fromId, toId, toId, fromId
+);
+
+const totalUnread = notification.getUnreadTotal(dbProfileTo);
+
+profile.wsSendService(
+  dbProfileTo,
+  _val.map()
+    .set("service", "notification/unread/count")
+    .set("content", _val.map().set("total", totalUnread))
+);
+
+profile.wsSendAsService(
+  dbProfileTo,
+  _val.map()
+    .set("service", "notification/new")
+    .set("content", _val.map())
+);
+
+profile.wsSendService(
+  dbProfileFrom,
+  _val.map()
+    .set("service", "notification/unread/count")
+    .set("content", _val.map().set("total", totalUnread))
+);
+
+profile.wsSendAsService(
+  dbProfileFrom,
+  _val.map()
+    .set("service", "notification/new")
+    .set("content", _val.map())
 );
 
 _out.json(_val.map().set("result", true).set("status", "none"));
