@@ -4,43 +4,51 @@ import profile from "#core/lib/profile.js";
 
 const dbProfile = profile.getLoggedIn();
 
-const dbFriends = _db.query(`
-    SELECT profile.uid, profile.name, profile.avatar, msg.latest_message, msg.unread_messages,
-        (SELECT COUNT(id) FROM profile_ws_session WHERE profile_id = profile.id) AS "sessions"
-    FROM friend
-        INNER JOIN profile ON friend.friend_profile_id = profile.id
-        LEFT JOIN (
-            SELECT to_profile_id, from_profile_id, (
-                SELECT sent_at
-                FROM message AS m
-                WHERE m.to_profile_id = message.to_profile_id
-                  AND m.from_profile_id = message.from_profile_id
-                ORDER BY sent_at DESC
-                LIMIT 1
-            ) AS latest_message, COUNT(id) AS unread_messages
-            FROM message
-            WHERE to_profile_id = ?
-                AND read_at IS NULL
-            GROUP BY to_profile_id, from_profile_id
-        ) AS msg ON msg.from_profile_id = friend.friend_profile_id
-    WHERE 1 = 1
-        AND friend.profile_id = ?
-        AND friend.accepted_on IS NOT NULL
-    ORDER BY msg.latest_message DESC NULLS LAST
-`, dbProfile.getInt("id"), dbProfile.getInt("id"));
+const dbParticipants = _db.query(`
+SELECT 
+    p.uid, 
+    p.name, 
+    p.avatar,
+    c.latest_message_moment, 
+    c.unread_messages_count,
+    (SELECT COUNT(id) FROM profile_ws_session WHERE profile_id = p.id) AS active_ws_sessions
+FROM profile AS p
+INNER JOIN (
+    SELECT 
+        raw_msg.peer_profile_id,
+        MAX(raw_msg.sent_at) AS latest_message_moment,
+        COUNT(CASE WHEN raw_msg.to_profile_id = ? AND raw_msg.read_at IS NULL THEN 1 END) AS unread_messages_count
+    FROM (
+        SELECT 
+            to_profile_id,
+            read_at,
+            sent_at,
+            CASE WHEN from_profile_id = ? THEN to_profile_id ELSE from_profile_id END AS peer_profile_id
+        FROM message
+        WHERE to_profile_id = ? OR from_profile_id = ?
+    ) AS raw_msg
+    GROUP BY raw_msg.peer_profile_id
+) AS c ON p.id = c.peer_profile_id
+ORDER BY c.latest_message_moment DESC NULLS LAST;
 
-const friends = _val.list();
+`,
+  dbProfile.getInt("id"),
+  dbProfile.getInt("id"),
+  dbProfile.getInt("id"),
+  dbProfile.getInt("id"));
 
-for (const dbFriend of dbFriends) {
-  friends.add(
+const participants = _val.list();
+
+for (const dbParticipant of dbParticipants) {
+  participants.add(
     _val.map()
-      .set("uid", dbFriend.getString("uid"))
-      .set("name", dbFriend.getString("name"))
-      .set("avatar", dbFriend.getString("avatar") !== "")
-      .set("online", dbFriend.getInt("sessions") > 0)
-      .set("latest_message", dbFriend.getSQLTimestamp("latest_message"))
-      .set("unread_messages", dbFriend.getInt("unread_messages", 0))
+      .set("uid", dbParticipant.getString("uid"))
+      .set("name", dbParticipant.getString("name"))
+      .set("avatar", dbParticipant.getString("avatar") !== "")
+      .set("online", dbParticipant.getInt("active_ws_sessions") > 0)
+      .set("latest_message", dbParticipant.getSQLTimestamp("latest_message_moment"))
+      .set("unread_messages", dbParticipant.getInt("unread_messages_count", 0))
   );
 }
 
-_out.json(friends);
+_out.json(participants);
