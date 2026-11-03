@@ -10,7 +10,7 @@ import globalNotification from "../../../../common/globalNotification.js";
 import _service from "@netuno/service-client";
 
 function FriendsList({ selectedFriend, onFriendSelected }) {
-  const [activeTab, setActiveTab] = useState("friends");
+  const [activeTab, setActiveTab] = useState("conversations");
   const [loading, setLoading] = useState(true);
   const [conversations, setConverstations] = useState(null);
   const [friends, setFriends] = useState(null);
