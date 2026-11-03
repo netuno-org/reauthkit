@@ -16,6 +16,11 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
   const [friends, setFriends] = useState(null);
   const ws = useWS();
 
+  const onChange = (key) => {
+    setActiveTab(key);
+    loadChats();
+  }
+
   useEffect(() => {
     _service({
       method: "GET",
@@ -195,7 +200,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
   return (
     <Tabs
       activeKey={activeTab}
-      onChange={setActiveTab}
+      onChange={onChange}
       items={tabItems}
       className="friends-page__tabs"
     />
