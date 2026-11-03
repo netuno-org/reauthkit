@@ -1,14 +1,18 @@
 import React from "react";
-import { Avatar, Badge, Col, Row } from "antd";
+import { Avatar, Badge, Button, Col, Popconfirm, Row } from "antd";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import _service from "@netuno/service-client";
 
 import "./index.less";
+import { DeleteOutlined } from "@ant-design/icons";
 
 dayjs.extend(utc);
 
-function FriendItem({ uid, name, avatar, online, latest_message, unread_messages, className, onClick }) {
+function FriendItem({ activeTab, uid, name, avatar, online, latest_message, unread_messages, className, onClick }) {
+  const handleDelete = (e, uid) => {
+  };
+
   return (
     <li onClick={onClick} className={`messages__friends-list__item ${className || ""}`}>
       <Row align="middle">
@@ -28,8 +32,29 @@ function FriendItem({ uid, name, avatar, online, latest_message, unread_messages
             <Badge color="green" count={unread_messages} />
           </>}
         </Col>
+        <Col>
+          {activeTab === "conversations" && (
+            < Popconfirm
+              title="Apagar conversa"
+              description="Tens certeza que pretendes apagar essa conversa inteira?"
+              okText="Sim"
+              cancelText="Não"
+              onConfirm={(e) => handleDelete(e, uid)}
+              onPopupClick={(e) => e.stopPropagation()}
+            >
+              <Button
+                type="text"
+                size="small"
+                danger
+                icon={<DeleteOutlined />}
+                className="messages__friends-list__item__delete-btn "
+                onClick={(e) => e.stopPropagation()}
+              />
+            </Popconfirm>
+          )}
+        </Col>
       </Row>
-    </li>
+    </li >
   );
 }
 

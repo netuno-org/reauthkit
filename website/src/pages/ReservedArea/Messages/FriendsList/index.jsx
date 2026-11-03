@@ -139,6 +139,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
                 {conversations.map((item) => (
                   <FriendItem
                     key={item.uid}
+                    activeTab={activeTab}
                     {...item}
                     className={selectedFriend && selectedFriend.uid === item.uid ? "active" : ""}
                     onClick={() => onFriendSelected && onFriendSelected(item)}
