@@ -1,3 +1,4 @@
+import message from "#core/lib/message.js";
 import profile from "#core/lib/profile.js";
 import { _db, _exec, _out, _req, _val } from "@netuno/server-types";
 
@@ -26,6 +27,20 @@ _db.execute(`
   `,
   partnedProfileId, loggedProfileId,
   partnedProfileId, loggedProfileId);
+
+profile.wsSendService(
+  dbPartner,
+  _val.map()
+    .set("service", "message/unread/count")
+    .set("content", _val.map().set("total", message.getUnreadTotal(dbPartner)))
+);
+
+profile.wsSendService(
+  dbLoggedInProfile,
+  _val.map()
+    .set("service", "message/unread/count")
+    .set("content", _val.map().set("total", message.getUnreadTotal(dbLoggedInProfile)))
+);
 
 _out.json(
   _val.map().set("result", true)
