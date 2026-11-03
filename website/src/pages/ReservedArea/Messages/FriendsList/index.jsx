@@ -39,7 +39,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
     });
   }, []);
 
-  useEffect(() => {
+  const loadChats = async () => {
     const listenerList = _ws.addListener({
       service: "message/participant/list",
       start: () => {
@@ -113,6 +113,10 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
       _ws.removeListener(listenerNewMessage);
       _ws.removeListener(listenerMessageReadMark);
     };
+  }
+
+  useEffect(() => {
+    loadChats();
   }, [ws.data]);
 
   const tabItems = [
@@ -141,6 +145,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
                     key={item.uid}
                     activeTab={activeTab}
                     {...item}
+                    loadChats={loadChats}
                     className={selectedFriend && selectedFriend.uid === item.uid ? "active" : ""}
                     onClick={() => onFriendSelected && onFriendSelected(item)}
                   />

@@ -10,7 +10,7 @@ import globalNotification from "../../../../../common/globalNotification";
 
 dayjs.extend(utc);
 
-function FriendItem({ activeTab, uid, name, avatar, online, latest_message, unread_messages, className, onClick }) {
+function FriendItem({ activeTab, uid, name, avatar, online, latest_message, unread_messages, className, onClick, loadChats }) {
   const handleDelete = (e, uid) => {
     e.stopPropagation();
     _service({
@@ -21,6 +21,7 @@ function FriendItem({ activeTab, uid, name, avatar, online, latest_message, unre
           title: "Conversas",
           description: "Conversa removida com sucesso.",
         });
+        loadChats();
       },
       fail: () => {
         globalNotification.serviceFail({
