@@ -6,11 +6,29 @@ import _service from "@netuno/service-client";
 
 import "./index.less";
 import { DeleteOutlined } from "@ant-design/icons";
+import globalNotification from "../../../../../common/globalNotification";
 
 dayjs.extend(utc);
 
 function FriendItem({ activeTab, uid, name, avatar, online, latest_message, unread_messages, className, onClick }) {
   const handleDelete = (e, uid) => {
+    e.stopPropagation();
+    _service({
+      method: "DELETE",
+      url: `/message/chat?partner_uid=${uid}`,
+      success: () => {
+        globalNotification.success({
+          title: "Conversas",
+          description: "Conversa removida com sucesso.",
+        });
+      },
+      fail: () => {
+        globalNotification.serviceFail({
+          title: "Conversas",
+          description: "Não foi possível apagar a conversa.",
+        });
+      },
+    });
   };
 
   return (
