@@ -236,7 +236,7 @@ function Friends() {
                         <Button
                           type="primary"
                           icon={<MessageOutlined />}
-                          onClick={() => navigate("/messages")}
+                          onClick={() => navigate(`/messages?chatFriend=${person.uid}`)}
                           className="friends-page__action-btn"
                         >
                           Mensagem

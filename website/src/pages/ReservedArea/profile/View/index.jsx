@@ -229,7 +229,7 @@ function ProfileView() {
           <Button
             type="primary"
             icon={<MessageOutlined />}
-            onClick={() => navigate("/messages")}
+            onClick={() => navigate(`/messages?chatFriend=${profileData.uid}`)}
           >
             Mandar Mensagem
           </Button>
