@@ -16,7 +16,7 @@ const { Text, Paragraph } = Typography;
 function formatTimeAgo(sentAt) {
   dayjs.extend(utc);
   if (!sentAt) { return ""; }
-  const moment = dayjs.utc(sentAt);
+  const moment = dayjs.utc(sentAt).local();
   const diffSec = dayjs().diff(moment, "second");
   if (diffSec < 60) { return "Há Alguns Segundos"; }
   const diffMin = dayjs().diff(moment, "minute");

@@ -47,7 +47,7 @@ function FriendItem({ activeTab, uid, name, avatar, online, latest_message, unre
         </Col>
         <Col flex="50px" className="messages__friends-list__item__messages">
           {unread_messages > 0 && <>
-            <div className="messages__friends-list__item__messages__latest">{dayjs.utc(latest_message).fromNow(true)}</div>
+            <div className="messages__friends-list__item__messages__latest">{dayjs.utc(latest_message).local().fromNow(true)}</div>
             <Badge color="green" count={unread_messages} />
           </>}
         </Col>

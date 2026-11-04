@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Typography, Popover, Dropdown, Input, Button, Popconfirm } from "antd";
 import { SmileOutlined, EditOutlined, DeleteOutlined, RollbackOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import _service from "@netuno/service-client";
 import useProfile from "../../../../../../common/useProfile.js";
 import EmojiPicker from "../../../EmojiPicker";
@@ -64,7 +65,7 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
     </div>
   );
 
-  const sentMoment = data.sent_at ? dayjs(data.sent_at) : null;
+  const sentMoment = data.sent_at ? dayjs.utc(data.sent_at).local() : null;
   const canEdit = !isIncoming && !isDeleted && sentMoment && dayjs().diff(sentMoment, "hour") < 1;
 
   const formatMessageMeta = () => {
@@ -78,53 +79,53 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
   const menuItems = [
     ...(isIncoming && !isDeleted
       ? [
-          {
-            key: "react",
-            label: "Reagir",
-            icon: <SmileOutlined />,
-            onClick: () => {
-              setMenuOpen(false);
-              setReactionPopoverOpen(true);
-            },
+        {
+          key: "react",
+          label: "Reagir",
+          icon: <SmileOutlined />,
+          onClick: () => {
+            setMenuOpen(false);
+            setReactionPopoverOpen(true);
           },
-          {
-            key: "reply",
-            label: "Responder",
-            icon: <RollbackOutlined />,
-            onClick: () => {
-              setMenuOpen(false);
-              onReply && onReply(data);
-            },
+        },
+        {
+          key: "reply",
+          label: "Responder",
+          icon: <RollbackOutlined />,
+          onClick: () => {
+            setMenuOpen(false);
+            onReply && onReply(data);
           },
-        ]
+        },
+      ]
       : []),
     ...(!isIncoming && !isDeleted
       ? [
-          ...(canEdit
-            ? [
-                {
-                  key: "edit",
-                  label: "Editar",
-                  icon: <EditOutlined />,
-                  onClick: () => {
-                    setMenuOpen(false);
-                    setEditText(data.message || "");
-                    setIsEditing(true);
-                  },
-                },
-              ]
-            : []),
-          {
-            key: "delete",
-            label: "Eliminar",
-            icon: <DeleteOutlined />,
-            danger: true,
-            onClick: () => {
-              setMenuOpen(false);
-              onDelete && onDelete(data.uid);
+        ...(canEdit
+          ? [
+            {
+              key: "edit",
+              label: "Editar",
+              icon: <EditOutlined />,
+              onClick: () => {
+                setMenuOpen(false);
+                setEditText(data.message || "");
+                setIsEditing(true);
+              },
             },
+          ]
+          : []),
+        {
+          key: "delete",
+          label: "Eliminar",
+          icon: <DeleteOutlined />,
+          danger: true,
+          onClick: () => {
+            setMenuOpen(false);
+            onDelete && onDelete(data.uid);
           },
-        ]
+        },
+      ]
       : []),
   ];
 
@@ -198,9 +199,8 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                     disabled={isDeleted}
                   >
                     <div
-                      className={`messages__message-bubble ${
-                        isDeleted ? "messages__message-bubble--deleted" : ""
-                      }`}
+                      className={`messages__message-bubble ${isDeleted ? "messages__message-bubble--deleted" : ""
+                        }`}
                       style={{ cursor: "pointer" }}
                     >
                       {!isDeleted && data.parent && (
@@ -257,9 +257,8 @@ function Message({ friend, data, onReply, onEdit, onDelete, onReact, onQuoteClic
                   disabled={isDeleted}
                 >
                   <div
-                    className={`messages__message-bubble ${
-                      isDeleted ? "messages__message-bubble--deleted" : ""
-                    }`}
+                    className={`messages__message-bubble ${isDeleted ? "messages__message-bubble--deleted" : ""
+                      }`}
                     style={{ cursor: isDeleted ? "default" : "pointer" }}
                   >
                     {!isDeleted && data.parent && (
