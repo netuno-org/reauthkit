@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Spin, Tabs } from "antd";
 import _ws from "@netuno/ws-client";
 
@@ -14,7 +14,18 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
   const [loading, setLoading] = useState(true);
   const [conversations, setConverstations] = useState(null);
   const [friends, setFriends] = useState(null);
+  const conversationsRef = useRef(null);
   const ws = useWS();
+
+  useEffect(() => {
+    conversationsRef.current = conversations;
+  }, [conversations]);
+
+  const loadChats = useCallback(() => {
+    _ws.sendService({
+      service: "message/participant/list",
+    });
+  }, []);
 
   const onChange = (key) => {
     setActiveTab(key);
@@ -44,7 +55,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
     });
   }, []);
 
-  const loadChats = async () => {
+  useEffect(() => {
     const listenerList = _ws.addListener({
       service: "message/participant/list",
       start: () => {
@@ -65,20 +76,16 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
       },
     });
 
-    _ws.sendService({
-      service: "message/participant/list",
-    });
-
     const listenerStatusChanged = _ws.addListener({
       service: "friend/status/changed",
       success: ({ content }) => {
         setConverstations((prev) =>
-          prev.map((item) => {
+          prev ? prev.map((item) => {
             if (item.uid === content.uid) {
               return { ...item, ...content };
             }
             return item;
-          })
+          }) : prev
         );
       },
     });
@@ -86,14 +93,30 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
     const listenerNewMessage = _ws.addListener({
       method: "POST",
       service: "message/new",
-      success: ({ data }) => {
+      success: ({ data, content }) => {
+        const knownConversation = conversationsRef.current
+          && conversationsRef.current.some((item) => item.uid === data.with);
+
+        if (!knownConversation) {
+          // First message exchanged with this profile: reload the list so the
+          // new conversation appears without requiring a tab switch.
+          loadChats();
+          return;
+        }
+
         setConverstations((prev) =>
-          prev.map((item) => {
-            if (item.uid === data.with) {
-              return { ...item, unread_messages: (item.unread_messages || 0) + 1 };
-            }
-            return item;
-          })
+          prev
+            .map((item) => {
+              if (item.uid === data.with) {
+                return {
+                  ...item,
+                  unread_messages: (item.unread_messages || 0) + 1,
+                  latest_message: content?.sent_at || item.latest_message,
+                };
+              }
+              return item;
+            })
+            .sort((a, b) => new Date(b.latest_message) - new Date(a.latest_message))
         );
       },
     });
@@ -102,15 +125,17 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
       service: "message/read/mark",
       success: ({ data }) => {
         setConverstations((prev) =>
-          prev.map((item) => {
+          prev ? prev.map((item) => {
             if (item.uid === data.from) {
               return { ...item, unread_messages: Math.max(0, (item.unread_messages || 0) - 1) };
             }
             return item;
-          })
+          }) : prev
         );
       },
     });
+
+    loadChats();
 
     return () => {
       _ws.removeListener(listenerList);
@@ -118,11 +143,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
       _ws.removeListener(listenerNewMessage);
       _ws.removeListener(listenerMessageReadMark);
     };
-  }
-
-  useEffect(() => {
-    loadChats();
-  }, [ws.data]);
+  }, [ws.data, loadChats]);
 
   const tabItems = [
     {
