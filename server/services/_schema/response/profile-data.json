@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "name": {
+      "type": "string-not-empty"
+    },
+    "username": {
+      "type": "string-not-empty"
+    },
+    "email": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "boolean"
+    },
+    "group": {
+      "type": "string-not-empty"
+    },
+    "friendship_status": {
+      "type": "string",
+      "enum": [
+        "self",
+        "friend",
+        "pending_sent",
+        "pending_received",
+        "none"
+      ]
+    }
+  },
+  "required": [
+    "uid",
+    "name",
+    "username",
+    "email",
+    "avatar",
+    "group"
+  ]
+}
