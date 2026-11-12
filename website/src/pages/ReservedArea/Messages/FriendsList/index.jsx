@@ -23,7 +23,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
 
   const loadChats = useCallback(() => {
     _ws.sendService({
-      service: "message/participant/list",
+      service: "message/chat/list",
     });
   }, []);
 
@@ -57,7 +57,7 @@ function FriendsList({ selectedFriend, onFriendSelected }) {
 
   useEffect(() => {
     const listenerList = _ws.addListener({
-      service: "message/participant/list",
+      service: "message/chat/list",
       start: () => {
         setLoading(true);
       },

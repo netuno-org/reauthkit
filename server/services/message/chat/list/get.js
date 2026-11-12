@@ -4,7 +4,7 @@ import profile from "#core/lib/profile.js";
 
 const dbProfile = profile.getLoggedIn();
 
-const dbParticipants = _db.query(`
+const dbChats = _db.query(`
 SELECT 
     p.uid, 
     p.name, 
@@ -37,18 +37,18 @@ ORDER BY c.latest_message_moment DESC NULLS LAST;
   dbProfile.getInt("id"),
   dbProfile.getInt("id"));
 
-const participants = _val.list();
+const chats = _val.list();
 
-for (const dbParticipant of dbParticipants) {
-  participants.add(
+for (const dbChat of dbChats) {
+  chats.add(
     _val.map()
-      .set("uid", dbParticipant.getString("uid"))
-      .set("name", dbParticipant.getString("name"))
-      .set("avatar", dbParticipant.getString("avatar") !== "")
-      .set("online", dbParticipant.getInt("active_ws_sessions") > 0)
-      .set("latest_message", dbParticipant.getSQLTimestamp("latest_message_moment"))
-      .set("unread_messages", dbParticipant.getInt("unread_messages_count", 0))
+      .set("uid", dbChat.getString("uid"))
+      .set("name", dbChat.getString("name"))
+      .set("avatar", dbChat.getString("avatar") !== "")
+      .set("online", dbChat.getInt("active_ws_sessions") > 0)
+      .set("latest_message", dbChat.getSQLTimestamp("latest_message_moment"))
+      .set("unread_messages", dbChat.getInt("unread_messages_count", 0))
   );
 }
 
-_out.json(participants);
+_out.json(chats);
