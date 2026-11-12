@@ -10,14 +10,19 @@ Netuno maps a file named after an HTTP method to its directory path. For example
 | --- | --- | --- |
 | `/` | Public | Redirects an authenticated visitor to `/dashboard`, otherwise to `/login`. |
 | `/login` | Public | Password/JWT login, optional remembered username/password, ALTCHA, password-recovery dialog, and enabled social-provider links. |
-| `/login/:provider` | Public | Completes a Netuno social-provider login callback. |
+| `/login/:provider` | Public | Completes a Netuno social-provider login callback; redirects to `/register` when the provider account has no local account yet. |
 | `/register` | Public | Password or enabled social-provider registration, with ALTCHA when configured. |
 | `/register/:provider` | Public | Completes social-provider registration and signs in the new account. |
 | `/recovery` | Public | Accepts the recovery key from the URL fragment and sets a new password. |
-| `/dashboard` | Authenticated | Reserved-area welcome screen. |
-| `/profile/edit` | Authenticated | Edits the current user's identity fields, password, and cropped avatar; the server defect noted below currently affects profile persistence. |
-| `/profile/view` | Authenticated | Placeholder profile-view screen; it does not load another user's data. |
-| `/messages` | Authenticated | Friend presence, unread counts, ten-message conversation history, message sending, and read marking over WebSocket service envelopes. |
+| `/dashboard` | Authenticated | Reserved-area welcome screen with the profile name. |
+| `/profile/edit` | Authenticated | Edits the current user's identity fields, password, and cropped avatar. |
+| `/profile/preferences` | Authenticated | Toggles friend and message notification preferences. |
+| `/profile/view` | Authenticated | Shows the logged-in profile with an edit action. |
+| `/profile/:uid` | Authenticated | Shows another user's profile with friendship actions (add, accept, remove, cancel) and a message link. |
+| `/friends` | Authenticated | Accepted friends plus received/sent requests; search, accept, refuse, cancel, remove, and open profile/messages. |
+| `/people` | Authenticated | Paginated, searchable profile directory. |
+| `/messages` | Authenticated | Conversation/friends tabs, presence, unread counts, paginated history, send/reply/edit/delete, reactions, and read marking over WebSocket service envelopes. |
+| `/notifications` | Authenticated | Unread/all tabs, pagination, mark-read/mark-all-read, deletion, and navigation to the related profile. |
 | `/other-page` | Authenticated | Placeholder reserved-area page for extension. |
 | Any unmatched route | Public shell | Displays the not-found page. |
 
@@ -36,29 +41,38 @@ All paths below are relative to `/services`.
 
 | Method and path | Status | Input | Current behavior |
 | --- | --- | --- | --- |
-| `DELETE /friend` | Placeholder | — | Empty extension point; friend removal is not implemented. |
-| `GET /friend/list` | Implemented | — | Returns the logged-in profile's friends with `uid`, `name`, avatar availability, online state, latest unread-message timestamp, and unread count. |
-| `POST /friend` | Placeholder | — | Empty extension point; adding a friend is not implemented. |
-| `PUT /friend` | Placeholder | — | Empty extension point; friend updates are not implemented. |
-| `DELETE /message` | Placeholder | — | Empty extension point; message deletion is not implemented. |
+| `DELETE /friend` | Implemented | `uid` | Removes the friendship in both directions and the related `friend_*` notifications; sends notification refresh events; returns `{ "result": true, "status": "none" }` or 404 `user-not-found`. |
+| `GET /friend/list` | Implemented | — | Returns `{ result, friends, received, sent }`. `friends` contains accepted friendships; `received` and `sent` contain pending requests. Each item has `uid`, `name`, `email`, `avatar` (Boolean), and `online`; accepted items have `accepted_on`, pending items `request_on`. |
+| `POST /friend` | Implemented | `uid` | Sends a friend request, accepts an incoming request, or returns the existing state. Returns `{ result: true, status }` with `friend` or `pending_sent`; 400 `cannot-friend-self`; 404 `user-not-found`. Creates a `friend` notification. |
+| `PUT /friend` | Implemented | `uid` | Accepts an incoming request, creates or updates the reciprocal friendship, and creates a `friend` notification for the requester. Returns `{ result: true, status: "friend" }` or 404 `user-not-found`. |
+| `DELETE /message` | Implemented | `uid` | Soft-deletes a message sent by the logged-in profile (`deleted_at`, `active=false`); broadcasts `DELETE message`; returns `{ result: true, content }`; errors `message-not-found` and `unauthorized`. |
 | `GET /message` | Placeholder | — | Empty extension point; single-message retrieval is not implemented. |
-| `POST /message` | Implemented | `to` profile UID, `message` string | Stores a message, notifies the recipient through `POST message/new`, and returns `{ "result": true }`. |
-| `PUT /message` | Placeholder | — | Empty extension point; message updates are not implemented. |
-| `POST /message/list` | Implemented | `with` profile UID | Marks incoming messages from that profile as read, refreshes unread/friend data when necessary, and returns the latest 10 messages in chronological order. |
-| `GET /message/read/mark` | Implemented | `from` profile UID, `uid` message UID | Marks the matching unread message as read and returns `{ "result": true, "from": UID }`. The source does not verify the recipient in its SQL predicate. |
-| `GET /message/unread/count` | Implemented | — | Returns `{ "total": number }` for the logged-in profile. |
-| `POST /notification/subscribe` | Implemented | `endpoint`, `keys.p256dh`, `keys.auth` | Stores a Web Push subscription for the logged-in profile. Returns 404 `not-exist` if no profile is found, otherwise `{ "result": true }`. |
-| `GET /profile` | Implemented | Optional `uid`; otherwise logged-in profile | Returns `{ "result": true, "data": { uid, name, username, email, avatar, group } }`, or 404 `not-exist`. |
-| `POST /profile` | Implemented | `name`, `username`; password flow: `email`, `password`, optional `altcha`; provider flow: `code`, `provider` | Registers a generic user/profile. Returns 409 for invalid provider data, invalid ALTCHA, or existing email/username. |
-| `PUT /profile` | Implemented with defect | Multipart `name`, `username`, `email`, optional `password`, optional `avatar` | Updates the Netuno user and responds `{ "result": true }`. The shipped source writes profile data to form `people` although the schema and all other code use `profile`; profile fields/avatar therefore require this defect to be corrected before relying on the endpoint. |
-| `DELETE /profile` | Disabled | — | The script begins with unconditional `_exec.stop()`. If that line is deliberately removed, the remaining sample deletes the logged-in profile and Netuno user, returning 200 or 404. |
-| `GET /profile/avatar` | Implemented | Required `uid` query value | Streams the stored JPEG/PNG avatar with no-cache headers; returns an empty 404 when the profile is absent. |
-| `GET /profile/list` | Placeholder | — | Empty extension point; profile listing is not implemented. |
-| `OPTIONS /recovery` | Implemented | — | Returns `{ "result": true }` for preflight/feature probing. |
-| `POST /recovery` | Implemented | `email` | Creates a one-day recovery key and sends an email. Returns 409 `user-not-active`, 404 `not-exists`, or `{ "result": true }`. The recovery URL is derived from the request `Origin` header. |
-| `PUT /recovery` | Implemented | `key`, `password` | Changes the password when the key exists and has not expired; otherwise returns 404 `user-not-found`. |
+| `POST /message` | Implemented | `to`, `message`, optional `parent_uid` | Stores a message (optionally as a reply), sends `message/new` and unread-count events, and returns `{ result: true, content }`. |
+| `PUT /message` | Implemented | `uid`, `message` | Edits a message sent by the logged-in profile within one hour; broadcasts `message/edit`; returns `{ result: true, content }`; errors `message-not-found`, `unauthorized`, and `edit-time-expired`. |
+| `POST /message/list` | Implemented | `with`, optional `page` and `pageSize` | Marks incoming messages from `with` as read on page 1, then returns `{ items, page, total }` with the messages in chronological order. The default page size is 10. |
+| `GET /message/read/mark` | Implemented | `from`, `uid` | Marks the message as read and broadcasts `message/read`; returns `{ result: true, from }`. The SQL predicate does not verify the recipient. |
+| `GET /message/unread/count` | Implemented | — | Returns `{ total }` for the logged-in profile. Returns 0 when the `message` notification type is disabled in preferences. |
+| `GET /message/chat/list` | Implemented | — | Returns a bare array (not wrapped in `result`) of conversations: `uid`, `name`, `avatar`, `online`, `latest_message`, and `unread_messages`, sorted by latest message. |
+| `DELETE /message/chat` | Implemented | `partner_uid` | Deletes all messages between the logged-in profile and the partner, sends unread-count updates, and returns `{ result: true }` or `{ result: false, error: "user-not-found" }`. |
+| `PUT /message/reaction` | Implemented | `uid`, optional `reaction` | Sets or clears a reaction on a message received by the logged-in profile; broadcasts `PUT message`; returns `{ result: true, content }`; errors `message-not-found` and `unauthorized`. |
+| `DELETE /notification` | Implemented | `uid` | Soft-deletes (`active=false`) one notification owned by the logged-in profile; sends the unread count; returns `{ result: true, total }`; error `not-found`. |
+| `POST /notification/list` | Implemented | optional `page`, `pageSize`, and `unread` | Returns `{ items, page, pageSize, total }` of active notifications, newest first; `unread=true` filters unread only. |
+| `PUT /notification/read` | Implemented | optional `all` and `uid` | Marks all unread notifications read (`all=true`) or one notification by `uid`; sends the unread count; returns `{ result: true, total }`. |
+| `GET /notification/settings` | Implemented | — | Returns `{ result: true, data: [{ id, code, name, enabled }] }` for all notification types; missing settings default to enabled. `not-logged` error when no profile exists. |
+| `POST /notification/settings` | Implemented | `code`, optional `enabled` | Creates or updates the notification preference for a type; returns `{ result: true, code, enabled }`; errors `not-logged` and `type-not-found`. Also sends a `message/unread/count` refresh. |
+| `GET /notification/unread/count` | Implemented | — | Returns `{ total }` for the logged-in profile. |
+| `POST /notification/subscribe` | Implemented | `endpoint`, `keys.p256dh`, `keys.auth` | Stores a Web Push subscription; 404 `not-exist` when no profile is found; otherwise `{ result: true }`. |
+| `GET /profile` | Implemented | optional `uid`; otherwise logged-in profile | Returns `{ result: true, data }` with `uid`, `name`, `username`, `email`, `avatar` (Boolean), `group`, and `friendship_status` when available (`self`, `friend`, `pending_sent`, `pending_received`, `none`); 404 `not-exist`. |
+| `POST /profile` | Implemented | password flow: `name`, `username`, `email`, `password`, optional `altcha`; provider flow: `name`, `username`, `code`, `provider` | Registers a Netuno user in the `generic` group and creates the profile. Provider identity is resolved by Netuno's provider flow. Returns `{ result: true }`; 409 `invalid-provider-data`, `invalid-altcha-payload`, `email-already-exists`, or `user-already-exists`. |
+| `PUT /profile` | Implemented | Multipart `name`, `username`, `email`, optional `password`, optional `avatar` | Updates the Netuno user and the `profile` record; a new avatar is resized to a 500×500 JPEG. Returns `{ result: true }`. |
+| `DELETE /profile` | Disabled | — | Starts with an unconditional `_exec.stop()`. If that line is deliberately removed, it deletes the logged-in profile and Netuno user (200 or 404). |
+| `GET /profile/avatar` | Implemented | required `uid` | Streams the stored avatar with no-cache headers; uses the JPEG content type when the stored extension is jpg/jpeg and PNG otherwise; empty 404 when the profile or avatar is absent. |
+| `POST /profile/list` | Implemented | optional `page`, `pageSize`, and `search` | Returns `{ items, page, pageSize, total }` of active profiles excluding the logged-in profile; each item has `uid`, `name`, `username`, `email`, `avatar` (Boolean), `group`, and `online`. Search is case-insensitive over name, username, and email. The default page size is 12. |
+| `OPTIONS /recovery` | Implemented | — | Returns `{ result: true }` for preflight/feature probing. |
+| `POST /recovery` | Implemented | `email` | Creates a one-day recovery key and sends the recovery email; returns `{ result: true }`, 404 `not-exists`, or 409 `user-not-active`. The recovery URL is derived from the request `Origin` header. |
+| `PUT /recovery` | Implemented | `key`, `password` | Changes the password when the key exists and has not expired; otherwise returns 404 `user-not-found`; returns `{ result: true }`. |
 
-`POST /profile` also depends on Netuno's configured `generic` group. Provider registration obtains identity data from Netuno's provider flow rather than trusting an email sent by the browser.
+`POST /profile` also depends on Netuno's configured `generic` group. Provider registration obtains identity data from Netuno's provider flow rather than trusting an email sent by the browser. Profile listing is `POST /profile/list`; there is no `GET /profile/list` route.
 
 ## WebSocket lifecycle service
 
@@ -75,15 +89,23 @@ The website sends the JWT as `?auth=<access-token>`. `server/core/_service_confi
 
 ### Service messages used by the website
 
-| Method and service | Direction | Payload/result |
+| Service | Direction | Payload/result |
 | --- | --- | --- |
-| `GET friend/list` | Client request/response | Response `content` is the friend list described above. |
-| `GET message/unread/count` | Client request/response or server refresh | Response `content.total` is the unread count. |
-| `POST message` | Client request/response | Request `data` contains `to` and `message`. |
-| `POST message/list` | Client request/response | Request `data.with` is a profile UID; `content` is the 10-message history. |
-| `GET message/read/mark` | Client request/response | Request `data` contains `uid` and `from`. |
-| `POST message/new` | Server event | `data.with` identifies the other profile; `content` contains `uid`, `from`, `to`, `message`, `sent_at`, and `read_at`. |
-| `GET friend/status/changed` | Server event | `content` contains profile `uid` and Boolean `online`. |
+| `friend/status/changed` | Server event | `content` contains `{ uid, online }`. |
+| `message` (POST) | Client request/response | `data` contains `to`, `message`, and optional `parent_uid`; the response contains the formatted message in `content`. |
+| `message` (PUT) | Client request/response | `data` contains `uid` and `message`; the response contains the formatted message in `content`. |
+| `message` (DELETE) | Client request/response or server event | Request `data.uid`; event `data.with` identifies the other profile; `content` contains the formatted message. |
+| `message` (PUT, reaction update) | Server event | `data.with` identifies the other profile; `content` contains the formatted message. |
+| `message/list` (POST) | Client request/response | `data` contains `with`, `page`, and `pageSize`; `content` contains `{ items, page, total }`. |
+| `message/new` (POST) | Server event | `data.with` identifies the other profile; `content` contains `uid`, `from`, `to`, `message`, `sent_at`, `read_at`, `deleted_at`, `active`, `edited_at`, `reaction`, and optionally `parent`. |
+| `message/edit` (PUT) | Server event | `data.with` identifies the other profile; `content` contains the formatted message. |
+| `message/read` (PUT) | Server event | `data.with` identifies the other profile; `content` contains `{ all: true, read_at }` or `{ uid, read_at }`. |
+| `message/read/mark` (GET) | Client request/response | `data` contains `uid` and `from`. |
+| `message/reaction` (PUT) | Client request/response | `data` contains `uid` and `reaction`; the response contains the formatted message in `content`. |
+| `message/chat/list` (GET) | Client request/response or server refresh | `content` contains the bare conversation array. |
+| `message/unread/count` | Server refresh | `content.total` contains the unread count. |
+| `notification/unread/count` | Server refresh | `content.total` contains the unread count. |
+| `notification/new` | Server event | `content` contains the notification data (`uid`, `title`, `content`, `sent_at`, `read_at`, `extra`, `type`). |
 
 ## Scheduled service
 
@@ -97,16 +119,19 @@ These default-exported objects are reusable application extension APIs. Import t
 
 | Module and function | Contract |
 | --- | --- |
-| `profile.getFullDataByUID(uid)` | Returns a Netuno value map containing `uid`, `name`, `username`, `email`, Boolean `avatar`, and `group`, or `null`. |
-| `profile.getLogged()` | Returns the database `profile` record linked to the current `_user.id`, or no record. |
-| `profile.getByUID(uid)` | Returns the database `profile` record for the UID, or no record. |
+| `profile.getFullDataByUid(uid)` | Returns a Netuno value map containing `uid`, `name`, `username`, `email`, Boolean `avatar`, and `group`, or `null`. |
+| `profile.getLoggedIn()` | Returns the database `profile` record linked to the current `_user.id`, or no record. |
+| `profile.getByUid(uid)` | Returns the database `profile` record for the UID, or no record. |
 | `profile.wsSendService(dbProfile, message)` | Sends a client-origin-style service envelope to every stored WebSocket session for the profile. |
 | `profile.wsSendAsService(dbProfile, message)` | Sends a server-origin service envelope to every stored WebSocket session for the profile. |
 | `friend.notifyAllWithStatusChanged(dbProfile, online)` | Notifies all stored friend sessions with `friend/status/changed`. |
-| `message.getByUID(uid)` | Returns the database `message` record for the UID, or no record. |
-| `message.getUnreadTotal(dbProfile)` | Returns the number of unread messages addressed to the profile. |
-| `message.toData(dbProfileFrom, dbProfileTo, dbMessage)` | Converts a message record to the public message value map. |
-| `notification.create(dbProfile, typeCode, title, content, extra)` | Stores a notification, sends Web Push to active subscriptions, and deactivates subscriptions reported as expired. The requested notification type must exist and be active. |
+| `message.getByUid(uid)` | Returns the database `message` record for the UID, or no record. |
+| `message.getUnreadTotal(dbProfile)` | Returns the number of unread messages addressed to the profile, or 0 when the profile is absent or the `message` notification type is disabled. |
+| `message.toData(dbProfileFrom, dbProfileTo, dbMessage)` | Converts a message record to the public message value map, including `uid`, `from`, `to`, `message`, `sent_at`, `read_at`, `deleted_at`, `active`, `edited_at`, `reaction`, and an optional `parent` object. |
+| `notification.create(dbProfile, typeCode, title, content, extra)` | Stores a notification, sends Web Push to active subscriptions, deactivates subscriptions reported as expired, and emits unread-count and `notification/new` events. The requested notification type must exist and be active. |
+| `notification.isEnabled(dbProfile, typeCode)` | Returns whether the profile has notifications enabled for the type. |
+| `notification.getUnreadTotal(dbProfile)` | Returns the number of unread active notifications for the profile, excluding disabled types. |
+| `notification.toData(dbNotification)` | Converts a notification record to the public notification value map. |
 
 ## Core lifecycle extension points
 
@@ -128,8 +153,10 @@ Netuno discovers the following files by name. Empty files are intentional hooks 
 
 ## Access-control caveats
 
-The current production allow-list in `_service_config.js` names `people/avatar/get`, `people/post`, and `people/options`, but the implemented routes are under `profile`, not `people`; it also omits `profile/get`. As shipped, only `recovery/{post,put,options}` is explicitly public, and `ws/private*` is allowed only for JWT requests. Development calls `_service.allow()` globally. Review and correct this allow-list and configure Netuno group permissions before production use.
+In development, `_service_config.js` calls `_service.allow()` for every service. The current explicit production allow-list contains `profile/avatar/get`, `profile/post`, `profile/options`, `recovery/post`, `recovery/put`, and `recovery/options`. This makes registration, avatar reads, and password recovery public. `profile/options` is allow-listed but no `profile/options` service file exists. The list omits `profile/get`; authenticated access to that route and the other application routes must be granted through Netuno group permissions. `ws/private*` is allowed only when `_auth.isJWT()` is true and is denied otherwise. Review and correct this allow-list and configure Netuno group permissions before production use.
 
-The companion OpenAPI schemas cover only `profile/{get,post,put,delete}` and `recovery/{post,put}`. The table above is therefore the complete source-derived route inventory; the generated OpenAPI document is currently incomplete.
+## OpenAPI coverage
+
+`server/services/_openapi.json` currently defines only `info` and `components.securitySchemes`; Netuno generates the paths from companion `*.in.json` and `*.out.*.json` files. Request schemas exist for `friend/{delete,post,put}`, `message/{delete,put}`, `message/reaction/put`, `notification/delete`, `profile/{get,post,put,delete}`, and `recovery/{post,put}`. Response schemas exist for the `profile` and `recovery` routes. The generated document is therefore still incomplete relative to the full route inventory above.
 
 For every sample configuration path, see [Configuration reference](configuration.md).
