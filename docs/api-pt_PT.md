@@ -157,6 +157,10 @@ Em desenvolvimento, `_service_config.js` executa `_service.allow()` para todos o
 
 ## Cobertura OpenAPI
 
-`server/services/_openapi.json` define atualmente apenas `info` e `components.securitySchemes`; o Netuno gera os caminhos a partir dos ficheiros complementares `*.in.json` e `*.out.*.json`. Existem esquemas de pedido para `friend/{delete,post,put}`, `message/{delete,put}`, `message/reaction/put`, `notification/delete`, `profile/{get,post,put,delete}` e `recovery/{post,put}`. Existem esquemas de resposta para as rotas `profile` e `recovery`. O documento gerado continua, por isso, incompleto em relação ao inventário completo de rotas acima.
+`server/services/_openapi.json` define o `info` do documento e o esquema de segurança `BearerAuth`. O Netuno gera os caminhos, operações, parâmetros ou corpos de pedido e respostas a partir dos ficheiros complementares `*.in.json` e `*.out.<code>.json`. Todas as rotas HTTP da tabela acima têm agora um ficheiro `*.in.json` complementar: as propriedades de `GET` e `DELETE` tornam-se parâmetros de query, enquanto as de `POST` e `PUT` se tornam corpos de pedido JSON. Os métodos do ciclo de vida WebSocket são incluídos com a etiqueta `WebSocket`.
+
+As definições de resposta reutilizáveis estão em `server/services/_schema/response`: `profile-data`, `friend-item`, `chat-item`, `people-item`, `message-data`, `notification-data`, `without-data`, `with-error` e `with-result-error`. Os estados de sucesso e os erros documentados estão cobertos para as rotas de amigos, mensagens, notificações, perfil e recuperação. `GET /profile/avatar` não tem esquema de resposta porque envia dados binários, e `GET /message` tem apenas metadados de pedido porque é um placeholder. As operações públicas (`GET /profile/avatar`, `POST /profile` e `POST`, `PUT` e `OPTIONS` em `/recovery`) declaram `security: []`; as restantes operações usam `BearerAuth`.
+
+O documento gerado está disponível em `http://localhost:9000/services/_openapi` (interface) e `http://localhost:9000/services/_openapi.json` (JSON em bruto).
 
 Para todos os caminhos da configuração de exemplo, consulte a [Referência de configuração](configuration-pt_PT.md).

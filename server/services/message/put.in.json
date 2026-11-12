@@ -1,6 +1,9 @@
 {
+  "tags": [
+    "Message"
+  ],
   "summary": "Edit message",
-  "description": "Edit a message that was sent to some user.",
+  "description": "Edit a message sent by the logged-in user within one hour.",
   "type": "object",
   "properties": {
     "uid": {

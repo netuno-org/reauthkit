@@ -1,4 +1,7 @@
 {
+  "tags": [
+    "Friend"
+  ],
   "summary": "Accept friendship request",
   "description": "Accept the friendship request sent by another user.",
   "type": "object",

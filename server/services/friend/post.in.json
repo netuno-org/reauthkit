@@ -1,6 +1,9 @@
 {
+  "tags": [
+    "Friend"
+  ],
   "summary": "Request friendship",
-  "description": "Send a friendship request to some user.",
+  "description": "Send a friendship request, accept an incoming request, or return the existing friendship state.",
   "type": "object",
   "properties": {
     "uid": {

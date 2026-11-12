@@ -1,6 +1,9 @@
 {
+  "tags": [
+    "Message"
+  ],
   "summary": "React to message",
-  "description": "React to a message that was sent by another user.",
+  "description": "Set or clear a reaction on a message received by the logged-in user.",
   "type": "object",
   "properties": {
     "uid": {

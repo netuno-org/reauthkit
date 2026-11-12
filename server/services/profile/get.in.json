@@ -1,4 +1,13 @@
 {
-  "summary": "Account Information",
-  "description": "Retrieve the information of the user logged."
+  "tags": [
+    "Profile"
+  ],
+  "summary": "Account information",
+  "description": "Retrieve the logged-in user's profile, or another profile when uid is provided.",
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    }
+  }
 }

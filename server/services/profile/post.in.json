@@ -1,6 +1,10 @@
 {
+  "tags": [
+    "Profile"
+  ],
   "summary": "Register",
-  "description": "Create a new account.",
+  "description": "Create a new account using a password or a social-provider identity.",
+  "security": [],
   "type": "object",
   "properties": {
     "name": {
@@ -19,6 +23,9 @@
       "type": "string"
     },
     "provider": {
+      "type": "string"
+    },
+    "altcha": {
       "type": "string"
     }
   },

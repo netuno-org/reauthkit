@@ -157,6 +157,10 @@ In development, `_service_config.js` calls `_service.allow()` for every service.
 
 ## OpenAPI coverage
 
-`server/services/_openapi.json` currently defines only `info` and `components.securitySchemes`; Netuno generates the paths from companion `*.in.json` and `*.out.*.json` files. Request schemas exist for `friend/{delete,post,put}`, `message/{delete,put}`, `message/reaction/put`, `notification/delete`, `profile/{get,post,put,delete}`, and `recovery/{post,put}`. Response schemas exist for the `profile` and `recovery` routes. The generated document is therefore still incomplete relative to the full route inventory above.
+`server/services/_openapi.json` defines the document `info` and the `BearerAuth` security scheme. Netuno generates the paths, operations, request parameters or bodies, and responses from the companion `*.in.json` and `*.out.<code>.json` files. Every HTTP route in the table above now has an `*.in.json` companion: `GET` and `DELETE` properties become query parameters, while `POST` and `PUT` properties become JSON request bodies. The WebSocket lifecycle methods are included with the `WebSocket` tag.
+
+Reusable response definitions live in `server/services/_schema/response`: `profile-data`, `friend-item`, `chat-item`, `people-item`, `message-data`, `notification-data`, `without-data`, `with-error`, and `with-result-error`. Success and documented error statuses are covered for the friend, message, notification, profile, and recovery routes. `GET /profile/avatar` has no response schema because it streams binary data, and `GET /message` has request metadata only because it is a placeholder. The public operations (`GET /profile/avatar`, `POST /profile`, and `POST`, `PUT`, and `OPTIONS` on `/recovery`) declare `security: []`; all other operations use `BearerAuth`.
+
+The generated document is available at `http://localhost:9000/services/_openapi` (the UI) and `http://localhost:9000/services/_openapi.json` (the raw JSON).
 
 For every sample configuration path, see [Configuration reference](configuration.md).

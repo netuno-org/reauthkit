@@ -1,10 +1,14 @@
 {
+  "tags": [
+    "Notification"
+  ],
   "summary": "Remove notification",
-  "description": "Delete a notification.",
+  "description": "Soft-delete a notification owned by the logged-in user.",
   "type": "object",
   "properties": {
     "uid": {
-      "type": "uid"
+      "type": "uid",
+      "required": true
     }
   },
   "required": [

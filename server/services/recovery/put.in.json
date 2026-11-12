@@ -1,6 +1,10 @@
 {
-  "summary": "New Password",
-  "description": "Save the new password.",
+  "tags": [
+    "Recovery"
+  ],
+  "summary": "New password",
+  "description": "Save a new password using a valid recovery key.",
+  "security": [],
   "type": "object",
   "properties": {
     "key": {

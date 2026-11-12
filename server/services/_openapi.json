@@ -1,7 +1,7 @@
 {
   "info": {
     "title": "ReAuthKit",
-    "description": "REST API of a ready-to-use solution for user registration, authentication, profile, and more.",
+    "description": "REST API for user registration, authentication, profiles, friendships, direct messages, notifications, and password recovery. WebSocket service envelopes are documented in the project's API reference.",
     "version": "1.0"
   },
   "components": {

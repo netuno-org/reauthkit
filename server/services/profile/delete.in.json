@@ -1,4 +1,7 @@
 {
-  "summary": "Remove Account (Sample)",
-  "description": "Example of how to delete the user logged account and their info."
+  "tags": [
+    "Profile"
+  ],
+  "summary": "Remove account",
+  "description": "Sample account removal; disabled in the shipped code by an unconditional stop."
 }

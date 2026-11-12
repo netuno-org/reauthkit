@@ -1,6 +1,9 @@
 {
-  "summary": "Update Account",
-  "description": "Change the information of the logged user.",
+  "tags": [
+    "Profile"
+  ],
+  "summary": "Update account",
+  "description": "Update the logged-in user's identity, optional password, and optional avatar.",
   "type": "object",
   "properties": {
     "name": {
@@ -14,6 +17,9 @@
     },
     "password": {
       "type": "string"
+    },
+    "avatar": {
+      "type": "file"
     }
   },
   "required": [
