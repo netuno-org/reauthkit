@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "Get message",
+  "description": "Placeholder extension point; single-message retrieval is not implemented."
+}

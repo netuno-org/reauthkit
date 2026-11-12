@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": "string",
+      "enum": [
+        "user-not-found"
+      ]
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

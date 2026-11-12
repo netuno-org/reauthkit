@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string-not-empty"
+          },
+          "name": {
+            "type": "string-not-empty"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "enabled"
+        ]
+      }
+    },
+    "error": {
+      "type": "string",
+      "enum": [
+        "not-logged"
+      ]
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

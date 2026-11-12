@@ -1,0 +1,32 @@
+{
+  "tags": [
+    "Notification"
+  ],
+  "summary": "Subscribe to Web Push",
+  "description": "Store a Web Push subscription for the logged-in user.",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string-not-empty"
+    },
+    "keys": {
+      "type": "object",
+      "properties": {
+        "p256dh": {
+          "type": "string-not-empty"
+        },
+        "auth": {
+          "type": "string-not-empty"
+        }
+      },
+      "required": [
+        "p256dh",
+        "auth"
+      ]
+    }
+  },
+  "required": [
+    "endpoint",
+    "keys"
+  ]
+}

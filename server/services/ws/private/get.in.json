@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "WebSocket"
+  ],
+  "summary": "WebSocket read",
+  "description": "WebSocket read lifecycle event."
+}

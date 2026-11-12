@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "friend",
+        "pending_sent"
+      ]
+    }
+  },
+  "required": [
+    "result",
+    "status"
+  ]
+}

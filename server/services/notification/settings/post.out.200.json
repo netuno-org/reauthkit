@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": "string",
+      "enum": [
+        "not-logged",
+        "type-not-found"
+      ]
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

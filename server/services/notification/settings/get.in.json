@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "Notification"
+  ],
+  "summary": "Notification settings",
+  "description": "List notification types and the logged-in user's preferences."
+}

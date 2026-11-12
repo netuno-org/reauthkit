@@ -1,0 +1,23 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "Send message",
+  "description": "Send a message, optionally as a reply to another message.",
+  "type": "object",
+  "properties": {
+    "to": {
+      "type": "uid"
+    },
+    "message": {
+      "type": "string-not-empty"
+    },
+    "parent_uid": {
+      "type": "uid"
+    }
+  },
+  "required": [
+    "to",
+    "message"
+  ]
+}

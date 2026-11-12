@@ -1,0 +1,71 @@
+{
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "from": {
+      "type": "uid"
+    },
+    "to": {
+      "type": "uid"
+    },
+    "message": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "timestamp"
+    },
+    "read_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deleted_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "edited_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reaction": {
+      "type": "string"
+    },
+    "parent": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "uid"
+        },
+        "message": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "uid",
+        "message",
+        "from"
+      ]
+    }
+  },
+  "required": [
+    "uid",
+    "from",
+    "to",
+    "message",
+    "sent_at",
+    "active"
+  ]
+}

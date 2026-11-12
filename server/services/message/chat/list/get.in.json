@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "List conversations",
+  "description": "List conversations ordered by the most recent message, including the peer profile, presence, and unread count."
+}

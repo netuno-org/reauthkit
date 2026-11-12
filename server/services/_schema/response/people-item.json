@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "name": {
+      "type": "string-not-empty"
+    },
+    "username": {
+      "type": "string-not-empty"
+    },
+    "email": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "boolean"
+    },
+    "group": {
+      "type": "string-not-empty"
+    },
+    "online": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "uid",
+    "name",
+    "username",
+    "email",
+    "avatar",
+    "group",
+    "online"
+  ]
+}

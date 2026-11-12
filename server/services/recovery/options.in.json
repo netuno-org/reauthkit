@@ -1,0 +1,8 @@
+{
+  "tags": [
+    "Recovery"
+  ],
+  "summary": "Recovery availability",
+  "description": "Probe whether password recovery is available.",
+  "security": []
+}

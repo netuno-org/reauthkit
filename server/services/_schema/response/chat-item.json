@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "name": {
+      "type": "string-not-empty"
+    },
+    "avatar": {
+      "type": "boolean"
+    },
+    "online": {
+      "type": "boolean"
+    },
+    "latest_message": {
+      "type": "timestamp"
+    },
+    "unread_messages": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "uid",
+    "name",
+    "avatar",
+    "online",
+    "latest_message",
+    "unread_messages"
+  ]
+}

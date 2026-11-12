@@ -1,0 +1,19 @@
+{
+  "tags": [
+    "Notification"
+  ],
+  "summary": "List notifications",
+  "description": "List active notifications, optionally only unread ones.",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "integer"
+    },
+    "pageSize": {
+      "type": "integer"
+    },
+    "unread": {
+      "type": "boolean"
+    }
+  }
+}

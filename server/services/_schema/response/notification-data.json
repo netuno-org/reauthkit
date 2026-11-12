@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "timestamp"
+    },
+    "read_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extra": {
+      "type": "string"
+    },
+    "type": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string-not-empty"
+        },
+        "name": {
+          "type": "string-not-empty"
+        }
+      },
+      "required": [
+        "code",
+        "name"
+      ]
+    }
+  },
+  "required": [
+    "uid",
+    "title",
+    "content",
+    "sent_at",
+    "extra"
+  ]
+}

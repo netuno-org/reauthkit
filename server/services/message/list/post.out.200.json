@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "_schema": "response/message-data"
+      }
+    },
+    "page": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "items",
+    "page",
+    "total"
+  ]
+}

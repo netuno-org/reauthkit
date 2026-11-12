@@ -1,0 +1,18 @@
+{
+  "tags": [
+    "Profile"
+  ],
+  "summary": "Profile avatar",
+  "description": "Stream the avatar image of a profile.",
+  "security": [],
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid",
+      "required": true
+    }
+  },
+  "required": [
+    "uid"
+  ]
+}

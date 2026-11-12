@@ -1,0 +1,22 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "Mark message as read",
+  "description": "Mark a message as read for the logged-in user.",
+  "type": "object",
+  "properties": {
+    "from": {
+      "type": "uid",
+      "required": true
+    },
+    "uid": {
+      "type": "uid",
+      "required": true
+    }
+  },
+  "required": [
+    "from",
+    "uid"
+  ]
+}

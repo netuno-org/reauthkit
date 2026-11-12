@@ -1,0 +1,19 @@
+{
+  "tags": [
+    "Notification"
+  ],
+  "summary": "Update notification preference",
+  "description": "Enable or disable notifications for a notification type.",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string-not-empty"
+    },
+    "enabled": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "code"
+  ]
+}

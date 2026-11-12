@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "WebSocket"
+  ],
+  "summary": "WebSocket disconnect",
+  "description": "WebSocket disconnect lifecycle event."
+}

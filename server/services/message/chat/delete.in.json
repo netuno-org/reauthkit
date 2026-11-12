@@ -1,0 +1,17 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "Delete conversation",
+  "description": "Delete all messages exchanged with another user.",
+  "type": "object",
+  "properties": {
+    "partner_uid": {
+      "type": "uid",
+      "required": true
+    }
+  },
+  "required": [
+    "partner_uid"
+  ]
+}

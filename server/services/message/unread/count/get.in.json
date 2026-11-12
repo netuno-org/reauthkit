@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "Unread message count",
+  "description": "Return the number of unread messages for the logged-in user."
+}

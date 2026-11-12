@@ -1,0 +1,16 @@
+{
+  "tags": [
+    "Notification"
+  ],
+  "summary": "Mark notifications as read",
+  "description": "Mark all notifications as read, or a single notification by UID.",
+  "type": "object",
+  "properties": {
+    "all": {
+      "type": "boolean"
+    },
+    "uid": {
+      "type": "uid"
+    }
+  }
+}

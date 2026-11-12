@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "content": {
+      "_schema": "response/message-data"
+    },
+    "error": {
+      "type": "string",
+      "enum": [
+        "message-not-found",
+        "unauthorized",
+        "edit-time-expired"
+      ]
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "tags": [
+    "Profile"
+  ],
+  "summary": "List profiles",
+  "description": "List active profiles excluding the logged-in user.",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "integer"
+    },
+    "pageSize": {
+      "type": "integer"
+    },
+    "search": {
+      "type": "string"
+    }
+  }
+}

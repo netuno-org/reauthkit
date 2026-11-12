@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "none"
+      ]
+    }
+  },
+  "required": [
+    "result",
+    "status"
+  ]
+}

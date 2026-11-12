@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "Notification"
+  ],
+  "summary": "Unread notification count",
+  "description": "Return the number of unread notifications for the logged-in user."
+}

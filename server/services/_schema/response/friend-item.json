@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "uid"
+    },
+    "name": {
+      "type": "string-not-empty"
+    },
+    "email": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "boolean"
+    },
+    "online": {
+      "type": "boolean"
+    },
+    "accepted_on": {
+      "type": "timestamp"
+    },
+    "request_on": {
+      "type": "timestamp"
+    }
+  },
+  "required": [
+    "uid",
+    "name",
+    "email",
+    "avatar",
+    "online"
+  ]
+}

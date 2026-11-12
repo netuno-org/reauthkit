@@ -1,0 +1,22 @@
+{
+  "tags": [
+    "Message"
+  ],
+  "summary": "List conversation messages",
+  "description": "Return the messages exchanged with another user in chronological order. Page 1 also marks incoming messages as read.",
+  "type": "object",
+  "properties": {
+    "with": {
+      "type": "uid"
+    },
+    "page": {
+      "type": "integer"
+    },
+    "pageSize": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "with"
+  ]
+}

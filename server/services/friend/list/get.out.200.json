@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "friends": {
+      "type": "array",
+      "items": {
+        "_schema": "response/friend-item"
+      }
+    },
+    "received": {
+      "type": "array",
+      "items": {
+        "_schema": "response/friend-item"
+      }
+    },
+    "sent": {
+      "type": "array",
+      "items": {
+        "_schema": "response/friend-item"
+      }
+    }
+  },
+  "required": [
+    "result",
+    "friends",
+    "received",
+    "sent"
+  ]
+}

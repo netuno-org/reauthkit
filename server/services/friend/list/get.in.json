@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "Friend"
+  ],
+  "summary": "List friends",
+  "description": "List accepted friends plus received and sent friendship requests."
+}

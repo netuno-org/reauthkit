@@ -1,0 +1,7 @@
+{
+  "tags": [
+    "WebSocket"
+  ],
+  "summary": "WebSocket message",
+  "description": "WebSocket incoming message lifecycle event."
+}

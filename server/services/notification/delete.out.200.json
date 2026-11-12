@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "error": {
+      "type": "string",
+      "enum": [
+        "not-found"
+      ]
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

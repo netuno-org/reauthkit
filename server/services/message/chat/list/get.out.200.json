@@ -1,0 +1,6 @@
+{
+  "type": "array",
+  "items": {
+    "_schema": "response/chat-item"
+  }
+}

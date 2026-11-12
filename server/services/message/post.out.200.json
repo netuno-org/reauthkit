@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "content": {
+      "_schema": "response/message-data"
+    }
+  },
+  "required": [
+    "result",
+    "content"
+  ]
+}
